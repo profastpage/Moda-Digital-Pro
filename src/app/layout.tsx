@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { SITE_CONFIG } from "@/constants/product";
 import MobileNav from "@/components/MobileNav";
 
 const geistSans = Geist({
@@ -16,20 +15,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.brand} | ${SITE_CONFIG.tagline}`,
-  description: SITE_CONFIG.description,
+  title: "Moda Digital Pro | Plotters Textiles de Alta Precisión",
+  description:
+    "Líderes en tecnología de impresión textil de gran formato. Construimos tu solución en moda digital.",
   keywords:
-    "moda digital, plotter textil, impresión textil, sublimación, diseño CAM, Perú, plotter industrial",
+    "moda digital, plotter textil, impresión textil, sublimación, diseño CAM, Perú, plotter industrial, plotters textiles",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
-    title: `${SITE_CONFIG.brand} | ${SITE_CONFIG.tagline}`,
-    description: SITE_CONFIG.description,
-    siteName: SITE_CONFIG.brand,
+    title: "Moda Digital Pro | Plotters Textiles de Alta Precisión",
+    description:
+      "Líderes en tecnología de impresión textil de gran formato. Construimos tu solución en moda digital.",
+    siteName: "Moda Digital Pro",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_CONFIG.brand} | ${SITE_CONFIG.tagline}`,
-    description: SITE_CONFIG.description,
+    title: "Moda Digital Pro | Plotters Textiles de Alta Precisión",
+    description:
+      "Líderes en tecnología de impresión textil de gran formato. Construimos tu solución en moda digital.",
   },
 };
 

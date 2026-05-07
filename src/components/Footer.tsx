@@ -1,19 +1,18 @@
 "use client";
 
 import { SITE_CONFIG, FOOTER_LINKS, CONTACT_INFO } from "@/constants/product";
+import PlotterIcon from "./PlotterIcon";
 
 export default function Footer() {
   return (
-    <footer className="bg-navy-dark border-t border-border/30 pt-16 pb-8">
+    <footer className="bg-navy-dark border-t border-border/30 pt-16 pb-20 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 mb-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
-              </div>
+              <PlotterIcon className="w-8 h-8" />
               <span className="text-white font-bold text-lg tracking-tight">
                 Moda Digital <span className="text-primary">Pro</span>
               </span>

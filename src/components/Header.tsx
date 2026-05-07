@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { NAV_ITEMS } from "@/constants/product";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import PlotterIcon from "./PlotterIcon";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,8 +27,8 @@ export default function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? isDark
-            ? "bg-slate-950/80 backdrop-blur-md shadow-lg border-b border-slate-800/50"
-            : "bg-white/80 backdrop-blur-md shadow-lg border-b border-slate-200"
+            ? "bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-slate-800/50"
+            : "bg-white/90 backdrop-blur-md shadow-lg border-b border-slate-200"
           : "bg-transparent"
       }`}
     >
@@ -36,12 +37,10 @@ export default function Header() {
           {/* Logo */}
           <a href="#" className="flex-shrink-0">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
-              </div>
+              <PlotterIcon className="w-8 h-8" />
               <span
                 className={`font-bold text-lg tracking-tight ${
-                  isDark ? "text-white" : "text-slate-900"
+                  isDark ? "text-slate-100" : "text-slate-900"
                 }`}
               >
                 Moda Digital <span className="text-primary">Pro</span>
