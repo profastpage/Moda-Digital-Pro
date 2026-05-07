@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
@@ -8,6 +8,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 export default function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
   const [currentText, setCurrentText] = useState(0);
+  const progressKeyRef = useRef(0); // forces re-render to restart CSS animation
 
   /* Rotate background images every 6 seconds */
   useEffect(() => {
@@ -17,11 +18,12 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  /* Rotate hero texts every 5.5 seconds */
+  /* Rotate hero texts every 6 seconds */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentText((prev) => (prev + 1) % HERO_ROTATIONS.length);
-    }, 5500);
+      progressKeyRef.current += 1; // bump key → re-mount bar → restart animation
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -112,7 +114,7 @@ export default function HeroSection() {
           </div>
 
           {/* Rotating Subtitle — fixed min-height prevents layout jump */}
-          <div className="min-h-[4.5rem] sm:min-h-[3.5rem] md:min-h-[4rem] mb-8 sm:mb-12 max-w-2xl overflow-hidden">
+          <div className="min-h-[4.5rem] sm:min-h-[3.5rem] md:min-h-[4rem] mb-6 max-w-2xl overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.p
                 key={currentText}
@@ -125,6 +127,25 @@ export default function HeroSection() {
                 {HERO_ROTATIONS[currentText].subtitle}
               </motion.p>
             </AnimatePresence>
+          </div>
+
+          {/* Progress Indicators — 2 dashes showing active slide + countdown */}
+          <div className="flex gap-2 mb-8 sm:mb-12">
+            {HERO_ROTATIONS.map((_, idx) => (
+              <div
+                key={idx}
+                className="h-1 w-8 bg-white/10 overflow-hidden rounded-full"
+              >
+                <div
+                  key={`bar-${idx}-${progressKeyRef.current}`}
+                  className={`h-full rounded-full ${
+                    idx === currentText
+                      ? "bg-cyan-500 animate-progress"
+                      : "w-0"
+                  }`}
+                />
+              </div>
+            ))}
           </div>
 
           <motion.div

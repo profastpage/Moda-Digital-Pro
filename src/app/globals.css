@@ -145,3 +145,17 @@ img, video, svg {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
+
+/* === HERO PROGRESS BAR ANIMATION === */
+@keyframes progress-fill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-progress {
+  animation: progress-fill 6s linear forwards;
+}
