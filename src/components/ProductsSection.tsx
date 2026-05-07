@@ -4,25 +4,26 @@ import { motion } from "framer-motion";
 import { PRODUCTS } from "@/constants/product";
 import { MessageCircle } from "lucide-react";
 
+/* Standardized animation: short slide (20px), fast (0.6s), easeOut */
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
+const cardUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.2 + i * 0.08, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
 export default function ProductsSection() {
-  const fadeUp = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
-  const cardUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.3 + i * 0.1, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
   return (
     <section id="productos" className="py-20 sm:py-28 lg:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +58,7 @@ export default function ProductsSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
-              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:-translate-y-1"
+              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1"
             >
               {/* Product Image — fixed height, object-contain for full visibility */}
               <div className="relative h-52 w-full bg-slate-900 overflow-hidden flex items-center justify-center p-4">

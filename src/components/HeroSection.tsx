@@ -28,19 +28,19 @@ export default function HeroSection() {
   }, []);
 
   const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.15, duration: 0.8, ease: "easeOut" as const },
+      transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
     }),
   };
 
   /* Exit: slide up & fade out | Enter: slide from below & fade in */
   const textVariants = {
-    enter: { opacity: 0, y: 40 },
-    center: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" as const } },
-    exit: { opacity: 0, y: -30, transition: { duration: 0.45, ease: "easeIn" as const } },
+    enter: { opacity: 0, y: 30 },
+    center: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+    exit: { opacity: 0, y: -20, transition: { duration: 0.4, ease: "easeIn" as const } },
   };
 
   return (
@@ -171,12 +171,15 @@ export default function HeroSection() {
         href="#productos"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
+        transition={{ delay: 1, duration: 0.6 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors"
       >
         <span className="text-xs font-medium tracking-widest uppercase">{HERO.scrollLabel}</span>
         <ChevronDown className="w-6 h-6" />
       </motion.a>
+
+      {/* Bottom gradient — smooth blend into Products section */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none z-[1]" />
     </section>
   );
 }

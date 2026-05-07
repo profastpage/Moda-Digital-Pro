@@ -5,6 +5,24 @@ import { motion } from "framer-motion";
 import { FAQ_ITEMS } from "@/constants/product";
 import { CircleQuestionMark, ChevronDown } from "lucide-react";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: () => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
+const listUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: () => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.15, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -17,10 +35,10 @@ export default function FAQSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7 }}
           className="text-center mb-14 sm:mb-18"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 rounded-full">
@@ -37,10 +55,10 @@ export default function FAQSection() {
 
         {/* FAQ Items */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={listUp}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
           className="space-y-3"
         >
           {FAQ_ITEMS.map((item, i) => (

@@ -11,37 +11,37 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Clock,
 };
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
+const statUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.15 + i * 0.08, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
+const slideRight = {
+  hidden: { opacity: 0, x: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: 0.2 + i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
 export default function AboutSection() {
-  const fadeUp = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
-  const statUp = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.2 + i * 0.1, duration: 0.6, ease: "easeOut" as const },
-    }),
-  };
-
-  const slideRight = {
-    hidden: { opacity: 0, x: 40 },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: { delay: 0.4 + i * 0.15, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
   return (
-    <section id="nosotros" className="py-20 sm:py-28 lg:py-32 bg-navy text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="nosotros" className="relative py-20 sm:py-28 lg:py-32 bg-navy text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
           custom={0}
@@ -106,7 +106,7 @@ export default function AboutSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center gap-4"
+              className="p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 flex flex-col items-center text-center gap-4"
             >
               <div className="w-12 h-12 flex items-center justify-center bg-primary/20 rounded-xl flex-shrink-0">
                 <span className="text-primary font-bold text-lg">{adv.number}</span>
@@ -119,6 +119,9 @@ export default function AboutSection() {
           ))}
         </div>
       </div>
+
+      {/* Bottom gradient — smooth blend into next section (FAQ bg-card / #0f172a) */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#0f172a] pointer-events-none" />
     </section>
   );
 }

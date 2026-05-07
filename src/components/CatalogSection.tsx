@@ -3,25 +3,25 @@
 import { motion } from "framer-motion";
 import { CATALOG } from "@/constants/product";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
+const cardUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.2 + i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
 export default function CatalogSection() {
-  const fadeUp = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
-  const cardUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.3 + i * 0.15, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
   return (
     <section id="catalogo" className="py-20 sm:py-28 lg:py-32 bg-muted/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +56,7 @@ export default function CatalogSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              className="group bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:-translate-y-1"
+              className="group bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 {/* Placeholder pattern */}

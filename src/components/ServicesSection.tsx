@@ -10,25 +10,25 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Palette,
 };
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
+const cardUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.2 + i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
 export default function ServicesSection() {
-  const fadeUp = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
-  const cardUp = {
-    hidden: { opacity: 0, y: 35 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.3 + i * 0.15, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
   return (
     <section id="servicios" className="py-20 sm:py-28 lg:py-32 bg-muted/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,7 +65,7 @@ export default function ServicesSection() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-                className="group bg-card rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:-translate-y-1 text-center"
+                className="group bg-card rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1 text-center"
               >
                 <div className="w-16 h-16 sm:w-18 sm:h-18 mx-auto flex items-center justify-center bg-primary/10 rounded-2xl mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
                   <IconComponent className="w-8 h-8 sm:w-9 sm:h-9 text-primary group-hover:text-white transition-colors duration-500" />

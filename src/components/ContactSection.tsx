@@ -5,6 +5,15 @@ import { motion } from "framer-motion";
 import { CONTACT_INFO, SITE_CONFIG } from "@/constants/product";
 import { Send, Phone, Mail, MapPin, Clock } from "lucide-react";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
+  }),
+};
+
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
@@ -26,18 +35,9 @@ export default function ContactSection() {
     setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
   };
 
-  const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.7, ease: "easeOut" as const },
-    }),
-  };
-
   return (
-    <section id="contacto" className="py-20 sm:py-28 lg:py-32 bg-muted/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contacto" className="relative py-20 sm:py-28 lg:py-32 bg-muted/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
           custom={0}
@@ -128,9 +128,11 @@ export default function ContactSection() {
                     className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm appearance-none"
                   >
                     <option value="">Selecciona un producto</option>
-                    <option value="plotter-t1800">Plotter T-1800</option>
-                    <option value="plotter-t3200">Plotter T-3200</option>
-                    <option value="sublima-s1200">Sublimación S-1200</option>
+                    <option value="escaneo-plano">Digitalizador de Escaneo Plano</option>
+                    <option value="plotter-corte-vertical">Plotter de Corte Vertical</option>
+                    <option value="plotter-cama-plana">Plotter de Corte Cama Plana</option>
+                    <option value="digitalizador">Digitalizador</option>
+                    <option value="getonagain-cad">GetonAgain Garment CAD V2024.1</option>
                     <option value="impresion">Servicio de Impresión</option>
                     <option value="otro">Otro</option>
                   </select>
@@ -218,7 +220,7 @@ export default function ContactSection() {
               href={SITE_CONFIG.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="block bg-[#25D366] rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center"
+              className="block bg-[#25D366] rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 text-center"
             >
               <p className="text-white font-bold text-lg mb-1">¿Prefieres WhatsApp?</p>
               <p className="text-white/80 text-sm">Escríbenos directamente y recibe atención inmediata</p>
@@ -226,6 +228,9 @@ export default function ContactSection() {
           </motion.div>
         </div>
       </div>
+
+      {/* Bottom gradient — smooth blend into Footer (navy-dark) */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none" />
     </section>
   );
 }

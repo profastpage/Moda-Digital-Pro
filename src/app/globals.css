@@ -41,6 +41,65 @@ img, video, svg {
 }
 
 /* ===================================
+   SECTION TRANSITIONS — Smooth Blends
+   =================================== */
+
+/* Dark section → light section: navy fades to background */
+.section-fade-dark-to-light {
+  position: relative;
+}
+.section-fade-dark-to-light::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #0f172a);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Light section → dark section: fades to navy */
+.section-fade-light-to-dark {
+  position: relative;
+}
+.section-fade-light-to-dark::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #0f172a);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Light mode overrides for section transitions */
+.light .section-fade-dark-to-light::after,
+.light .section-fade-light-to-dark::after {
+  background: linear-gradient(to bottom, transparent, #0f172a);
+}
+
+/* Dark → muted transition (e.g., About → FAQ) */
+.section-fade-dark-to-muted::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--color-background));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.light .section-fade-dark-to-muted::after {
+  background: linear-gradient(to bottom, transparent, #0f172a);
+}
+
+/* ===================================
    MODO CLARO — Estética Industrial
    =================================== */
 
@@ -58,7 +117,7 @@ img, video, svg {
   background-color: #e2e8f0 !important;
 }
 
-/* Navy sections stay dark in both modes (hero overlay, about, footer) */
+/* Navy sections: deep navy #0f172a in both modes (softer than pure black) */
 .light .bg-navy {
   background-color: #0f172a !important;
 }
