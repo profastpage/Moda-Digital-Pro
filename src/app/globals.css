@@ -99,6 +99,10 @@ img, video, svg {
 }
 
 /* --- BG utilities --- */
+.light .bg-slate-900 {
+  background-color: #f1f5f9 !important;
+}
+
 .light .bg-white\/5 {
   background-color: rgba(15, 23, 42, 0.04) !important;
 }

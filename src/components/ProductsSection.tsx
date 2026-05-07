@@ -47,7 +47,7 @@ export default function ProductsSection() {
           </p>
         </motion.div>
 
-        {/* Product Cards — 3 columns on lg */}
+        {/* Product Cards — 3 columns on lg, uniform height */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {PRODUCTS.map((product, i) => (
             <motion.article
@@ -57,35 +57,34 @@ export default function ProductsSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
-              className="group bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:-translate-y-1"
+              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:-translate-y-1"
             >
-              {/* Product Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+              {/* Product Image — fixed height, object-contain for full visibility */}
+              <div className="relative h-52 w-full bg-slate-900 overflow-hidden flex items-center justify-center p-4">
                 <img
                   src={product.image}
                   alt={product.title}
                   loading="lazy"
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 {product.badge && (
-                  <span className="absolute top-4 right-4 px-3 py-1 text-xs font-bold text-white bg-primary/90 backdrop-blur-sm rounded-full">
+                  <span className="absolute top-3 right-3 px-3 py-1 text-xs font-bold text-white bg-primary/90 backdrop-blur-sm rounded-full">
                     {product.badge}
                   </span>
                 )}
               </div>
 
-              {/* Product Info */}
-              <div className="p-5 sm:p-6">
+              {/* Product Info — flex-grow pushes button to bottom */}
+              <div className="p-5 sm:p-6 flex flex-col flex-grow pb-4">
                 <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 leading-snug">
                   {product.title}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-grow">
                   {product.description}
                 </p>
                 <a
                   href="#contacto"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-colors duration-300 shadow-md hover:shadow-lg"
+                  className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 w-full text-sm font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-colors duration-300 shadow-md hover:shadow-lg"
                 >
                   <MessageCircle className="w-4 h-4" />
                   {product.cta}
