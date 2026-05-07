@@ -25,6 +25,19 @@ const NAV_ITEMS = [
   { label: "Contacto", href: "#contacto" },
 ];
 
+const HERO_ROTATIONS = [
+  {
+    title: "La nueva generación del trazado industrial",
+    subtitle:
+      "Plotters de alta velocidad fabricados con componentes electrónicos de clase mundial, estructura en aluminio aeronáutico y panel táctil inteligente.",
+  },
+  {
+    title: "Diseñados para producción de alto rendimiento",
+    subtitle:
+      "Plotters industriales ultrarrápidos con estructura reforzada en aluminio aeronáutico, acabados premium y operación táctil intuitiva.",
+  },
+];
+
 const HERO = {
   badge: "Moda Digital & Plotter Textil",
   title: SITE_CONFIG.tagline,
@@ -198,6 +211,7 @@ const FOOTER_LINKS = {
 export {
   SITE_CONFIG,
   NAV_ITEMS,
+  HERO_ROTATIONS,
   HERO,
   PRODUCTS,
   CATALOG,

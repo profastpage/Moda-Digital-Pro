@@ -1,17 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { HERO } from "@/constants/product";
+import { motion, AnimatePresence } from "framer-motion";
+import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
+  const [currentText, setCurrentText] = useState(0);
 
+  /* Rotate background images every 6 seconds */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % 2);
     }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  /* Rotate hero texts every 5.5 seconds */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentText((prev) => (prev + 1) % HERO_ROTATIONS.length);
+    }, 5500);
     return () => clearInterval(interval);
   }, []);
 
@@ -22,6 +32,13 @@ export default function HeroSection() {
       y: 0,
       transition: { delay: i * 0.15, duration: 0.8, ease: "easeOut" as const },
     }),
+  };
+
+  /* Exit: slide up & fade out | Enter: slide from below & fade in */
+  const textVariants = {
+    enter: { opacity: 0, y: 40 },
+    center: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" as const } },
+    exit: { opacity: 0, y: -30, transition: { duration: 0.45, ease: "easeIn" as const } },
   };
 
   return (
@@ -78,25 +95,37 @@ export default function HeroSection() {
             {HERO.badge}
           </motion.span>
 
-          <motion.h1
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 sm:mb-8"
-          >
-            {HERO.title}
-          </motion.h1>
+          {/* Rotating Title — fixed min-height prevents layout jump */}
+          <div className="min-h-[3.5rem] sm:min-h-[4.5rem] md:min-h-[5rem] lg:min-h-[5.5rem] mb-6 sm:mb-8 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={currentText}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+              >
+                {HERO_ROTATIONS[currentText].title}
+              </motion.h1>
+            </AnimatePresence>
+          </div>
 
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed mb-8 sm:mb-12 max-w-2xl"
-          >
-            {HERO.subtitle}
-          </motion.p>
+          {/* Rotating Subtitle — fixed min-height prevents layout jump */}
+          <div className="min-h-[4.5rem] sm:min-h-[3.5rem] md:min-h-[4rem] mb-8 sm:mb-12 max-w-2xl overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={currentText}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed"
+              >
+                {HERO_ROTATIONS[currentText].subtitle}
+              </motion.p>
+            </AnimatePresence>
+          </div>
 
           <motion.div
             custom={3}
