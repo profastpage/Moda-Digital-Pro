@@ -52,34 +52,64 @@ const HERO = {
 
 const PRODUCTS = [
   {
-    id: "plotter-t1800",
-    title: "Plotter Textil T-1800",
-    image: "/images/product-plotter-1.jpg",
+    id: "escaneo-plano-1",
+    title: "Digitalizador de Escaneo Plano",
+    image: "/images/product-01-escaneo-plano.jpg",
     description:
-      "Plotter de inyección de tinta de alta resolución para impresión textil directa. Capacidad de impresión de hasta 1.8 metros de ancho con velocidad de 45 m²/h.",
-    price: "$5,600",
+      "Sistema de digitalización de alta precisión para escaneo de patrones, moldes y diseños textiles sobre superficies planas. Captura con resolución profesional y exportación directa a formatos CAD compatibles con software de patronaje industrial.",
+    price: "Cotizar",
     cta: "Cotizar Ahora",
-    badge: "Más vendido",
+    badge: "Escaneo",
   },
   {
-    id: "plotter-t3200",
-    title: "Plotter Industrial T-3200",
-    image: "/images/product-plotter-2.jpg",
+    id: "plotter-corte-vertical",
+    title: "Plotter de Corte de Inyección de Tinta Vertical",
+    image: "/images/product-02-plotter-corte-vertical.jpg",
     description:
-      "Equipo industrial de grado aeronáutico para impresión de trazos a gran escala. Resolución de 1440 dpi con sistema de alimentación automática de rollo continuo.",
-    price: "$12,800",
+      "Plotter vertical de inyección de tinta con sistema de corte integrado para producción textil en continuo. Diseño compacto que optimiza espacio en el taller con alimentación por rollo y corte automatizado de alta velocidad.",
+    price: "Cotizar",
     cta: "Cotizar Ahora",
-    badge: "Industrial",
+    badge: "Corte + Impresión",
   },
   {
-    id: "plotter-sublima",
-    title: "Plotter de Sublimación S-1200",
-    image: "/images/product-plotter-3.jpg",
+    id: "plotter-corte-cama-plana",
+    title: "Plotter de Corte de Inyección de Tinta de Cama Plana",
+    image: "/images/product-03-plotter-corte-cama-plana.jpg",
     description:
-      "Sistema de sublimación térmica para transferencia de diseños sobre telas sintéticas y poliéster. Ideal para producción de moda deportiva y ropa técnica.",
-    price: "$3,400",
+      "Plotter de cama plana con tecnología de inyección de tinta y cabeza de corte para materiales textiles rígidos y semirrígidos. Ideal para corte preciso sobre telas montadas, vinilos y substratos especiales.",
+    price: "Cotizar",
     cta: "Cotizar Ahora",
-    badge: "Nuevo",
+    badge: "Cama Plana",
+  },
+  {
+    id: "escaneo-plano-2",
+    title: "Digitalizador de Escaneo Plano",
+    image: "/images/product-04-escaneo-plano-2.jpg",
+    description:
+      "Digitalizador profesional para escaneo de documentos físicos y patrones textiles de gran formato. Alta velocidad de captura con conversión digital inmediata para integración en flujos de trabajo de diseño y producción textil.",
+    price: "Cotizar",
+    cta: "Cotizar Ahora",
+    badge: "Gran Formato",
+  },
+  {
+    id: "digitalizador",
+    title: "Digitalizador",
+    image: "/images/product-05-digitalizador.jpg",
+    description:
+      "Digitalizador compacto de alto rendimiento para la conversión precisa de diseños físicos a formato digital. Captura nítida con sensores de última generación para patrones, moldes y trazos textiles de cualquier escala.",
+    price: "Cotizar",
+    cta: "Cotizar Ahora",
+    badge: "Compacto",
+  },
+  {
+    id: "getonagain-cad",
+    title: "GetonAgain Garment CAD V2024.1",
+    image: "/images/product-06-getonagain-cad.jpg",
+    description:
+      "Software profesional de patronaje y diseño textil Garment CAD versión 2024.1. Incluye herramientas avanzadas de grading, marcación, modificación de patrones y exportación a formatos de corte industrial compatible con plotters CNC.",
+    price: "Cotizar",
+    cta: "Cotizar Ahora",
+    badge: "Software",
   },
 ];
 
@@ -189,9 +219,10 @@ const CONTACT_INFO = {
 
 const FOOTER_LINKS = {
   productos: [
-    { label: "Plotter T-1800", href: "#productos" },
-    { label: "Plotter T-3200", href: "#productos" },
-    { label: "Sublimación S-1200", href: "#productos" },
+    { label: "Escaneo Plano", href: "#productos" },
+    { label: "Plotter Corte Vertical", href: "#productos" },
+    { label: "Plotter Cama Plana", href: "#productos" },
+    { label: "GetonAgain CAD", href: "#productos" },
     { label: "Ver todos", href: "#productos" },
   ],
   servicios: [

@@ -19,7 +19,7 @@ export default function ProductsSection() {
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: 0.3 + i * 0.15, duration: 0.7, ease: "easeOut" as const },
+      transition: { delay: 0.3 + i * 0.1, duration: 0.7, ease: "easeOut" as const },
     }),
   };
 
@@ -39,15 +39,15 @@ export default function ProductsSection() {
             Nuestros Productos
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Equipos de impresión de última generación
+            Equipos y software de última generación
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed text-center">
-            Plotters textiles de alta precisión diseñados para la industria de la moda.
-            Tecnología que transforma diseños en realidad con colores vibrantes y trazos perfectos.
+            Soluciones integrales para la industria textil: digitalizadores, plotters de corte
+            e inyección, y software CAD profesional. Todo lo que necesitas para escalar tu producción.
           </p>
         </motion.div>
 
-        {/* Product Cards */}
+        {/* Product Cards — 3 columns on lg */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {PRODUCTS.map((product, i) => (
             <motion.article
@@ -56,36 +56,31 @@ export default function ProductsSection() {
               variants={cardUp}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               className="group bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:-translate-y-1"
             >
-              <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-                {/* Placeholder pattern for product image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-navy-dark/80 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="w-16 h-16 mx-auto mb-3 bg-primary/20 rounded-2xl flex items-center justify-center">
-                      <span className="text-primary text-2xl font-bold">
-                        {product.price.replace("$", "").replace(",", "")}
-                      </span>
-                    </div>
-                    <p className="text-white/40 text-xs">Imagen del producto</p>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              {/* Product Image */}
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 {product.badge && (
-                  <span className="absolute top-4 right-4 px-3 py-1 text-xs font-bold text-white bg-primary rounded-full">
+                  <span className="absolute top-4 right-4 px-3 py-1 text-xs font-bold text-white bg-primary/90 backdrop-blur-sm rounded-full">
                     {product.badge}
                   </span>
                 )}
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg">
-                    {product.title}
-                  </h3>
-                  <span className="text-primary-light font-bold text-lg">{product.price}</span>
-                </div>
               </div>
+
+              {/* Product Info */}
               <div className="p-5 sm:p-6">
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 leading-snug">
+                  {product.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-5">
                   {product.description}
                 </p>
                 <a
