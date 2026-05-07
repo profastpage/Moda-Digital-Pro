@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PRODUCTS } from "@/constants/product";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Eye } from "lucide-react";
+import ProductModal from "./ProductModal";
 
 /* Standardized animation: short slide (20px), fast (0.6s), easeOut */
 const fadeUp = {
@@ -24,6 +26,20 @@ const cardUp = {
 };
 
 export default function ProductsSection() {
+  const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (product: typeof PRODUCTS[0]) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    /* Delay unmount for exit animation */
+    setTimeout(() => setSelectedProduct(null), 350);
+  };
+
   return (
     <section id="productos" className="py-20 sm:py-28 lg:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,7 +74,8 @@ export default function ProductsSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
-              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1"
+              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer"
+              onClick={() => openModal(product)}
             >
               {/* Product Image — fixed height, object-contain for full visibility */}
               <div className="relative h-52 w-full bg-slate-900 overflow-hidden flex items-center justify-center p-4">
@@ -73,6 +90,13 @@ export default function ProductsSection() {
                     {product.badge}
                   </span>
                 )}
+                {/* Hover overlay — "Ver detalles" */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                    <Eye className="w-4 h-4 text-white" />
+                    <span className="text-xs font-semibold text-white">Ver detalles</span>
+                  </div>
+                </div>
               </div>
 
               {/* Product Info — flex-grow pushes button to bottom */}
@@ -84,7 +108,10 @@ export default function ProductsSection() {
                   {product.description}
                 </p>
                 <a
-                  href="#contacto"
+                  href={`https://wa.me/51999999999?text=${encodeURIComponent(`Hola, estoy interesado en: ${product.title}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
                   className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 w-full text-sm font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-colors duration-300 shadow-md hover:shadow-lg"
                 >
                   <MessageCircle className="w-4 h-4" />
@@ -95,6 +122,13 @@ export default function ProductsSection() {
           ))}
         </div>
       </div>
+
+      {/* Product Detail Modal */}
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
     </section>
   );
 }

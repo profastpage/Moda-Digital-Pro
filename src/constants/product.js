@@ -60,6 +60,16 @@ const PRODUCTS = [
     price: "Cotizar",
     cta: "Cotizar Ahora",
     badge: "Escaneo",
+    longDescription:
+      "Nuestro Digitalizador de Escaneo Plano es la solución definitiva para convertir patrones físicos, moldes y diseños textiles en archivos digitales con precisión milimétrica. Equipado con sensores ópticos de alta resolución, este sistema permite capturar diseños sobre superficies planas de hasta 1.8 metros de ancho en un solo escaneo. Su integración directa con software CAD de patronaje industrial acelera drásticamente el flujo de trabajo del taller, eliminando la necesidad de digitalización manual.",
+    specs: [
+      { label: "Área de escaneo", value: "1800 x 1200 mm" },
+      { label: "Resolución óptica", value: "600 dpi" },
+      { label: "Velocidad de captura", value: "3 segundos / hoja A0" },
+      { label: "Formatos de exportación", value: "DXF, PLT, AI, SVG, PDF" },
+      { label: "Conectividad", value: "USB 3.0, Ethernet, Wi-Fi" },
+      { label: "Compatibilidad CAD", value: "GetonAgain, Lectra, Gerber, Optitex" },
+    ],
   },
   {
     id: "plotter-corte-vertical",
@@ -70,6 +80,16 @@ const PRODUCTS = [
     price: "Cotizar",
     cta: "Cotizar Ahora",
     badge: "Corte + Impresión",
+    longDescription:
+      "El Plotter de Corte de Inyección de Tinta Vertical representa la convergencia perfecta entre impresión y corte en un solo equipo de footprint reducido. Su configuración vertical permite alimentación continua por rollo, ideal para talleres donde el espacio es premium. La cabeza combinada de inyección y cuchilla de corte realizará ambas operaciones en secuencia automática, eliminando manipulación intermedia. Fabricado con estructura de aluminio aeronáutico para máxima estabilidad en producciones de alto volumen.",
+    specs: [
+      { label: "Ancho de impresión", value: "1600 mm" },
+      { label: "Velocidad de impresión", value: "45 m²/h" },
+      { label: "Resolución máxima", value: "1440 dpi" },
+      { label: "Corte", value: "Cuchilla oscilante de precisión" },
+      { label: "Alimentación", value: "Rollo continuo automático" },
+      { label: "Tintas", value: "Pigmentadas reactivas (CMYK)" },
+    ],
   },
   {
     id: "plotter-corte-cama-plana",
@@ -80,6 +100,16 @@ const PRODUCTS = [
     price: "Cotizar",
     cta: "Cotizar Ahora",
     badge: "Cama Plana",
+    longDescription:
+      "El Plotter de Cama Plana está diseñado para materiales que no pueden procesarse en rollo: telas montadas en bastidor, vinilos gruesos, transfer térmico y substratos especiales. Su mesa de succión vacía asegura un posicionamiento perfecto del material durante todo el proceso de impresión y corte. El cabezal dual realiza primero la impresión de alta resolución y luego el corte preciso sin necesidad de re-posicionar el material, garantizando alineación milimétrica entre color y corte.",
+    specs: [
+      { label: "Área de trabajo", value: "1800 x 2500 mm" },
+      { label: "Velocidad de impresión", value: "30 m²/h" },
+      { label: "Resolución máxima", value: "1440 dpi" },
+      { label: "Mesa de succión", value: "Zonas independientes programables" },
+      { label: "Corte", value: "Cuchilla tangencial + láser opcional" },
+      { label: "Materiales", value: "Telas, vinilo, transfer, sublimado" },
+    ],
   },
   {
     id: "escaneo-plano-2",
@@ -90,6 +120,16 @@ const PRODUCTS = [
     price: "Cotizar",
     cta: "Cotizar Ahora",
     badge: "Gran Formato",
+    longDescription:
+      "Este Digitalizador de Gran Formato está diseñado para empresas textiles que manejan patrones de gran volumen y necesitan una digitalización rápida y precisa. Con capacidad para escanear documentos de hasta 1118 mm de ancho en un solo paso, captura cada detalle con fidelidad fotográfica. Su sistema de alimentación automática permite procesar lotes de patrones de forma continua, ideal para la conversión de archivos históricos y la integración en sistemas de producción digitales modernos.",
+    specs: [
+      { label: "Ancho máximo", value: "1118 mm (44 pulgadas)" },
+      { label: "Resolución óptica", value: "1200 dpi (interpolable 9600)" },
+      { label: "Profundidad de color", value: "48-bit (16 bits por canal)" },
+      { label: "Velocidad", value: "25 mm/s en 600 dpi" },
+      { label: "Formatos", value: "TIFF, JPEG, PNG, PDF, DXF" },
+      { label: "Software incluido", value: "GetonAgain Scan + CAD link" },
+    ],
   },
   {
     id: "digitalizador",
@@ -100,6 +140,16 @@ const PRODUCTS = [
     price: "Cotizar",
     cta: "Cotizar Ahora",
     badge: "Compacto",
+    longDescription:
+      "El Digitalizador Compacto es la opción ideal para talleres y estudios de diseño que necesitan digitalizar patrones con calidad profesional en un formato de escritorio. A pesar de su tamaño reducido, cuenta con sensores CIS de última generación que entregan una captura nítida y precisa, perfecta para patrones de moda infantil, ropa interior y accesorios. Su calibración automática garantiza colores fieles desde la primera exploración, y su software de陪伴 guía paso a paso al usuario en el proceso de vectorización.",
+    specs: [
+      { label: "Área de escaneo", value: "A3+ (329 x 483 mm)" },
+      { label: "Resolución", value: "1200 x 1200 dpi" },
+      { label: "Profundidad de color", value: "48-bit" },
+      { label: "Velocidad de captura", value: "5 segundos / A3" },
+      { label: "Interfaz", value: "USB-C 3.2" },
+      { label: "Peso", value: "4.2 kg (portátil)" },
+    ],
   },
   {
     id: "getonagain-cad",
@@ -110,6 +160,16 @@ const PRODUCTS = [
     price: "Cotizar",
     cta: "Cotizar Ahora",
     badge: "Software",
+    longDescription:
+      "GetonAgain Garment CAD V2024.1 es el software de patronaje más completo del mercado textil latinoamericano. Esta versión incluye herramientas avanzadas de diseño de patrones desde cero, grading automático con tablas de medidas personalizables, marcación inteligente que optimiza el consumo de tela hasta un 15%, y exportación directa a formatos de corte compatible con todos los plotters CNC del mercado. Su interfaz ha sido rediseñada para mayor productividad, con atajos de teclado personalizables y vista previa 3D del prendido terminado.",
+    specs: [
+      { label: "Versión", value: "2024.1 (última actualización)" },
+      { label: "Módulos incluidos", value: "Patronaje + Grading + Marcación + 3D" },
+      { label: "Formatos de exportación", value: "DXF, PLT, CUT, ISO, CSV" },
+      { label: "Idiomas", value: "Español, Inglés, Portugués, Chino" },
+      { label: "Licencia", value: "Perpetua con 1 año de actualizaciones" },
+      { label: "Requisitos", value: "Windows 10/11, 8 GB RAM, SSD" },
+    ],
   },
 ];
 
