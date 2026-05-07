@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* === Moda Digital Pro — Industrial Palette === */
+  --color-background: #020617;
+  --color-foreground: #cbd5e1;
+  --color-primary: #06b6d4;
+  --color-primary-light: #22d3ee;
+  --color-primary-dark: #0891b2;
+  --color-navy: #0f172a;
+  --color-navy-dark: #020617;
+  --color-card: #0f172a;
+  --color-card-hover: #1e293b;
+  --color-muted: #1e293b;
+  --color-border: #334155;
+  --color-cyan: #06b6d4;
+  --color-cyan-light: #22d3ee;
+  --color-cyan-dark: #0891b2;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
