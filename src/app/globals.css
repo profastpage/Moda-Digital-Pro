@@ -21,7 +21,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* === SCROLL LOCK — Solo vertical === */
+/* === SCROLL LOCK === */
 html,
 body {
   overflow-x: hidden;
@@ -35,7 +35,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* === Force all images and containers to respect viewport === */
 img, video, svg {
   max-width: 100%;
   height: auto;
@@ -44,11 +43,8 @@ img, video, svg {
 /* ===================================
    MODO CLARO — Estética Industrial
    =================================== */
-.light body {
-  background: #f1f5f9;
-  color: #0f172a;
-}
 
+/* --- Fondos --- */
 .light .bg-background {
   background-color: #f1f5f9 !important;
 }
@@ -62,11 +58,16 @@ img, video, svg {
   background-color: #e2e8f0 !important;
 }
 
-.light .bg-navy,
+/* Navy sections stay dark in both modes (hero overlay, about, footer) */
+.light .bg-navy {
+  background-color: #0f172a !important;
+}
+
 .light .bg-navy-dark {
   background-color: #0f172a !important;
 }
 
+/* --- Textos --- */
 .light .text-foreground {
   color: #0f172a !important;
 }
@@ -75,41 +76,46 @@ img, video, svg {
   color: #475569 !important;
 }
 
+/* text-white on DARK sections (navy, hero, footer) keeps white.
+   text-white on LIGHT sections gets overridden per-component.
+   Default: keep white for safety on dark overlays. */
 .light .text-white {
   color: #ffffff !important;
 }
 
-.light .text-white\/75,
 .light .text-white\/80,
+.light .text-white\/75,
 .light .text-white\/70,
 .light .text-white\/85,
 .light .text-white\/60 {
-  color: #334155 !important;
+  color: #64748b !important;
 }
 
+/* --- Bordes --- */
 .light .border-border\/60,
 .light .border-border\/40,
 .light .border-border\/30 {
   border-color: #cbd5e1 !important;
 }
 
+/* --- BG utilities --- */
 .light .bg-white\/5 {
-  background-color: rgba(15, 23, 42, 0.05) !important;
+  background-color: rgba(15, 23, 42, 0.04) !important;
 }
 
 .light .bg-white\/10 {
-  background-color: rgba(15, 23, 42, 0.08) !important;
+  background-color: rgba(15, 23, 42, 0.07) !important;
 }
 
 .light .hover\:bg-white\/5:hover {
-  background-color: rgba(15, 23, 42, 0.05) !important;
+  background-color: rgba(15, 23, 42, 0.04) !important;
 }
 
 .light .hover\:bg-white\/10:hover {
-  background-color: rgba(15, 23, 42, 0.08) !important;
+  background-color: rgba(15, 23, 42, 0.07) !important;
 }
 
-/* Inputs en modo claro */
+/* --- Inputs --- */
 .light input,
 .light select,
 .light textarea {
@@ -118,7 +124,7 @@ img, video, svg {
   color: #0f172a !important;
 }
 
-/* === Custom scrollbar === */
+/* === Scrollbar === */
 ::-webkit-scrollbar {
   width: 8px;
 }

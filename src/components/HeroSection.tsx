@@ -42,7 +42,8 @@ export default function HeroSection() {
             currentImage === 1 ? "opacity-100" : "opacity-0"
           }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80" />
+        {/* Dark gradient — always opaque enough for white text in both themes */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-[#0f172a]/60 to-[#020617]/85" />
       </div>
 
       {/* Mobile Background */}
@@ -61,7 +62,7 @@ export default function HeroSection() {
             currentImage === 1 ? "opacity-100" : "opacity-0"
           }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/70 via-navy/50 to-navy-dark/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-[#0f172a]/60 to-[#020617]/85" />
       </div>
 
       {/* Content */}
