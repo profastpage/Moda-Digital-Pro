@@ -21,7 +21,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-html {
+/* === SCROLL LOCK — Solo vertical === */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
   scroll-behavior: smooth;
 }
 
@@ -29,6 +33,12 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* === Force all images and containers to respect viewport === */
+img, video, svg {
+  max-width: 100%;
+  height: auto;
 }
 
 /* ===================================
@@ -99,37 +109,6 @@ body {
   background-color: rgba(15, 23, 42, 0.08) !important;
 }
 
-/* Header en modo claro */
-.light .bg-navy-dark\/95 {
-  background-color: rgba(255, 255, 255, 0.92) !important;
-}
-
-.light header a span {
-  color: #0f172a !important;
-}
-
-.light header nav a {
-  color: #475569 !important;
-}
-
-.light header nav a:hover {
-  color: #0f172a !important;
-  background-color: rgba(15, 23, 42, 0.06) !important;
-}
-
-.light header button {
-  color: #475569 !important;
-}
-
-.light header button:hover {
-  color: #0f172a !important;
-  background-color: rgba(15, 23, 42, 0.06) !important;
-}
-
-.light header .border-border\/40 {
-  border-color: #cbd5e1 !important;
-}
-
 /* Inputs en modo claro */
 .light input,
 .light select,
@@ -139,7 +118,7 @@ body {
   color: #0f172a !important;
 }
 
-/* Custom scrollbar */
+/* === Custom scrollbar === */
 ::-webkit-scrollbar {
   width: 8px;
 }
