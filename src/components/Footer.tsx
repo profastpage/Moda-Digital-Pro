@@ -85,7 +85,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="border-t border-border/30 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-xs sm:text-sm">
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.brand} — Moda Digital Pro. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} {SITE_CONFIG.brand}. Todos los derechos reservados.
           </p>
           <p className="text-muted-foreground text-xs">
             Diseñado con tecnología de grado industrial

@@ -5,7 +5,7 @@
  */
 
 const SITE_CONFIG = {
-  brand: "CMC",
+  brand: "Moda Digital Pro",
   tagline: "Construimos tu solución en Moda Digital",
   description:
     "Plotter Textil de alta precisión. Tecnología de grado aeronáutico para impresión de trazos a gran escala.",
