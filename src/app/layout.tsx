@@ -46,6 +46,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        {/* Force dark mode BEFORE hydration — prevents FOUC and stale localStorage */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){document.documentElement.classList.add('dark');try{localStorage.setItem('theme','dark')}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {children}
