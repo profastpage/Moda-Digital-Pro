@@ -125,7 +125,8 @@ export default function Header() {
 
   const isDark = mounted && theme !== "light";
 
-  /* Header colors: transparent over hero, themed when scrolled */
+  /* When NOT scrolled (over hero video with gradient) → always white text.
+     When scrolled → adapt to current theme background. */
   const textLogo = !scrolled
     ? "text-white"
     : isDark
@@ -180,8 +181,8 @@ export default function Header() {
             ? isDark
               ? "bg-slate-950/90 backdrop-blur-md shadow-lg"
               : "bg-white/90 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
-        } border-b ${borderDiv}`}
+            : "bg-gradient-to-b from-black/70 via-black/40 to-transparent"
+        } ${!scrolled ? "border-b border-transparent" : `border-b ${borderDiv}`}`}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[52px] sm:h-[56px]">

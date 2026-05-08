@@ -55,19 +55,7 @@ export default function HeroSection() {
       className="hero-section relative w-full overflow-hidden bg-black"
       style={{ height: "100svh", minHeight: "100vh" }}
     >
-      {/* ===== LAYER 1: VIDEO FULLSCREEN =====
-          
-          Técnica CSS clásica para video fullscreen sin franjas negras:
-            - min-w-full min-h-full: el video SIEMPRE cubre ancho y alto mínimo
-            - w-auto h-auto: el navegador calcula dimensiones naturales
-            - object-cover: rellena sin distorsión (equivalente a c_fill)
-            - top/left 50% + translate -50%: centra perfectamente
-          
-          NOTA: No se usa c_fill,g_auto en la URL Cloudinary porque:
-            (1) g_auto NO funciona en video (HTTP 400, solo imágenes)
-            (2) Cualquier transform on-the-fly genera accept-ranges: none
-                que bloquea el streaming/autoplay del navegador
-      */}
+      {/* ===== LAYER 1: VIDEO FULLSCREEN ===== */}
       <video
         ref={videoRef}
         autoPlay
@@ -81,11 +69,14 @@ export default function HeroSection() {
         <source src={HERO.video.raw} type="video/mp4" />
       </video>
 
-      {/* ===== LAYER 2: OVERLAY — fondo a transparente arriba ===== */}
-      <div className="absolute inset-0 z-[2] bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+      {/* ===== LAYER 2: OVERLAY OSCURO (efecto cine) ===== */}
+      <div className="absolute inset-0 z-[2] bg-black/30" />
 
-      {/* ===== LAYER 3: TEXTO — alineado abajo ===== */}
-      <div className="relative z-10 h-full flex flex-col justify-end pb-20 sm:pb-28 px-6 sm:px-8 lg:px-8">
+      {/* ===== LAYER 3: GRADIENT para fusionar con secciones ===== */}
+      <div className="absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-transparent to-black/50" />
+
+      {/* ===== LAYER 4: CONTENIDO — CENTRADO VERTICAL ===== */}
+      <div className="relative z-10 flex flex-col justify-center items-center text-center h-full px-6 sm:px-8">
         <div className="max-w-3xl w-full">
           <motion.span
             custom={0}
@@ -114,7 +105,7 @@ export default function HeroSection() {
                   {HERO_ROTATIONS[currentText].title}
                 </h1>
                 <p
-                  className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl"
+                  className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto"
                   style={{ textShadow: "0 1px 10px rgba(0,0,0,0.8)" }}
                 >
                   {HERO_ROTATIONS[currentText].subtitle}
@@ -124,7 +115,7 @@ export default function HeroSection() {
           </div>
 
           {/* Progress Indicators */}
-          <div className="flex gap-2 mb-6 sm:mb-8">
+          <div className="flex justify-center gap-2 mb-6 sm:mb-8">
             {HERO_ROTATIONS.map((_, idx) => (
               <div
                 key={idx}
@@ -147,7 +138,7 @@ export default function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
               href={HERO.cta.href}
