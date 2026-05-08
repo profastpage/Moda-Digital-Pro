@@ -4,10 +4,8 @@ import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MessageCircle, ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
-import { SITE_CONFIG } from "@/constants/product";
 import { useHasMounted } from "@/hooks/useHasMounted";
-
-const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
+import { buildProductWhatsAppURL, hasNumericPrice } from "@/utils/whatsapp-engine";
 
 interface ProductSpec {
   label: string;
@@ -29,11 +27,6 @@ interface ProductModalProps {
   product: ProductData | null;
   isOpen: boolean;
   onClose: () => void;
-}
-
-/** Check if a price string represents a numeric value (e.g. "$ 5,500") */
-function hasNumericPrice(price?: string): boolean {
-  return !!price && /^\$/.test(price.trim());
 }
 
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
@@ -69,18 +62,14 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
   if (!product) return null;
 
-  /* ── Dynamic CTA: price vs no-price ── */
+  /* ── Dynamic CTA: price vs no-price (powered by whatsapp-engine) ── */
   const withPrice = hasNumericPrice(product.price);
 
   const ctaLabel = withPrice
     ? "Deseo adquirir este equipo"
     : "Cotizar este equipo por WhatsApp";
 
-  const waMessage = withPrice
-    ? `Hola, vi el *${product.title}* a ${product.price} en su web y deseo más información para la compra.`
-    : `Hola, me interesa el *${product.title}*. ¿Podrían brindarme una cotización formal?`;
-
-  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMessage)}`;
+  const waUrl = buildProductWhatsAppURL(product);
 
   return (
     <AnimatePresence>
