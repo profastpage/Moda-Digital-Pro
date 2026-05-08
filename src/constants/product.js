@@ -44,26 +44,26 @@ const HERO = {
   cta: SITE_CONFIG.cta,
   video: {
     /*
-     * HERO 3.mp4 — Subido 2026-05-08
-     * Public ID: hero/HERO_3_gu9pj0
-     * Original: 1920x1080, 23.6s, 59MB, H.264, ~2.5 Mbps
+     * PLOTTER_PRINCIPAL_2.mp4 — Ultra-HD Hero Video
+     * Cloud Name: dqk6ol7id
+     * Public ID: PLOTTER_PRINCIPAL_2_k96ktp
      *
-     * DESKTOP: URL raw con version ID → streaming perfecto
-     *   accept-ranges: bytes, cache-control: immutable
+     * DESKTOP (PC — Alta Resolución):
+     *   URL directa con q_auto:best → máxima calidad fidelidad.
+     *   Streaming por bytes con cache inmutable.
      *
-     * MOBILE: g_auto:subject encadenado como componente separado
-     *   genera un video pre-renderizado en Cloudinary (720x1280, 4MB)
-     *   con accept-ranges: bytes y cache-control: immutable.
-     *   La IA detecta el sujeto (plotter) y lo centra al recortar
-     *   de horizontal a vertical.
+     * MOBILE (IA Cloudinary — Enfoque Inteligente):
+     *   g_auto:subject → la IA detecta el sujeto (plotter)
+     *   y lo centra al recortar de horizontal a vertical (9:16).
+     *   c_fill,ar_9:16,w_720,q_auto:best → 720x1280 optimizado.
      *
      * IMPORTANTE: No agregar e_sharpen ni e_improve a las URLs
      * porque activan "backfill" on-the-fly que elimina el cache
      * y cambia accept-ranges a none, rompiendo el streaming.
      */
-    raw: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778210648/hero/HERO_3_gu9pj0.mp4",
-    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778210648/hero/HERO_3_gu9pj0.mp4",
-    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/g_auto:subject/c_fill,ar_9:16,w_720,q_auto:best/v1778210648/hero/HERO_3_gu9pj0.mp4",
+    raw: "https://res.cloudinary.com/dqk6ol7id/video/upload/PLOTTER_PRINCIPAL_2_k96ktp.mp4",
+    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/q_auto:best/PLOTTER_PRINCIPAL_2_k96ktp.mp4",
+    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/g_auto:subject/c_fill,ar_9:16,w_720,q_auto:best/PLOTTER_PRINCIPAL_2_k96ktp.mp4",
   },
   images: {
     desktop: ["/images/hero-1.jpg", "/images/hero-2.jpg"],

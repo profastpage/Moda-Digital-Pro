@@ -100,18 +100,18 @@ export default function HeroSection() {
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 w-full h-full"
         style={{ objectFit: "cover" }}
         onError={handleVideoError}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* ===== LAYER 2: OVERLAY — subtle for text legibility ===== */}
-      <div className="absolute inset-0 bg-black/30 z-10" />
+      {/* ===== LAYER 2: OVERLAY — enhanced for perfect text legibility ===== */}
+      <div className="absolute inset-0 bg-black/40 z-10" />
 
-      {/* ===== LAYER 3: CONTENT — centered with text shadow ===== */}
-      <div className="relative z-20 flex flex-col justify-center items-center h-full text-center px-6">
+      {/* ===== LAYER 3: CONTENT — perfectly centered (vertical + horizontal) ===== */}
+      <div className="relative z-20 inset-0 flex flex-col justify-center items-center h-full text-center px-6">
         <div className="max-w-3xl w-full">
           <motion.span
             custom={0}
