@@ -9,22 +9,6 @@ import { useHasMounted } from "@/hooks/useHasMounted";
 
 const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
 
-/** Mensajes contextuales por producto para WhatsApp */
-const WA_MESSAGES: Record<string, string> = {
-  "plotter-inkjet-alta-velocidad":
-    "📋 ¡Hola! Vi el *Plotter Inkjet de Alta Velocidad* en su web (200 m²/h, aluminio aeronáutico, 1-4 cartuchos). Me interesa cotizar este equipo. ¿Tienen stock y disponibilidad inmediata? 📐",
-  "plotter-trazo-corte-carton":
-    "🖨️ Hola Moda Digital Pro, vi el *Plotter de Trazo de Papel y Corte de Cartón* (110 m²/h, Servo, HP45, cuchilla rotativa) en su catálogo. Me gustaría conocer el precio y disponibilidad. 📏",
-  "digitalizador-48x36":
-    "⚙️ ¡Buen día! Vi el *Digitalizador de 48x36* en su web (compatible con +30 formatos CAD). Por favor envíenme precio y disponibilidad. 📐",
-  "plotter-corte-carton-cama-plana":
-    "🚀 Hola, vi el *Plotter de Corte de Cartón Cama Plana* (Flatbed industrial, Servo, HP45, pantalla HD) en su web. Me interesa cotizar. ¿Hay stock? 📂",
-  "digitalizador-cama-plana":
-    "💎 ¡Hola! Quiero cotizar el *Digitalizador de Cama Plana* (escaneo un solo toque, vacío, DXF universal) que vi en su catálogo. ¿Podrían indicarme precio y disponibilidad? ✂️",
-  "getonagain-cad":
-    "💻 Hola, me interesa la licencia de *GetonAgain Garment CAD V2024.1* que vi en su web. ¿Incluye Patronaje + Grading + Marcación + 3D? ¿Precio y disponibilidad inmediata? 👕",
-};
-
 interface ProductSpec {
   label: string;
   value: string;
@@ -45,6 +29,11 @@ interface ProductModalProps {
   product: ProductData | null;
   isOpen: boolean;
   onClose: () => void;
+}
+
+/** Check if a price string represents a numeric value (e.g. "$ 5,500") */
+function hasNumericPrice(price?: string): boolean {
+  return !!price && /^\$/.test(price.trim());
 }
 
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
@@ -80,9 +69,18 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
   if (!product) return null;
 
-  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
-    WA_MESSAGES[product.id] || `Hola, estoy interesado en: ${product.title}. ¿Podrían darme más información y precio?`
-  )}`;
+  /* ── Dynamic CTA: price vs no-price ── */
+  const withPrice = hasNumericPrice(product.price);
+
+  const ctaLabel = withPrice
+    ? "Deseo adquirir este equipo"
+    : "Cotizar este equipo por WhatsApp";
+
+  const waMessage = withPrice
+    ? `Hola, vi el *${product.title}* a ${product.price} en su web y deseo más información para la compra.`
+    : `Hola, me interesa el *${product.title}*. ¿Podrían brindarme una cotización formal?`;
+
+  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMessage)}`;
 
   return (
     <AnimatePresence>
@@ -160,17 +158,17 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     {product.title}
                   </h2>
 
-                  {/* Price — Celeste highlight */}
+                  {/* Price — Big cyan highlight */}
                   {product.price && (
                     <div className="mb-4">
-                      <span className={`text-2xl sm:text-3xl font-bold ${
-                        product.price.startsWith("$")
+                      <span className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
+                        hasNumericPrice(product.price)
                           ? "text-cyan-500"
                           : isDark ? "text-slate-300" : "text-slate-600"
                       }`}>
                         {product.price}
                       </span>
-                      {product.price.startsWith("$") && (
+                      {hasNumericPrice(product.price) && (
                         <span className={`block text-xs font-medium mt-1 ${
                           isDark ? "text-slate-500" : "text-slate-400"
                         }`}>
@@ -224,7 +222,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     </div>
                   </div>
 
-                  {/* ===== WHATSAPP CTA — Big Green Button ===== */}
+                  {/* ===== WHATSAPP CTA — Dynamic text based on price ===== */}
                   <a
                     href={waUrl}
                     target="_blank"
@@ -232,7 +230,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     className="mt-auto flex items-center justify-center gap-3 w-full px-6 py-5 text-lg font-bold text-white bg-[#25D366] rounded-2xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40 hover:-translate-y-0.5"
                   >
                     <MessageCircle className="w-6 h-6" />
-                    Cotizar este equipo por WhatsApp
+                    <span className="text-center leading-snug">{ctaLabel}</span>
                     <ArrowRight className="w-5 h-5" />
                   </a>
                 </div>
