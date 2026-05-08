@@ -91,35 +91,24 @@ export default function HeroSection() {
             {HERO.badge}
           </motion.span>
 
-          {/* Rotating Title */}
-          <div className="min-h-[3.5rem] sm:min-h-[4.5rem] md:min-h-[5rem] lg:min-h-[5.5rem] mb-6 sm:mb-8 overflow-hidden">
+          {/* ===== Rotating Content Block (single AnimatePresence) ===== */}
+          {/* Fixed min-height container prevents layout jump / text overlap */}
+          <div className="min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px] mb-6">
             <AnimatePresence mode="wait">
-              <motion.h1
+              <motion.div
                 key={currentText}
                 variants={textVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg"
               >
-                {HERO_ROTATIONS[currentText].title}
-              </motion.h1>
-            </AnimatePresence>
-          </div>
-
-          {/* Rotating Subtitle */}
-          <div className="min-h-[4.5rem] sm:min-h-[3.5rem] md:min-h-[4rem] mb-6 max-w-2xl overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={currentText}
-                variants={textVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed"
-              >
-                {HERO_ROTATIONS[currentText].subtitle}
-              </motion.p>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-4 sm:mb-6">
+                  {HERO_ROTATIONS[currentText].title}
+                </h1>
+                <p className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">
+                  {HERO_ROTATIONS[currentText].subtitle}
+                </p>
+              </motion.div>
             </AnimatePresence>
           </div>
 
