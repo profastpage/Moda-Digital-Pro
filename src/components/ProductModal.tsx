@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MessageCircle, Play, Monitor } from "lucide-react";
+import { X, MessageCircle, Monitor, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/constants/product";
 
 const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
@@ -71,9 +71,15 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
+  if (!product) return null;
+
+  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+    WA_MESSAGES[product.id] || `Hola, estoy interesado en: ${product.title}. ¿Podrían darme más información y precio?`
+  )}`;
+
   return (
     <AnimatePresence>
-      {isOpen && product && (
+      {isOpen && (
         /* Backdrop */
         <motion.div
           initial={{ opacity: 0 }}
@@ -106,10 +112,9 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
             {/* Content: Side A (Visual) + Side B (Info) */}
             <div className="flex flex-col lg:flex-row">
-              {/* SIDE A — Visual (Video / Image) */}
+              {/* SIDE A — Visual */}
               <div className="w-full lg:w-1/2 flex-shrink-0">
                 <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full bg-slate-900/50 flex items-center justify-center p-6 lg:p-8">
-                  {/* Product image with optional video placeholder overlay */}
                   <img
                     src={product.image}
                     alt={product.title}
@@ -123,7 +128,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                 </div>
               </div>
 
-              {/* SIDE B — Info */}
+              {/* SIDE B — Full Info */}
               <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col">
                 {/* Badge */}
                 {product.badge && (
@@ -137,7 +142,12 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                   {product.title}
                 </h2>
 
-                {/* Long description */}
+                {/* Short description (from card) */}
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">
+                  {product.description}
+                </p>
+
+                {/* Long description (full detail) */}
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
                   {product.longDescription}
                 </p>
@@ -166,17 +176,16 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                   </div>
                 </div>
 
-                {/* WhatsApp CTA */}
+                {/* ===== WHATSAPP CTA — Big & Prominent ===== */}
                 <a
-                  href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
-                    WA_MESSAGES[product.id] || `Hola, estoy interesado en: ${product.title}. ¿Podrían darme más información y precio?`
-                  )}`}
+                  href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto inline-flex items-center justify-center gap-3 w-full px-6 py-4 text-base font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg hover:shadow-[#25D366]/30 hover:-translate-y-0.5"
+                  className="mt-auto flex items-center justify-center gap-3 w-full px-6 py-5 text-lg font-bold text-white bg-[#25D366] rounded-2xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg shadow-[#25D366]/30 hover:shadow-[#25D366]/50 hover:-translate-y-0.5"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <MessageCircle className="w-6 h-6" />
                   Cotizar por WhatsApp
+                  <ArrowRight className="w-5 h-5" />
                 </a>
               </div>
             </div>

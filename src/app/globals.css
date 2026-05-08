@@ -103,6 +103,11 @@ img, svg {
   background-color: #f1f5f9 !important;
 }
 
+/* bg-muted/60 for gradient placeholders */
+.light .bg-muted\/60 {
+  background-color: rgba(248, 250, 252, 0.6) !important;
+}
+
 .light .bg-white\/5 {
   background-color: rgba(15, 23, 42, 0.04) !important;
 }
@@ -120,6 +125,8 @@ img, svg {
 }
 
 /* --- Inputs (global catch for any remaining unconverted inputs) --- */
+/* REMOVED: ContactSection now uses explicit theme-aware classes.
+   Only uncomment if other unconverted forms appear:
 .light input,
 .light select,
 .light textarea {
@@ -127,6 +134,7 @@ img, svg {
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
+*/
 
 /* ===================================
    HERO SECTION — Texto siempre blanco

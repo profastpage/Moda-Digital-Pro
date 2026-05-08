@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import { CONTACT_INFO, SITE_CONFIG } from "@/constants/product";
@@ -17,7 +17,13 @@ const fadeUp = {
 
 export default function ContactSection() {
   const { theme } = useTheme();
-  const isDark = theme !== "light";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = !mounted || theme !== "light";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -40,7 +46,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contacto" className="py-20 sm:py-28 lg:py-32 bg-white">
+    <section id="contacto" className={`py-20 sm:py-28 lg:py-32 transition-colors duration-300 ${isDark ? "bg-slate-950" : "bg-white"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -54,10 +60,10 @@ export default function ContactSection() {
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 rounded-full">
             Contáctanos
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${isDark ? "text-white" : "text-slate-900"}`}>
             Impulsa tu producción textil
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p className={`text-base sm:text-lg leading-relaxed ${isDark ? "text-slate-300" : "text-slate-600"}`}>
             Estamos listos para asesorarte. Escríbenos y recibe una cotización personalizada sin costo.
           </p>
         </motion.div>
@@ -74,11 +80,11 @@ export default function ContactSection() {
           >
             <form
               onSubmit={handleSubmit}
-              className="bg-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm border border-slate-200"
+              className={`${isDark ? "bg-slate-900 border-slate-700/50" : "bg-white border-slate-200"} rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm border`}
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
                     Nombre completo
                   </label>
                   <input
@@ -88,11 +94,11 @@ export default function ContactSection() {
                     onChange={handleChange}
                     placeholder="Ej: Carlos Mendoza"
                     required
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
+                    className={`w-full px-4 py-3 ${isDark ? "bg-slate-800 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"} border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
                     Correo electrónico
                   </label>
                   <input
@@ -102,13 +108,13 @@ export default function ContactSection() {
                     onChange={handleChange}
                     placeholder="correo@ejemplo.com"
                     required
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
+                    className={`w-full px-4 py-3 ${isDark ? "bg-slate-800 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"} border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm`}
                   />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
                     Teléfono
                   </label>
                   <input
@@ -117,11 +123,11 @@ export default function ContactSection() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+51 944 252 684"
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
+                    className={`w-full px-4 py-3 ${isDark ? "bg-slate-800 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"} border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
                     Producto de interés
                   </label>
                   <select
@@ -129,7 +135,7 @@ export default function ContactSection() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm appearance-none"
+                    className={`w-full px-4 py-3 ${isDark ? "bg-slate-800 border-slate-600 text-white" : "bg-white border-slate-300 text-slate-900"} border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm appearance-none`}
                   >
                     <option value="">Selecciona un producto</option>
                     <option value="escaneo-plano">Digitalizador de Escaneo Plano</option>
@@ -143,7 +149,7 @@ export default function ContactSection() {
                 </div>
               </div>
               <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${isDark ? "text-slate-300" : "text-slate-700"}`}>
                   Mensaje
                 </label>
                 <textarea
@@ -153,7 +159,7 @@ export default function ContactSection() {
                   placeholder="Cuéntanos sobre tu proyecto o necesidad..."
                   rows={5}
                   required
-                  className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm resize-none"
+                  className={`w-full px-4 py-3 ${isDark ? "bg-slate-800 border-slate-600 text-white placeholder:text-slate-500" : "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"} border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm resize-none`}
                 />
               </div>
               <button
@@ -175,45 +181,45 @@ export default function ContactSection() {
             viewport={{ once: true, amount: 0.2 }}
             className="lg:col-span-2 space-y-5"
           >
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-              <h3 className="text-lg font-bold text-slate-900 mb-6">
+            <div className={`${isDark ? "bg-slate-900 border-slate-700/50" : "bg-white border-slate-200"} rounded-2xl p-6 sm:p-8 shadow-sm border`}>
+              <h3 className={`text-lg font-bold mb-6 ${isDark ? "text-white" : "text-slate-900"}`}>
                 Información de Contacto
               </h3>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                  <div className={`w-10 h-10 flex items-center justify-center rounded-xl flex-shrink-0 ${isDark ? "bg-cyan-500/10" : "bg-cyan-50"}`}>
                     <Phone className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-800">Teléfono</p>
-                    <p className="text-sm text-slate-600">{CONTACT_INFO.phone}</p>
+                    <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Teléfono</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                  <div className={`w-10 h-10 flex items-center justify-center rounded-xl flex-shrink-0 ${isDark ? "bg-cyan-500/10" : "bg-cyan-50"}`}>
                     <Mail className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-800">Correo</p>
-                    <p className="text-sm text-slate-600">{CONTACT_INFO.email}</p>
+                    <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Correo</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                  <div className={`w-10 h-10 flex items-center justify-center rounded-xl flex-shrink-0 ${isDark ? "bg-cyan-500/10" : "bg-cyan-50"}`}>
                     <MapPin className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-800">Ubicación</p>
-                    <p className="text-sm text-slate-600">{CONTACT_INFO.address}</p>
+                    <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Ubicación</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.address}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                  <div className={`w-10 h-10 flex items-center justify-center rounded-xl flex-shrink-0 ${isDark ? "bg-cyan-500/10" : "bg-cyan-50"}`}>
                     <Clock className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-800">Horario</p>
-                    <p className="text-sm text-slate-600">{CONTACT_INFO.hours}</p>
+                    <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Horario</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.hours}</p>
                   </div>
                 </div>
               </div>

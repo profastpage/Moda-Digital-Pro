@@ -60,8 +60,8 @@ export default function CatalogSection() {
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 {/* Placeholder pattern */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-navy-dark/60 flex items-center justify-center">
-                  <p className="text-white/30 text-sm">Catálogo — {item.title}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-muted/60 flex items-center justify-center">
+                  <p className="text-muted-foreground/50 text-sm">Catálogo — {item.title}</p>
                 </div>
               </div>
               <div className="p-5 sm:p-6">

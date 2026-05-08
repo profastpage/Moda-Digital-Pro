@@ -121,7 +121,7 @@ export default function AboutSection() {
       </div>
 
       {/* Bottom gradient — smooth blend into next section (FAQ bg-card / #0f172a) */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#0f172a] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-card pointer-events-none" />
     </section>
   );
 }

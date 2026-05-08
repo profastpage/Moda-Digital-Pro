@@ -2,32 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PRODUCTS, SITE_CONFIG } from "@/constants/product";
-import { MessageCircle, Eye } from "lucide-react";
+import { PRODUCTS } from "@/constants/product";
+import { ArrowRight } from "lucide-react";
 import ProductModal from "./ProductModal";
-
-const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
-
-/** Mensajes pre-rellenados contextuales por producto */
-const WA_MESSAGES: Record<string, string> = {
-  "escaneo-plano-1":
-    "📋 ¡Hola! Me interesa el *Digitalizador de Escaneo Plano* (1800×1200mm, 600dpi). ¿Podrían enviarme precio y disponibilidad inmediata? 📐",
-  "plotter-corte-vertical":
-    "🖨️ Hola Moda Digital Pro, necesito cotizar el *Plotter de Corte de Inyección Vertical* (1600mm, 45m²/h). ¿Tienen disponibilidad? ¿Cuál es el precio? 📏",
-  "plotter-corte-cama-plana":
-    "⚙️ ¡Buen día! Quiero información del *Plotter de Cama Plana* (1800×2500mm, 1440dpi). Por favor envíenme precio y disponibilidad. 📐",
-  "escaneo-plano-2":
-    "🚀 Hola, estoy interesado en el *Digitalizador de Gran Formato* (1118mm, 1200dpi). ¿Cuál es el precio y hay stock disponible? 📂",
-  "digitalizador":
-    "💎 ¡Hola! Quiero cotizar el *Digitalizador Compacto* (A3+, 1200dpi). ¿Podrían indicarme precio y disponibilidad? ✂️",
-  "getonagain-cad":
-    "💻 Hola, me interesa la licencia de *GetonAgain Garment CAD V2024.1* (Patronaje + Grading + Marcación + 3D). ¿Precio y disponibilidad? 👕",
-};
-
-function getWhatsAppUrl(productId: string): string {
-  const msg = WA_MESSAGES[productId] || `Hola, estoy interesado en consultar por un producto de Moda Digital Pro.`;
-  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-}
 
 /* Standardized animation: short slide (20px), fast (0.6s), easeOut */
 const fadeUp = {
@@ -87,7 +64,7 @@ export default function ProductsSection() {
           </p>
         </motion.div>
 
-        {/* Product Cards — 3 columns on lg, uniform height */}
+        {/* Product Cards — simplified, fully clickable */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {PRODUCTS.map((product, i) => (
             <motion.article
@@ -97,51 +74,33 @@ export default function ProductsSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
-              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 md:hover:scale-[1.02] md:hover:-translate-y-1 md:cursor-pointer"
-              onClick={() => {
-                if (window.innerWidth >= 768) openModal(product);
-              }}
+              onClick={() => openModal(product)}
+              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer"
             >
-              {/* Product Image — fixed height, object-contain for full visibility */}
-              <div className="relative h-52 w-full bg-slate-900 overflow-hidden flex items-center justify-center p-4">
+              {/* Product Image */}
+              <div className="relative h-48 sm:h-52 w-full bg-muted overflow-hidden flex items-center justify-center p-4">
                 <img
                   src={product.image}
                   alt={product.title}
                   loading="lazy"
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                 />
                 {product.badge && (
                   <span className="absolute top-3 right-3 px-3 py-1 text-xs font-bold text-white bg-primary/90 backdrop-blur-sm rounded-full">
                     {product.badge}
                   </span>
                 )}
-                {/* Hover overlay — "Ver detalles" (desktop only, no modal on mobile) */}
-                <div className="absolute inset-0 bg-black/0 md:group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <Eye className="w-4 h-4 text-white" />
-                    <span className="text-xs font-semibold text-white">Ver detalles</span>
-                  </div>
-                </div>
               </div>
 
-              {/* Product Info — flex-grow pushes button to bottom */}
-              <div className="p-5 sm:p-6 flex flex-col flex-grow pb-4">
-                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 leading-snug">
+              {/* Product Info — image + title + CTA only */}
+              <div className="p-5 sm:p-6 flex flex-col flex-grow">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-4 leading-snug flex-grow">
                   {product.title}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-grow">
-                  {product.description}
-                </p>
-                <a
-                  href={getWhatsAppUrl(product.id)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 w-full text-sm font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-colors duration-300 shadow-md hover:shadow-lg"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Cotizar por WhatsApp
-                </a>
+                <span className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 w-full text-sm font-semibold text-primary border-2 border-primary/30 rounded-xl group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
+                  Ver detalles
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
               </div>
             </motion.article>
           ))}
