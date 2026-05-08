@@ -44,20 +44,26 @@ const HERO = {
   cta: SITE_CONFIG.cta,
   video: {
     /*
-     * Cloudinary video — Hero de Moda Digital Pro.
-     * Public ID: nbtlskmnbfugnl8r9my5 | Duración: 20.1s | Original: 1920x1080
+     * HERO 3.mp4 — Subido 2026-05-08
+     * Public ID: hero/HERO_3_gu9pj0
+     * Original: 1920x1080, 23.6s, 59MB, H.264, ~2.5 Mbps
      *
-     * IMPORTANTE: Se usa la URL raw con version ID para asegurar
-     * headers de streaming correctos (accept-ranges: bytes).
-     * Las transformaciones on-the-fly de Cloudinary generan
-     * cache-control: no-store + accept-ranges: none, lo que
-     * bloquea el autoplay en la mayoría de navegadores.
+     * DESKTOP: URL raw con version ID → streaming perfecto
+     *   accept-ranges: bytes, cache-control: immutable
      *
-     * El cropping visual se maneja via CSS object-cover.
+     * MOBILE: g_auto:subject encadenado como componente separado
+     *   genera un video pre-renderizado en Cloudinary (720x1280, 4MB)
+     *   con accept-ranges: bytes y cache-control: immutable.
+     *   La IA detecta el sujeto (plotter) y lo centra al recortar
+     *   de horizontal a vertical.
+     *
+     * IMPORTANTE: No agregar e_sharpen ni e_improve a las URLs
+     * porque activan "backfill" on-the-fly que elimina el cache
+     * y cambia accept-ranges a none, rompiendo el streaming.
      */
-    raw: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778205612/nbtlskmnbfugnl8r9my5.mp4",
-    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778205612/nbtlskmnbfugnl8r9my5.mp4",
-    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778205612/nbtlskmnbfugnl8r9my5.mp4",
+    raw: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778210648/hero/HERO_3_gu9pj0.mp4",
+    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778210648/hero/HERO_3_gu9pj0.mp4",
+    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/g_auto:subject/c_fill,ar_9:16,w_720,q_auto:best/v1778210648/hero/HERO_3_gu9pj0.mp4",
   },
   images: {
     desktop: ["/images/hero-1.jpg", "/images/hero-2.jpg"],

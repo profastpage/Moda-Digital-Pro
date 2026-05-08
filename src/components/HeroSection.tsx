@@ -1,14 +1,41 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0);
+  const [videoSrc, setVideoSrc] = useState(HERO.video.desktop);
   const progressKeyRef = useRef(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  /* ===== DYNAMIC VIDEO URL BY VIEWPORT =====
+     Mobile (<768px): Cloudinary AI-cropped vertical (720x1280, 4MB)
+     Desktop (>=768px): Raw original (1920x1080, 59MB)
+     Both have accept-ranges: bytes + cache-control: immutable */
+  const updateVideoSrc = useCallback(() => {
+    const isMobile = window.innerWidth < 768;
+    const newSrc = isMobile ? HERO.video.mobile : HERO.video.desktop;
+    setVideoSrc(newSrc);
+  }, []);
+
+  useEffect(() => {
+    updateVideoSrc();
+    const handleResize = () => updateVideoSrc();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [updateVideoSrc]);
+
+  /* Re-play video when source changes (viewport change) */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.load();
+      video.play().catch(() => {});
+    }
+  }, [videoSrc]);
 
   /* Rotate hero texts every 6 seconds */
   useEffect(() => {
@@ -55,24 +82,18 @@ export default function HeroSection() {
       className="hero-section relative w-full overflow-hidden bg-black"
       style={{ height: "100svh", minHeight: "100vh" }}
     >
-      {/* ===== LAYER 1: VIDEO FULLSCREEN (alta calidad CSS) =====
+      {/* ===== LAYER 1: VIDEO — URL DINÁMICA POR VIEWPORT =====
 
-          Calidad de video garantizada por:
-            1. URL raw con version ID → streaming correcto (accept-ranges: bytes)
-            2. image-rendering: -webkit-optimize-contrast → bordes más nítidos en móvil
-            3. filter: contrast(1.03) saturate(1.05) → ligeramente más vibrante
-            4. preload="auto" + fetchPriority="high" → carga prioritaria
-            5. object-cover: rellena sin distorsión (equivale a c_fill)
+          DESKTOP (>=768px):
+            URL raw → 1920x1080, 59MB, streaming perfecto
+            El video horizontal cubre todo el ancho
 
-          POR QUÉ NO usamos transforms en la URL Cloudinary:
-            - g_auto:subject → HTTP 400 (solo funciona en imágenes, no video)
-            - q_auto, e_sharpen → accept-ranges: none → bloquea autoplay
-            - Cualquier transform on-the-fly rompe el streaming del navegador
-
-          El video original es 1920x1080 @ 2.5 Mbps (50MB total),
-          calidad suficiente para cualquier pantalla móvil o desktop.
-          Si se ve pixelado, el problema es el bitrate del SOURCE,
-          no del delivery. Solución: re-encode con bitrate mayor.
+          MOBILE (<768px):
+            Cloudinary g_auto:subject → 720x1280, 4MB
+            La IA detecta el plotter y recorta horizontal→vertical
+            g_auto está encadenado como componente separado para
+            que Cloudinary pre-renderice y cachee el resultado
+            con accept-ranges: bytes
       */}
       <video
         ref={videoRef}
@@ -81,24 +102,17 @@ export default function HeroSection() {
         loop
         playsInline
         preload="auto"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover object-center z-0"
-        style={{
-          imageRendering: "-webkit-optimize-contrast" as React.CSSProperties["imageRendering"],
-          filter: "contrast(1.03) saturate(1.05)",
-        }}
+        className="absolute inset-0 w-full h-full object-cover z-0"
         poster="/images/hero-1.jpg"
       >
-        <source src={HERO.video.raw} type="video/mp4" />
+        <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* ===== LAYER 2: OVERLAY OSCURO (efecto cine — sutil) ===== */}
-      <div className="absolute inset-0 z-[2] bg-black/25" />
+      {/* ===== LAYER 2: OVERLAY (efecto cine) ===== */}
+      <div className="absolute inset-0 bg-black/40 z-10" />
 
-      {/* ===== LAYER 3: GRADIENT para fusionar con secciones ===== */}
-      <div className="absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-
-      {/* ===== LAYER 4: CONTENIDO — CENTRADO VERTICAL ===== */}
-      <div className="relative z-10 flex flex-col justify-center items-center text-center h-full px-6 sm:px-8">
+      {/* ===== LAYER 3: CONTENIDO — CENTRO PERFECTO ===== */}
+      <div className="relative z-20 flex flex-col justify-center items-center h-full text-center px-6">
         <div className="max-w-3xl w-full">
           <motion.span
             custom={0}
@@ -179,7 +193,7 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-white/50 hover:text-white transition-colors"
+        className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/50 hover:text-white transition-colors"
       >
         <span className="text-[10px] font-medium tracking-widest uppercase">{HERO.scrollLabel}</span>
         <ChevronDown className="w-5 h-5" />
