@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { useHasMounted } from "@/hooks/useHasMounted";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FAQ_ITEMS } from "@/constants/product";
 import { CircleQuestionMark, ChevronDown } from "lucide-react";
 
@@ -75,7 +75,7 @@ export default function FAQSection() {
             }`}
           >
             Resolvemos tus dudas más comunes sobre nuestros equipos, servicios y
-            procesos de produccion textil.
+            procesos de producción textil.
           </p>
         </motion.div>
 
@@ -92,14 +92,14 @@ export default function FAQSection() {
             return (
               <div
                 key={i}
-                className={`rounded-2xl transition-all duration-300 shadow-sm ${
+                className={`rounded-2xl transition-all duration-300 ${
                   isOpen
                     ? isDark
-                      ? "bg-cyan-500/10 border border-cyan-500/30 shadow-md"
-                      : "bg-blue-50 shadow-md"
+                      ? "bg-cyan-500/10 border border-cyan-500/30 shadow-md shadow-cyan-500/5"
+                      : "bg-white border border-cyan-200/60 shadow-md shadow-slate-200/50"
                     : isDark
                       ? "bg-[#0f172a] border border-slate-700/50 hover:shadow-md hover:border-primary/30"
-                      : "bg-white hover:shadow-md"
+                      : "bg-white border border-slate-200/60 hover:shadow-md hover:border-cyan-200"
                 }`}
               >
                 <button
@@ -116,24 +116,38 @@ export default function FAQSection() {
                   <div
                     className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-300 ${
                       isOpen
-                        ? "bg-cyan-500 text-white rotate-180"
+                        ? "bg-cyan-500 text-white"
                         : isDark
                           ? "bg-slate-700/50 text-slate-400"
                           : "bg-slate-100 text-slate-500"
                     }`}
+                    style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </div>
                 </button>
-                {isOpen && (
-                  <div
-                    className={`px-6 pb-5 text-sm leading-relaxed ${
-                      isDark ? "text-slate-300" : "text-slate-600"
-                    }`}
-                  >
-                    {item.answer}
-                  </div>
-                )}
+
+                {/* Smooth accordion with AnimatePresence */}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div
+                        className={`px-6 pb-5 text-sm leading-relaxed ${
+                          isDark ? "text-slate-300" : "text-slate-600"
+                        }`}
+                      >
+                        {item.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

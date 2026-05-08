@@ -276,29 +276,44 @@ const ADVANTAGES = [
 
 const FAQ_ITEMS = [
   {
-    question: "¿Cuál es la vida útil de un plotter textil de Moda Digital Pro?",
+    question: "¿Qué garantía ofrecen sus plotters y digitalizadores industriales?",
     answer:
-      "Nuestros plotters tienen una vida útil estimada de 8 a 12 años con mantenimiento adecuado. Cada equipo incluye un programa de mantenimiento preventivo que extiende significativamente la durabilidad de los cabezales de impresión y los sistemas mecánicos.",
+      "Todos nuestros equipos cuentan con garantía de fábrica de 12 meses que cubre defectos de fabricación en componentes electrónicos, mecánicos y estructurales. Adicionalmente, fabricamos nuestros plotters con estructura de aluminio aeronáutico y componentes de alta precisión, lo que garantiza una vida útil estimada de 8 a 12 años con mantenimiento adecuado. Cada equipo incluye un programa de mantenimiento preventivo que extiende significativamente la durabilidad de cabezales, sistemas de movimiento lineal y paneles de control táctil.",
   },
   {
-    question: "¿Qué tipo de telas puedo imprimir con el Plotter T-1800?",
+    question: "¿Sus digitalizadores son compatibles con otros software CAD del mercado?",
     answer:
-      "El Plotter T-1800 es compatible con algodón, poliéster, lino, seda, tela de mezcla y substratos sintéticos. Utilizamos tintas reactivas para fibras naturales y tintas dispersas para fibras sintéticas, garantizando la mejor calidad en cada material.",
+      "Sí. Tanto nuestro Digitalizador de 48x36 como el Digitalizador de Cama Plana son compatibles con más de 30 formatos digitales y se integran de forma nativa con los principales softwares CAD de patronaje industrial: GetonAgain, Lectra, Gerber, Optitex, Diamino, Accumark y otros sistemas líderes del mercado. La exportación es directa en formato universal DXF, lo que permite un flujo de trabajo fluido entre la digitalización del patrón físico y su edición en cualquier entorno CAD profesional.",
   },
   {
-    question: "¿Ofrecen servicio de impresión por metro lineal?",
+    question: "¿Realizan instalaciones y capacitaciones a nivel nacional?",
     answer:
-      "Sí, ofrecemos impresión por metro lineal desde 1 metro mínimo hasta rollos completos. Nuestros precios varían según el tipo de tela, la cantidad y la complejidad del diseño. Contáctanos para una cotización personalizada sin compromiso.",
+      "Sí, contamos con un equipo técnico certificado que realiza instalaciones in situ en cualquier ciudad del país. Cada compra incluye: instalación profesional en tu taller o planta de producción, capacitación completa de 2 días para tu equipo operativo, manual técnico detallado en español, y 12 meses de soporte técnico remoto. Para proyectos corporativos o compras de múltiples equipos, coordinamos visitas de capacitación especializada y acompañamiento durante la primera semana de producción.",
   },
   {
-    question: "¿Incluyen capacitación al comprar un equipo?",
+    question: "¿Cómo puedo obtener una cotización formal de un equipo con precio publicado?",
     answer:
-      "Absolutamente. Cada compra incluye: instalación profesional en tu taller, capacitación completa de 2 días para tu equipo operativo, manual técnico detallado, y 12 meses de soporte técnico remoto. También ofrecemos cursos avanzados de diseño textil en CAM.",
+      "Para equipos con precio publicado (como el Plotter Inkjet de Alta Velocidad a USD 5,500, el Plotter de Trazo y Corte a USD 6,200 o la Flatbed Industrial a USD 9,900), puedes solicitar tu cotización formal directamente a través del botón de WhatsApp en nuestra web o escribiendo a ventas@modadigitalpro.com. Te enviaremos una proforma con detalle del equipo, condiciones de pago, tiempos de entrega y cobertura de garantía. Para equipos sin precio publicado, nuestro equipo comercial te brindará una cotización personalizada según tus requerimientos específicos de producción.",
   },
   {
-    question: "¿Cuál es el tiempo de entrega de un pedido de impresión?",
+    question: "¿Cuál es el tiempo de entrega de un equipo?",
     answer:
-      "El tiempo estándar de entrega es de 48 horas para pedidos estándar y 24 horas para urgencias con recargo. Para producciones de gran volumen (más de 500 metros), el tiempo puede variar entre 3 a 5 días hábiles según la complejidad del diseño.",
+      "El tiempo estándar de entrega de equipos es de 48 a 72 horas hábiles para productos con stock disponible en Lima. Para equipos que requieren configuración especial o despacho a provincias, el tiempo puede variar entre 5 a 10 días hábiles según la ubicación y logística de transporte. Todos nuestros envíos incluyen embalaje industrial con protección anticompresión y seguimiento en tiempo real para garantizar que el equipo llegue en perfectas condiciones a tu taller.",
+  },
+  {
+    question: "¿Qué tipo de soporte técnico ofrecen después de la compra?",
+    answer:
+      "Nuestro programa de soporte post-venta incluye: 12 meses de asistencia técnica remota por WhatsApp y videollamada, actualizaciones de firmware y software de forma gratuita durante el primer año, acceso prioritario a repuestos originales con envío express, y consultoría de optimización de producción. Además, ofrecemos contratos de mantenimiento preventivo extendido que incluyen visitas programadas para calibración de cabezales, verificación de sistemas mecánicos y actualización de software CAD.",
+  },
+  {
+    question: "¿Qué tipo de tintas y materiales son compatibles con sus plotters?",
+    answer:
+      "Nuestros plotters utilizan cartuchos HP45 de alta precisión y sistemas de suministro de tinta continuo compatible con tintas pigmentadas, reactivas y de sublimado. El Plotter Inkjet de Alta Velocidad acepta configuraciones de 1 a 4 cartuchos para trazado sobre papel continuo, mientras que el Plotter de Cama Plana trabaja con sistema combinado de suministro de tinta y cartuchos HP45 para impresión y corte sobre múltiples materiales: papel kraft desde 80 gr/m², cartón corrugado, vinilo, transfer térmico y substratos especiales de producción textil.",
+  },
+  {
+    question: "¿El software GetonAgain Garment CAD V2024.1 es compatible con todos sus equipos?",
+    answer:
+      "Sí. GetonAgain Garment CAD V2024.1 es totalmente compatible con toda nuestra línea de plotters y digitalizadores. El software incluye módulos de Patronaje, Grading, Marcación y vista previa 3D, con exportación directa a formatos de corte (DXF, PLT, CUT, ISO, CSV) reconocidos por todos nuestros equipos. La licencia es perpetua con 1 año de actualizaciones gratuitas, está disponible en 4 idiomas (español, inglés, portugués y chino), y funciona sobre Windows 10/11 con 8 GB de RAM mínimo. Es la herramienta ideal para completar un flujo de trabajo integrado desde la digitalización hasta la producción.",
   },
 ];
 
