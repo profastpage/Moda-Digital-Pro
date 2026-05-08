@@ -1,19 +1,15 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
-interface ThemeToggleProps {
+export default function ThemeToggle({ scrolled = false, isDark = true }: {
   scrolled?: boolean;
   isDark?: boolean;
-}
-
-export default function ThemeToggle({ scrolled = false, isDark = true }: ThemeToggleProps) {
-  const [mounted, setMounted] = useState(false);
+}) {
+  const mounted = useHasMounted();
   const { theme, setTheme } = useTheme();
-
-  useEffect(() => setMounted(true), []);
 
   if (!mounted) {
     return (

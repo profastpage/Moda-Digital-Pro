@@ -4,8 +4,8 @@ import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MessageCircle, ArrowRight } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useState } from "react";
 import { SITE_CONFIG } from "@/constants/product";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
 
@@ -49,11 +49,7 @@ interface ProductModalProps {
 
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
   const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useHasMounted();
 
   const isDark = !mounted || theme !== "light";
 

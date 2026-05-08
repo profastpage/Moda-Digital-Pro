@@ -32,7 +32,9 @@ body {
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img, svg {
@@ -199,4 +201,25 @@ img, svg {
 
 .animate-progress {
   animation: progress-fill 6s linear forwards;
+}
+
+/* === SMOOTH THEME TRANSITION === */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === BODY SCROLL PADDING FOR FIXED NAV === */
+body {
+  padding-bottom: 3.5rem;
+}
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* === SELECTION COLOR === */
+::selection {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: inherit;
 }

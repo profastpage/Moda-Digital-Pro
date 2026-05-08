@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Box, Wrench, MessageCircle, Users, Phone } from "lucide-react";
 import { useWhatsAppModal } from "@/context/WhatsAppModalContext";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 const TABS: { label: string; icon: typeof Box; href?: string; isCenter?: boolean }[] = [
   { label: "Productos", icon: Box, href: "#productos" },
@@ -15,11 +16,11 @@ const TABS: { label: string; icon: typeof Box; href?: string; isCenter?: boolean
 
 export default function MobileNav() {
   const [active, setActive] = useState("#productos");
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
   const { theme } = useTheme();
+  const { toggleModal } = useWhatsAppModal();
 
   useEffect(() => {
-    setMounted(true);
     const onScroll = () => {
       const sections = TABS.filter((t) => !t.isCenter && t.href).map((t) => t.href!);
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -41,7 +42,6 @@ export default function MobileNav() {
 
   if (!mounted) return null;
 
-  const { toggleModal } = useWhatsAppModal();
   const isDark = theme !== "light";
 
   /* Theme-aware color tokens */

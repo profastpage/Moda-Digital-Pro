@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS, SITE_CONFIG } from "@/constants/product";
 import { Menu, X, ArrowRight, Sun, Moon, MessageCircle, ChevronDown } from "lucide-react";
 import PlotterIcon from "./PlotterIcon";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 /* ============================================
    MENÚ FULLSCREEN PREMIUM — FRAMER MOTION
@@ -101,11 +102,10 @@ const whatsappPulse = {
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHasMounted();
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);

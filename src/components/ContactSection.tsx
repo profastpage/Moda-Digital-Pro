@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { CONTACT_INFO, SITE_CONFIG } from "@/constants/product";
+import { CONTACT_INFO } from "@/constants/product";
+import { useHasMounted } from "@/hooks/useHasMounted";
 import { Send, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 
 const fadeUp = {
@@ -17,11 +18,7 @@ const fadeUp = {
 
 export default function ContactSection() {
   const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useHasMounted();
 
   const isDark = !mounted || theme !== "light";
 

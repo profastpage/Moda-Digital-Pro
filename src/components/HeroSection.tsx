@@ -1,39 +1,32 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
+/* ===== Viewport width tracking via useSyncExternalStore ===== */
+const emptySubscribe = () => () => {};
+
+function useIsMobile(breakpoint = 768) {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => typeof window !== "undefined" ? window.innerWidth < breakpoint : false,
+    () => false
+  );
+}
+
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0);
-  const [videoSrc, setVideoSrc] = useState(HERO.video.desktop);
   const [mobileFailed, setMobileFailed] = useState(false);
-  const progressKeyRef = useRef(0);
+  const [progressKey, setProgressKey] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const isMobile = useIsMobile();
 
-  /* ===== DYNAMIC VIDEO URL BY VIEWPORT =====
-     Mobile (<768px): Cloudinary AI-cropped vertical (720x1280)
-     Desktop (>=768px): Raw original (1920x1080)
-     If Cloudinary transform fails → fallback to raw desktop URL */
-  const getVideoSrc = useCallback(() => {
-    const isMobile = window.innerWidth < 768;
-    if (isMobile && !mobileFailed) {
-      return HERO.video.mobile;
-    }
-    return HERO.video.desktop;
-  }, [mobileFailed]);
-
-  const updateVideoSrc = useCallback(() => {
-    setVideoSrc(getVideoSrc());
-  }, [getVideoSrc]);
-
-  useEffect(() => {
-    updateVideoSrc();
-    const handleResize = () => updateVideoSrc();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [updateVideoSrc]);
+  /* Derive video source from viewport + fallback state */
+  const videoSrc = isMobile && !mobileFailed
+    ? HERO.video.mobile
+    : HERO.video.desktop;
 
   /* Re-play video when source changes (viewport change) */
   useEffect(() => {
@@ -46,9 +39,8 @@ export default function HeroSection() {
 
   /* Fallback: if Cloudinary mobile URL fails to load, use desktop raw URL */
   const handleVideoError = useCallback(() => {
-    if (window.innerWidth < 768 && !mobileFailed) {
+    if (typeof window !== "undefined" && window.innerWidth < 768 && !mobileFailed) {
       setMobileFailed(true);
-      setVideoSrc(HERO.video.desktop);
     }
   }, [mobileFailed]);
 
@@ -56,7 +48,7 @@ export default function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentText((prev) => (prev + 1) % HERO_ROTATIONS.length);
-      progressKeyRef.current += 1;
+      setProgressKey((prev) => prev + 1);
     }, 6000);
     return () => clearInterval(interval);
   }, []);
@@ -110,7 +102,6 @@ export default function HeroSection() {
         preload="auto"
         className="absolute inset-0 z-0"
         style={{ objectFit: "cover" }}
-        poster="/images/hero-1.jpg"
         onError={handleVideoError}
       >
         <source src={videoSrc} type="video/mp4" />
@@ -166,7 +157,7 @@ export default function HeroSection() {
                 className="h-1 w-8 bg-white/20 overflow-hidden rounded-full"
               >
                 <div
-                  key={`bar-${idx}-${progressKeyRef.current}`}
+                  key={`bar-${idx}-${progressKey}`}
                   className={`h-full rounded-full ${
                     idx === currentText
                       ? "bg-cyan-400 animate-progress"
