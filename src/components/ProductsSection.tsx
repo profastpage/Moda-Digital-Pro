@@ -74,8 +74,10 @@ export default function ProductsSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
-              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer"
-              onClick={() => openModal(product)}
+              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border/60 hover:border-primary/30 md:hover:scale-[1.02] md:hover:-translate-y-1 md:cursor-pointer"
+              onClick={() => {
+                if (window.innerWidth >= 768) openModal(product);
+              }}
             >
               {/* Product Image — fixed height, object-contain for full visibility */}
               <div className="relative h-52 w-full bg-slate-900 overflow-hidden flex items-center justify-center p-4">
@@ -90,9 +92,9 @@ export default function ProductsSection() {
                     {product.badge}
                   </span>
                 )}
-                {/* Hover overlay — "Ver detalles" */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+                {/* Hover overlay — "Ver detalles" (desktop only, no modal on mobile) */}
+                <div className="absolute inset-0 bg-black/0 md:group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                  <div className="opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
                     <Eye className="w-4 h-4 text-white" />
                     <span className="text-xs font-semibold text-white">Ver detalles</span>
                   </div>

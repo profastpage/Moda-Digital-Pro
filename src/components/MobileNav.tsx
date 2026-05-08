@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Box, Wrench, MessageCircle, Users, Phone } from "lucide-react";
-import { SITE_CONFIG } from "@/constants/product";
+import { useWhatsAppModal } from "@/context/WhatsAppModalContext";
 
-const TABS = [
+const TABS: { label: string; icon: typeof Box; href?: string; isCenter?: boolean }[] = [
   { label: "Productos", icon: Box, href: "#productos" },
   { label: "Servicios", icon: Wrench, href: "#servicios" },
-  { label: "WhatsApp", icon: MessageCircle, href: SITE_CONFIG.whatsapp, isCenter: true },
+  { label: "WhatsApp", icon: MessageCircle, isCenter: true },
   { label: "Nosotros", icon: Users, href: "#nosotros" },
   { label: "Contacto", icon: Phone, href: "#contacto" },
 ];
@@ -21,7 +21,7 @@ export default function MobileNav() {
   useEffect(() => {
     setMounted(true);
     const onScroll = () => {
-      const sections = TABS.filter((t) => !t.isCenter).map((t) => t.href);
+      const sections = TABS.filter((t) => !t.isCenter && t.href).map((t) => t.href!);
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.querySelector(sections[i]);
         if (el) {
@@ -41,6 +41,7 @@ export default function MobileNav() {
 
   if (!mounted) return null;
 
+  const { toggleModal } = useWhatsAppModal();
   const isDark = theme !== "light";
 
   return (
@@ -80,22 +81,23 @@ export default function MobileNav() {
           );
         })}
 
-      {/* Center WhatsApp button — compact */}
-      <a
-        href={SITE_CONFIG.whatsapp}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-col items-center justify-center -mt-4 min-w-[48px]"
+      {/* Center WhatsApp button — triggers product modal */}
+      <button
+        data-wa-trigger
+        onClick={toggleModal}
+        type="button"
+        className="flex flex-col items-center justify-center -mt-4 min-w-[48px] bg-transparent border-none cursor-pointer"
+        aria-label="Abrir menú de productos por WhatsApp"
       >
         <div
-          className="w-11 h-11 rounded-full bg-[#06b6d4] flex items-center justify-center shadow-lg shadow-cyan-500/30 active:scale-95 transition-transform duration-200"
+          className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform duration-200"
         >
           <MessageCircle className="w-5 h-5 text-white" />
         </div>
-        <span className="text-[10px] font-medium text-[#06b6d4] mt-0.5">
+        <span className="text-[10px] font-medium text-[#25D366] mt-0.5">
           WhatsApp
         </span>
-      </a>
+      </button>
 
       {/* Right tabs */}
       {TABS.filter((t) => !t.isCenter)
