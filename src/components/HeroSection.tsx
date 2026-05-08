@@ -19,12 +19,11 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  /* Force autoplay on mount — browsers may block autoplay */
+  /* Force autoplay on mount */
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
       video.play().catch(() => {
-        /* Autoplay blocked: user must interact first. On first tap, resume. */
         const resumeOnInteraction = () => {
           video.play().catch(() => {});
           document.removeEventListener("click", resumeOnInteraction);
@@ -52,8 +51,8 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden bg-transparent">
-      {/* ===== LAYER 1: Video Background (z-index: 0) ===== */}
+    <section className="relative w-full overflow-hidden bg-black" style={{ height: "100dvh", minHeight: "100vh" }}>
+      {/* ===== LAYER 1: Video Background ===== */}
       <video
         ref={videoRef}
         autoPlay
@@ -61,20 +60,14 @@ export default function HeroSection() {
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 z-0 w-full h-full object-cover bg-transparent"
+        className="absolute top-0 left-0 z-0 w-full h-full object-cover"
         poster="/images/hero-1.jpg"
       >
-        <source
-          src={HERO.video.desktop}
-          type="video/mp4"
-        />
+        <source src={HERO.video.desktop} type="video/mp4" />
       </video>
 
-      {/* ===== LAYER 2: Image Fallback (z-index: 1, hidden by default) ===== */}
-      <div
-        className="absolute inset-0 z-[1] bg-transparent"
-        aria-hidden="true"
-      >
+      {/* ===== LAYER 2: Image Fallback (hidden by default) ===== */}
+      <div className="absolute top-0 left-0 z-[1] w-full h-full" aria-hidden="true">
         <img
           src={HERO.images.desktop[0]}
           alt=""
@@ -85,13 +78,13 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* ===== LAYER 3: Dark Overlay (z-index: 2) ===== */}
+      {/* ===== LAYER 3: Dark Overlay ===== */}
       <div className="absolute inset-0 z-[2] bg-black/40" />
       <div className="absolute inset-0 z-[2] bg-gradient-to-b from-[#020617]/60 via-transparent to-[#020617]/90" />
 
-      {/* ===== LAYER 4: Content (z-index: 10) ===== */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 sm:py-40">
-        <div className="max-w-3xl">
+      {/* ===== LAYER 4: Content — vertically centered ===== */}
+      <div className="relative z-10 flex items-center justify-center w-full h-full px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl w-full py-16 sm:py-0">
           <motion.span
             custom={0}
             variants={fadeUp}
@@ -103,7 +96,7 @@ export default function HeroSection() {
           </motion.span>
 
           {/* ===== Rotating Content Block ===== */}
-          <div className="min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px] mb-6">
+          <div className="min-h-[140px] sm:min-h-[160px] md:min-h-[200px] lg:min-h-[220px] mb-6">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentText}
@@ -112,10 +105,10 @@ export default function HeroSection() {
                 animate="center"
                 exit="exit"
               >
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-4 sm:mb-6">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-3 sm:mb-6">
                   {HERO_ROTATIONS[currentText].title}
                 </h1>
-                <p className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">
+                <p className="text-sm sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">
                   {HERO_ROTATIONS[currentText].subtitle}
                 </p>
               </motion.div>
@@ -123,7 +116,7 @@ export default function HeroSection() {
           </div>
 
           {/* Progress Indicators */}
-          <div className="flex gap-2 mb-8 sm:mb-12">
+          <div className="flex gap-2 mb-6 sm:mb-12">
             {HERO_ROTATIONS.map((_, idx) => (
               <div
                 key={idx}
@@ -165,14 +158,14 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors"
+        className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors"
       >
         <span className="text-xs font-medium tracking-widest uppercase">{HERO.scrollLabel}</span>
         <ChevronDown className="w-6 h-6" />
       </motion.a>
 
       {/* Bottom gradient — smooth blend into Products section */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none z-[5]" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none z-[5]" />
     </section>
   );
 }
