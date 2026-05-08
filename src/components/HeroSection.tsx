@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
-/* Responsive breakpoint: 768px */
-const MOBILE_BREAKPOINT = 768;
-
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0);
-  const [videoSrc, setVideoSrc] = useState(HERO.video.desktop);
   const progressKeyRef = useRef(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -23,30 +19,22 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  /* Dynamic video URL based on viewport width */
-  const updateVideoSrc = useCallback(() => {
-    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    const newSrc = isMobile ? HERO.video.mobile : HERO.video.desktop;
-    setVideoSrc((prev) => {
-      if (prev !== newSrc) return newSrc;
-      return prev;
-    });
-  }, []);
-
-  useEffect(() => {
-    updateVideoSrc();
-    window.addEventListener("resize", updateVideoSrc);
-    return () => window.removeEventListener("resize", updateVideoSrc);
-  }, [updateVideoSrc]);
-
-  /* Re-trigger play when source changes (resize cross breakpoint) */
+  /* Force autoplay on mount — browsers may block autoplay */
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.load();
-      video.play().catch(() => {});
+      video.play().catch(() => {
+        /* Autoplay blocked: user must interact first. On first tap, resume. */
+        const resumeOnInteraction = () => {
+          video.play().catch(() => {});
+          document.removeEventListener("click", resumeOnInteraction);
+          document.removeEventListener("touchstart", resumeOnInteraction);
+        };
+        document.addEventListener("click", resumeOnInteraction, { once: true });
+        document.addEventListener("touchstart", resumeOnInteraction, { once: true });
+      });
     }
-  }, [videoSrc]);
+  }, []);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -64,40 +52,44 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* ===== LAYER 1: Background Video (Cloudinary Dynamic) ===== */}
-      <div className="absolute inset-0" aria-hidden="true">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-          poster="/images/hero-1.jpg"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      </div>
+    <section className="relative h-screen overflow-hidden bg-transparent">
+      {/* ===== LAYER 1: Video Background (z-index: 0) ===== */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 z-0 w-full h-full object-cover bg-transparent"
+        poster="/images/hero-1.jpg"
+      >
+        <source
+          src={HERO.video.desktop}
+          type="video/mp4"
+        />
+      </video>
 
-      {/* ===== LAYER 2: Image Fallback (if video fails) ===== */}
-      <div className="absolute inset-0" aria-hidden="true">
+      {/* ===== LAYER 2: Image Fallback (z-index: 1, hidden by default) ===== */}
+      <div
+        className="absolute inset-0 z-[1] bg-transparent"
+        aria-hidden="true"
+      >
         <img
           src={HERO.images.desktop[0]}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-0"
+          className="w-full h-full object-cover opacity-0"
           onError={(e) => {
             (e.target as HTMLImageElement).style.opacity = "1";
           }}
         />
       </div>
 
-      {/* ===== LAYER 3: Overlay — dark film for text readability ===== */}
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/60 via-transparent to-[#020617]/90" />
+      {/* ===== LAYER 3: Dark Overlay (z-index: 2) ===== */}
+      <div className="absolute inset-0 z-[2] bg-black/40" />
+      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-[#020617]/60 via-transparent to-[#020617]/90" />
 
-      {/* ===== LAYER 4: Content ===== */}
+      {/* ===== LAYER 4: Content (z-index: 10) ===== */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 sm:py-40">
         <div className="max-w-3xl">
           <motion.span
@@ -110,7 +102,7 @@ export default function HeroSection() {
             {HERO.badge}
           </motion.span>
 
-          {/* ===== Rotating Content Block (single AnimatePresence) ===== */}
+          {/* ===== Rotating Content Block ===== */}
           <div className="min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px] mb-6">
             <AnimatePresence mode="wait">
               <motion.div
@@ -180,7 +172,7 @@ export default function HeroSection() {
       </motion.a>
 
       {/* Bottom gradient — smooth blend into Products section */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none z-[1]" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none z-[5]" />
     </section>
   );
 }

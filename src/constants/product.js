@@ -45,16 +45,20 @@ const HERO = {
   cta: SITE_CONFIG.cta,
   video: {
     /*
-     * Cloudinary optimized video — Hero de Moda Digital Pro.
+     * Cloudinary video — Hero de Moda Digital Pro.
      * Public ID: nbtlskmnbfugnl8r9my5 | Duración: 20.1s | Original: 1920x1080
      *
-     * Desktop:  c_limit,w_1920,q_auto,f_auto  → horizontal optimizado
-     * Mobile:   c_fill,g_auto:subject,ar_9:16,z_1.2,q_auto,f_auto  → IA smart-crop vertical 9:16
+     * IMPORTANTE: Se usa la URL raw con version ID para asegurar
+     * headers de streaming correctos (accept-ranges: bytes).
+     * Las transformaciones on-the-fly de Cloudinary generan
+     * cache-control: no-store + accept-ranges: none, lo que
+     * bloquea el autoplay en la mayoría de navegadores.
+     *
+     * El cropping visual se maneja via CSS object-cover.
      */
-    cloudName: "dqk6ol7id",
-    publicId: "nbtlskmnbfugnl8r9my5",
-    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/c_limit,w_1920,q_auto,f_auto/nbtlskmnbfugnl8r9my5.mp4",
-    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/c_fill,g_auto:subject,ar_9:16,z_1.2,q_auto,f_auto/nbtlskmnbfugnl8r9my5.mp4",
+    raw: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778205612/nbtlskmnbfugnl8r9my5.mp4",
+    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778205612/nbtlskmnbfugnl8r9my5.mp4",
+    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/v1778205612/nbtlskmnbfugnl8r9my5.mp4",
   },
   images: {
     desktop: ["/images/hero-1.jpg", "/images/hero-2.jpg"],
