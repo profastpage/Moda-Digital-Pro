@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import BackToTop from "@/components/BackToTop";
 import { WhatsAppModalProvider } from "@/context/WhatsAppModalContext";
 
 const geistSans = Geist({
@@ -125,6 +126,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <WhatsAppModalProvider>
             {children}
+            <BackToTop />
             <FloatingWhatsApp />
             <MobileNav />
           </WhatsAppModalProvider>

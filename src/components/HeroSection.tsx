@@ -86,6 +86,7 @@ export default function HeroSection() {
 
   return (
     <section
+      id="hero"
       className="hero-section relative w-full h-[100svh] overflow-hidden bg-black"
     >
       {/* ===== LAYER 1: VIDEO — FULLSCREEN BACKGROUND =====
