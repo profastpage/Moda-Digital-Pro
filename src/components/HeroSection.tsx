@@ -2,24 +2,31 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HERO, HERO_ROTATIONS, SITE_CONFIG } from "@/constants/product";
-import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
+import { HERO, HERO_ROTATIONS } from "@/constants/product";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0);
   const [videoSrc, setVideoSrc] = useState(HERO.video.desktop);
+  const [mobileFailed, setMobileFailed] = useState(false);
   const progressKeyRef = useRef(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   /* ===== DYNAMIC VIDEO URL BY VIEWPORT =====
-     Mobile (<768px): Cloudinary AI-cropped vertical (720x1280, 4MB)
-     Desktop (>=768px): Raw original (1920x1080, 59MB)
-     Both have accept-ranges: bytes + cache-control: immutable */
-  const updateVideoSrc = useCallback(() => {
+     Mobile (<768px): Cloudinary AI-cropped vertical (720x1280)
+     Desktop (>=768px): Raw original (1920x1080)
+     If Cloudinary transform fails → fallback to raw desktop URL */
+  const getVideoSrc = useCallback(() => {
     const isMobile = window.innerWidth < 768;
-    const newSrc = isMobile ? HERO.video.mobile : HERO.video.desktop;
-    setVideoSrc(newSrc);
-  }, []);
+    if (isMobile && !mobileFailed) {
+      return HERO.video.mobile;
+    }
+    return HERO.video.desktop;
+  }, [mobileFailed]);
+
+  const updateVideoSrc = useCallback(() => {
+    setVideoSrc(getVideoSrc());
+  }, [getVideoSrc]);
 
   useEffect(() => {
     updateVideoSrc();
@@ -36,6 +43,14 @@ export default function HeroSection() {
       video.play().catch(() => {});
     }
   }, [videoSrc]);
+
+  /* Fallback: if Cloudinary mobile URL fails to load, use desktop raw URL */
+  const handleVideoError = useCallback(() => {
+    if (window.innerWidth < 768 && !mobileFailed) {
+      setMobileFailed(true);
+      setVideoSrc(HERO.video.desktop);
+    }
+  }, [mobileFailed]);
 
   /* Rotate hero texts every 6 seconds */
   useEffect(() => {
@@ -79,21 +94,12 @@ export default function HeroSection() {
 
   return (
     <section
-      className="hero-section relative w-full overflow-hidden bg-black"
-      style={{ height: "100svh", minHeight: "100vh" }}
+      className="hero-section relative w-full h-[100svh] overflow-hidden bg-black"
     >
-      {/* ===== LAYER 1: VIDEO — URL DINÁMICA POR VIEWPORT =====
-
-          DESKTOP (>=768px):
-            URL raw → 1920x1080, 59MB, streaming perfecto
-            El video horizontal cubre todo el ancho
-
-          MOBILE (<768px):
-            Cloudinary g_auto:subject → 720x1280, 4MB
-            La IA detecta el plotter y recorta horizontal→vertical
-            g_auto está encadenado como componente separado para
-            que Cloudinary pre-renderice y cachee el resultado
-            con accept-ranges: bytes
+      {/* ===== LAYER 1: VIDEO — FULLSCREEN BACKGROUND =====
+          DESKTOP (>=768px): Raw 1920x1080 → object-cover fills viewport
+          MOBILE (<768px): Cloudinary g_auto:subject 720x1280 vertical
+          Fallback: if Cloudinary transform fails → raw desktop URL
       */}
       <video
         ref={videoRef}
@@ -102,16 +108,18 @@ export default function HeroSection() {
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover z-0"
+        className="absolute inset-0 z-0"
+        style={{ objectFit: "cover" }}
         poster="/images/hero-1.jpg"
+        onError={handleVideoError}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* ===== LAYER 2: OVERLAY (efecto cine) ===== */}
-      <div className="absolute inset-0 bg-black/40 z-10" />
+      {/* ===== LAYER 2: OVERLAY — subtle for text legibility ===== */}
+      <div className="absolute inset-0 bg-black/30 z-10" />
 
-      {/* ===== LAYER 3: CONTENIDO — CENTRO PERFECTO ===== */}
+      {/* ===== LAYER 3: CONTENT — centered with text shadow ===== */}
       <div className="relative z-20 flex flex-col justify-center items-center h-full text-center px-6">
         <div className="max-w-3xl w-full">
           <motion.span
@@ -169,6 +177,7 @@ export default function HeroSection() {
             ))}
           </div>
 
+          {/* CTA — Explorar Equipos → scroll suave a #productos */}
           <motion.div
             custom={3}
             variants={fadeUp}
@@ -177,13 +186,14 @@ export default function HeroSection() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
-              href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20interesa%20cotizar%20el%20Plotter%20Textil%20T-1800%20a%20%245%2C600.%20%C2%BFTienen%20disponibilidad%20inmediata%3F%20%f0%9f%8f%ad%f0%9f%93%90"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#25D366] text-white font-semibold text-base sm:text-lg rounded-xl hover:bg-[#20BD5A] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#20BD5A]/40 hover:-translate-y-0.5"
+              href="#productos"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-cyan-500 text-white font-semibold text-base sm:text-lg rounded-xl hover:bg-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 hover:scale-105 active:scale-[0.98]"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector("#productos")?.scrollIntoView({ behavior: "smooth" });
+              }}
             >
-              <MessageCircle className="w-5 h-5" />
-              Cotizar Plotter $5,600
+              Explorar Equipos
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </motion.div>
@@ -197,6 +207,10 @@ export default function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
         className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/50 hover:text-white transition-colors"
+        onClick={(e) => {
+          e.preventDefault();
+          document.querySelector("#productos")?.scrollIntoView({ behavior: "smooth" });
+        }}
       >
         <span className="text-[10px] font-medium tracking-widest uppercase">{HERO.scrollLabel}</span>
         <ChevronDown className="w-5 h-5" />

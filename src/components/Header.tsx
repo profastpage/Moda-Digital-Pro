@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS, SITE_CONFIG } from "@/constants/product";
-import { Menu, X, ArrowRight, Sun, Moon, MessageCircle } from "lucide-react";
+import { Menu, X, ArrowRight, Sun, Moon, MessageCircle, ChevronDown } from "lucide-react";
 import PlotterIcon from "./PlotterIcon";
 
 /* ============================================
@@ -345,17 +345,19 @@ export default function Header() {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <motion.a
-                    href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20interesa%20cotizar%20el%20Plotter%20Textil%20T-1800%20a%20%245%2C600.%20%C2%BFTienen%20disponibilidad%20inmediata%3F%20%f0%9f%8f%ad%f0%9f%93%90"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#productos"
                     variants={ctaPulse}
                     initial="rest"
                     whileHover="hover"
                     whileTap="tap"
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold rounded-xl transition-colors duration-300"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      closeItem("#productos");
+                    }}
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-[1.03]"
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    Cotizar Plotter $5,600
+                    <ChevronDown className="w-4 h-4 rotate-[-90deg]" />
+                    Explorar Equipos
                   </motion.a>
 
                   <motion.a

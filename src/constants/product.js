@@ -10,8 +10,8 @@ const SITE_CONFIG = {
   description:
     "Plotter Textil de alta precisión. Tecnología de grado aeronáutico para impresión de trazos a gran escala.",
   cta: {
-    label: "Cotizar Plotter $5,600",
-    href: "#contacto",
+    label: "Explorar Equipos",
+    href: "#productos",
   },
   whatsapp: "https://wa.me/51944252684",
 };
