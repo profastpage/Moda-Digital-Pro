@@ -52,7 +52,20 @@ export default function HeroSection() {
 
   return (
     <section className="hero-section relative w-full overflow-hidden bg-black" style={{ height: "100dvh", minHeight: "100vh" }}>
-      {/* ===== LAYER 1: Video Background ===== */}
+      {/* ===== LAYER 1: Video Background =====
+          
+          NOTA: No usamos transformaciones on-the-fly de Cloudinary en la URL
+          porque: (1) g_auto NO funciona en video (HTTP 400, solo imágenes),
+          (2) CUALQUIER transformación on-the-fly genera accept-ranges: none
+          que bloquea el streaming y autoplay del navegador.
+          
+          En su lugar, usamos la URL raw con version ID para streaming correcto
+          y logramos el mismo efecto visual via CSS:
+            - object-cover: equivale a c_fill (llena sin letterboxing)
+            - scale-[1.3]: equivale a z_1.3 (zoom para recortar bordes con texto)
+            - object-position: center (centra el sujeto, equivalente a g_center)
+            - En móvil 9:16, object-cover recorta automáticamente de horizontal a vertical
+      */}
       <video
         ref={videoRef}
         autoPlay
@@ -60,10 +73,10 @@ export default function HeroSection() {
         loop
         playsInline
         preload="auto"
-        className="absolute top-0 left-0 z-0 w-full h-full object-cover"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 w-full h-full object-cover object-center scale-[1.3]"
         poster="/images/hero-1.jpg"
       >
-        <source src={HERO.video.desktop} type="video/mp4" />
+        <source src={HERO.video.raw} type="video/mp4" />
       </video>
 
       {/* ===== LAYER 2: Image Fallback (hidden by default) ===== */}
@@ -78,9 +91,13 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* ===== LAYER 3: Dark Overlay ===== */}
+      {/* ===== LAYER 3: Dark Overlay — legible en AMBOS modos =====
+          Overlay oscuro garantiza que el texto blanco sea legible
+          sin importar si el usuario está en modo claro u oscuro.
+          Sin overlay, el modo claro haría invisible el texto blanco
+          sobre las partes claras del video. */}
       <div className="absolute inset-0 z-[2] bg-black/40" />
-      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-[#020617]/60 via-transparent to-[#020617]/90" />
+      <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
 
       {/* ===== LAYER 4: Content — vertically centered ===== */}
       <div className="relative z-10 flex items-center justify-center w-full h-full px-4 sm:px-6 lg:px-8">
@@ -105,10 +122,18 @@ export default function HeroSection() {
                 animate="center"
                 exit="exit"
               >
-                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg mb-3 sm:mb-6">
+                {/* Texto SIEMPRE blanco con drop-shadow para legibilidad
+                    en ambos modos (el overlay oscuro garantiza el contraste).
+                    Se usa text-shadow + drop-shadow para proteger contra
+                    cualquier fondo claro del video. */}
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] mb-3 sm:mb-6"
+                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.8), 0 0px 4px rgba(0,0,0,0.6)" }}
+                >
                   {HERO_ROTATIONS[currentText].title}
                 </h1>
-                <p className="text-sm sm:text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl">
+                <p className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
+                >
                   {HERO_ROTATIONS[currentText].subtitle}
                 </p>
               </motion.div>
@@ -120,13 +145,13 @@ export default function HeroSection() {
             {HERO_ROTATIONS.map((_, idx) => (
               <div
                 key={idx}
-                className="h-1 w-8 bg-white/10 overflow-hidden rounded-full"
+                className="h-1 w-8 bg-white/20 overflow-hidden rounded-full"
               >
                 <div
                   key={`bar-${idx}-${progressKeyRef.current}`}
                   className={`h-full rounded-full ${
                     idx === currentText
-                      ? "bg-cyan-500 animate-progress"
+                      ? "bg-cyan-400 animate-progress"
                       : "w-0"
                   }`}
                 />
@@ -152,20 +177,20 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator — siempre blanco con fondo oscuro */}
       <motion.a
         href="#productos"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
-        className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors"
+        className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors"
       >
         <span className="text-xs font-medium tracking-widest uppercase">{HERO.scrollLabel}</span>
         <ChevronDown className="w-6 h-6" />
       </motion.a>
 
-      {/* Bottom gradient — smooth blend into Products section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none z-[5]" />
+      {/* Bottom gradient — smooth blend into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-b from-transparent to-[#020617] dark:to-[#020617] pointer-events-none z-[5]" />
     </section>
   );
 }
