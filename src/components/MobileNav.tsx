@@ -44,12 +44,17 @@ export default function MobileNav() {
   const { toggleModal } = useWhatsAppModal();
   const isDark = theme !== "light";
 
+  /* Theme-aware color tokens */
+  const inactiveColor = isDark ? "text-[#94a3b8]" : "text-slate-500";
+  const activeColor = isDark ? "text-[#06b6d4]" : "text-cyan-600";
+  const waLabelColor = isDark ? "text-[#25D366]" : "text-green-600";
+
   return (
     <nav
       className={`fixed bottom-0 left-0 right-0 z-50 md:hidden h-14 flex items-center justify-around px-2 transition-colors duration-300 ${
         isDark
           ? "bg-[#020617]/95 border-t border-[#334155]"
-          : "bg-white/95 border-t border-slate-200"
+          : "bg-white border-t border-slate-100"
       }`}
       style={{ backdropFilter: "blur(10px)" }}
     >
@@ -67,12 +72,12 @@ export default function MobileNav() {
             >
               <Icon
                 className={`w-[18px] h-[18px] transition-colors duration-200 ${
-                  isActive ? "text-[#06b6d4]" : "text-[#94a3b8]"
+                  isActive ? activeColor : inactiveColor
                 }`}
               />
               <span
                 className={`text-[10px] font-medium leading-tight transition-colors duration-200 ${
-                  isActive ? "text-[#06b6d4]" : "text-[#94a3b8]"
+                  isActive ? activeColor : inactiveColor
                 }`}
               >
                 {tab.label}
@@ -90,11 +95,15 @@ export default function MobileNav() {
         aria-label="Abrir menú de productos por WhatsApp"
       >
         <div
-          className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform duration-200"
+          className={`w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center active:scale-95 transition-transform duration-200 ${
+            isDark
+              ? "shadow-lg shadow-[#25D366]/30"
+              : "shadow-lg shadow-green-600/25 ring-2 ring-white"
+          }`}
         >
           <MessageCircle className="w-5 h-5 text-white" />
         </div>
-        <span className="text-[10px] font-medium text-[#25D366] mt-0.5">
+        <span className={`text-[10px] font-medium mt-0.5 ${waLabelColor}`}>
           WhatsApp
         </span>
       </button>
@@ -113,12 +122,12 @@ export default function MobileNav() {
             >
               <Icon
                 className={`w-[18px] h-[18px] transition-colors duration-200 ${
-                  isActive ? "text-[#06b6d4]" : "text-[#94a3b8]"
+                  isActive ? activeColor : inactiveColor
                 }`}
               />
               <span
                 className={`text-[10px] font-medium leading-tight transition-colors duration-200 ${
-                  isActive ? "text-[#06b6d4]" : "text-[#94a3b8]"
+                  isActive ? activeColor : inactiveColor
                 }`}
               >
                 {tab.label}
