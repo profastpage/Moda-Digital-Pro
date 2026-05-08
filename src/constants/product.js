@@ -18,7 +18,6 @@ const SITE_CONFIG = {
 
 const NAV_ITEMS = [
   { label: "Productos", href: "#productos" },
-  { label: "Catálogo", href: "#catalogo" },
   { label: "Servicios", href: "#servicios" },
   { label: "Nosotros", href: "#nosotros" },
   { label: "FAQ", href: "#faq" },
