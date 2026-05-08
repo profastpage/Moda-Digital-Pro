@@ -7,6 +7,13 @@ import { useTheme } from "next-themes";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { buildProductWhatsAppURL, hasNumericPrice } from "@/utils/whatsapp-engine";
 
+/* ================================================================
+   ProductModal — Premium UX Responsive
+   ────────────────────────────────────────
+   PC  : Horizontal 2-column (image left / info right), scroll en columna B
+   Móvil: Vertical single-column, h-[92vh], scroll completo
+   ================================================================ */
+
 interface ProductSpec {
   label: string;
   value: string;
@@ -32,10 +39,9 @@ interface ProductModalProps {
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
   const { theme } = useTheme();
   const mounted = useHasMounted();
-
   const isDark = !mounted || theme !== "light";
 
-  /* Lock body scroll when modal is open */
+  /* ── Lock body scroll when modal is open ── */
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -47,7 +53,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
     };
   }, [isOpen]);
 
-  /* Close on Escape key */
+  /* ── Close on Escape ── */
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -62,20 +68,32 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
   if (!product) return null;
 
-  /* ── Dynamic CTA: price vs no-price (powered by whatsapp-engine) ── */
+  /* ── Dynamic CTA: price vs no-price ── */
   const withPrice = hasNumericPrice(product.price);
-
   const ctaLabel = withPrice
     ? "Deseo adquirir este equipo"
     : "Cotizar este equipo por WhatsApp";
-
   const waUrl = buildProductWhatsAppURL(product);
+
+  /* ── Theme tokens (applied consistently) ── */
+  const t = {
+    modalBg: isDark ? "bg-slate-900 border-slate-700/50" : "bg-white border-slate-200",
+    imageBg: isDark ? "bg-slate-800/50" : "bg-slate-50",
+    title: isDark ? "text-white" : "text-slate-900",
+    body: isDark ? "text-slate-300" : "text-slate-600",
+    muted: isDark ? "text-slate-400" : "text-slate-500",
+    subtle: isDark ? "text-slate-500" : "text-slate-400",
+    divider: isDark ? "border-slate-700/30" : "border-slate-100",
+    closeBg: isDark
+      ? "bg-black/30 border-white/10 text-white/60 hover:text-white hover:bg-black/50"
+      : "bg-black/10 border-black/5 text-slate-500 hover:text-slate-900 hover:bg-black/20",
+  };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* ===== BACKDROP — Deep blur overlay ===== */}
+          {/* ══════════ BACKDROP — Deep blur overlay ══════════ */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -85,143 +103,152 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
             onClick={onClose}
           />
 
-          {/* ===== MODAL — Scale up + fade in ===== */}
+          {/* ══════════ MODAL CONTAINER ══════════ */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[101] flex items-center justify-center p-4 sm:p-6 pointer-events-none"
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[101] flex items-center justify-center p-3 sm:p-4 md:p-6 pointer-events-none"
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className={`pointer-events-auto relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border transition-colors duration-300 ${
-                isDark
-                  ? "bg-slate-900 border-slate-700/50"
-                  : "bg-white border-slate-200"
-              }`}
+              className={`pointer-events-auto relative w-full
+                /* Móvil: altura casi completa */
+                h-[92vh] max-h-[92vh]
+                /* PC: ancho horizontal, altura con límite */
+                lg:h-auto lg:max-h-[88vh] lg:max-w-5xl
+                overflow-hidden rounded-2xl lg:rounded-3xl shadow-2xl border transition-colors duration-300
+                ${t.modalBg}`}
             >
-              {/* ===== FLOATING CLOSE BUTTON — Translucent ===== */}
+              {/* ══════════ CLOSE BUTTON — Absolute, translucent ══════════ */}
               <button
                 onClick={onClose}
-                className={`sticky top-4 float-right mr-4 mt-4 z-10 w-10 h-10 flex items-center justify-center rounded-full
-                  backdrop-blur-md border transition-all duration-200 hover:scale-110 ${
-                    isDark
-                      ? "bg-black/40 border-white/10 text-white/70 hover:text-white hover:bg-black/60"
-                      : "bg-black/10 border-black/5 text-slate-500 hover:text-slate-900 hover:bg-black/20"
-                  }`}
+                className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-50 w-10 h-10 flex items-center justify-center rounded-full
+                  backdrop-blur-md border transition-all duration-200 hover:scale-110 active:scale-95 ${t.closeBg}`}
                 aria-label="Cerrar"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {/* ===== CONTENT: Image (top) + Info (bottom) ===== */}
-              <div className="flex flex-col lg:flex-row">
-                {/* Side A — Product Image */}
-                <div className="w-full lg:w-1/2 flex-shrink-0">
-                  <div className={`relative aspect-[4/3] lg:aspect-auto lg:h-full flex items-center justify-center p-6 lg:p-10 transition-colors duration-300 ${
-                    isDark ? "bg-slate-800/50" : "bg-slate-50"
-                  }`}>
+              {/* ══════════ LAYOUT: 2-col PC / 1-col Mobile ══════════ */}
+              <div className="flex flex-col lg:flex-row h-full overflow-hidden">
+
+                {/* ══════════ SIDE A — PRODUCT IMAGE ══════════ */}
+                <div className="
+                  /* Móvil: imagen compacta arriba */
+                  w-full flex-shrink-0 aspect-[4/3] lg:aspect-auto lg:h-full lg:w-[45%]
+                ">
+                  <div className={`w-full h-full flex items-center justify-center p-5 sm:p-8 lg:p-10 transition-colors duration-300 ${t.imageBg}`}>
                     <img
                       src={product.image}
                       alt={product.title}
-                      className="w-full h-full object-contain rounded-xl"
+                      className="w-full h-full object-contain rounded-xl drop-shadow-sm"
                     />
                   </div>
                 </div>
 
-                {/* Side B — Full Product Info */}
-                <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col">
-                  {/* Badge */}
-                  {product.badge && (
-                    <span className="inline-block self-start px-3 py-1 mb-5 text-[10px] font-bold tracking-widest uppercase rounded-full border
-                      text-cyan-600 bg-cyan-50 border-cyan-200">
-                      {product.badge}
-                    </span>
-                  )}
+                {/* ══════════ SIDE B — PRODUCT INFO (scrollable) ══════════ */}
+                <div className="
+                  flex-1 overflow-y-auto
+                  /* Scrollbar sutil en Webkit */
+                  [&::-webkit-scrollbar]:w-1.5
+                  [&::-webkit-scrollbar-track]:bg-transparent
+                  [&::-webkit-scrollbar-thumb]:bg-slate-400/20
+                  [&::-webkit-scrollbar-thumb]:rounded-full
+                  hover:[&::-webkit-scrollbar-thumb]:bg-slate-400/40
+                  transition-colors duration-300
+                ">
+                  <div className="p-5 sm:p-7 lg:p-10 lg:pr-12 flex flex-col">
 
-                  {/* Title */}
-                  <h2 className={`text-2xl sm:text-3xl font-bold mb-4 leading-tight ${
-                    isDark ? "text-white" : "text-slate-900"
-                  }`}>
-                    {product.title}
-                  </h2>
-
-                  {/* Price — Big cyan highlight */}
-                  {product.price && (
-                    <div className="mb-4">
-                      <span className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
-                        hasNumericPrice(product.price)
-                          ? "text-cyan-500"
-                          : isDark ? "text-slate-300" : "text-slate-600"
-                      }`}>
-                        {product.price}
+                    {/* ── Badge ── */}
+                    {product.badge && (
+                      <span className="inline-block self-start px-3 py-1.5 mb-6 text-[10px] font-bold tracking-widest uppercase rounded-full border
+                        text-cyan-600 bg-cyan-50 border-cyan-200">
+                        {product.badge}
                       </span>
-                      {hasNumericPrice(product.price) && (
-                        <span className={`block text-xs font-medium mt-1 ${
-                          isDark ? "text-slate-500" : "text-slate-400"
+                    )}
+
+                    {/* ── Title ── */}
+                    <h2 className={`text-2xl sm:text-3xl font-bold leading-tight mb-6 ${t.title}`}>
+                      {product.title}
+                    </h2>
+
+                    {/* ── Price — Resaltado con aire generoso ── */}
+                    {product.price && (
+                      <div className="mb-8">
+                        <span className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight ${
+                          withPrice ? "text-cyan-500" : t.body
                         }`}>
-                          Dólares americanos
+                          {product.price}
                         </span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Short description */}
-                  <p className={`text-sm leading-relaxed mb-3 ${
-                    isDark ? "text-slate-400" : "text-slate-500"
-                  }`}>
-                    {product.description}
-                  </p>
-
-                  {/* Long description */}
-                  <p className={`text-sm sm:text-base leading-relaxed mb-8 ${
-                    isDark ? "text-slate-300" : "text-slate-600"
-                  }`}>
-                    {product.longDescription}
-                  </p>
-
-                  {/* Specs Table */}
-                  <div className="mb-8 flex-grow">
-                    <h3 className={`text-xs font-bold uppercase tracking-widest mb-4 ${
-                      isDark ? "text-slate-500" : "text-slate-400"
-                    }`}>
-                      Especificaciones Clave
-                    </h3>
-                    <div className="space-y-0">
-                      {product.specs.map((spec, i) => (
-                        <div
-                          key={i}
-                          className={`flex items-start justify-between py-3 border-b ${
-                            isDark ? "border-slate-700/40" : "border-slate-100"
-                          } ${i === product.specs.length - 1 ? "border-b-0" : ""}`}
-                        >
-                          <span className={`text-sm font-medium pr-4 ${
-                            isDark ? "text-slate-400" : "text-slate-500"
-                          }`}>
-                            {spec.label}
+                        {withPrice && (
+                          <span className={`block text-xs font-medium mt-2 tracking-wide ${t.subtle}`}>
+                            Dólares americanos
                           </span>
-                          <span className={`text-sm font-semibold text-right ${
-                            isDark ? "text-white" : "text-slate-900"
-                          }`}>
-                            {spec.value}
-                          </span>
-                        </div>
-                      ))}
+                        )}
+                      </div>
+                    )}
+
+                    {/* ── Reading container: max-w-prose para líneas cómodas ── */}
+                    <div className="max-w-prose">
+                      {/* Short description */}
+                      <p className={`text-sm leading-[1.7] mb-6 ${t.muted}`}>
+                        {product.description}
+                      </p>
+
+                      {/* Long description */}
+                      <p className={`text-sm sm:text-[15px] leading-[1.7] mb-8 ${t.body}`}>
+                        {product.longDescription}
+                      </p>
                     </div>
+
+                    {/* ── Specs Table — Lista técnica de lujo ── */}
+                    <div className="mb-0 lg:mb-0">
+                      <h3 className={`text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] mb-5 ${t.subtle}`}>
+                        Especificaciones Clave
+                      </h3>
+                      <div className={`rounded-xl border ${t.divider} overflow-hidden`}>
+                        {product.specs.map((spec, i) => (
+                          <div
+                            key={i}
+                            className={`flex items-start justify-between px-4 py-3.5 sm:px-5 sm:py-4
+                              transition-colors duration-150 ${
+                                isDark ? "hover:bg-white/[0.02]" : "hover:bg-slate-50/80"
+                              }
+                              ${i < product.specs.length - 1 ? `border-b ${t.divider}` : ""}`}
+                          >
+                            <span className={`text-sm font-medium pr-4 leading-snug ${t.muted}`}>
+                              {spec.label}
+                            </span>
+                            <span className={`text-sm font-semibold text-right whitespace-nowrap leading-snug ${t.title}`}>
+                              {spec.value}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* ── WhatsApp CTA — Cierre natural de la lectura ── */}
+                    <div className="mt-12 lg:mt-12">
+                      <a
+                        href={waUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-3 w-full px-6 py-[18px] text-lg font-bold text-white bg-[#25D366]
+                          rounded-2xl hover:bg-[#20bd59] transition-all duration-300
+                          shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40 hover:-translate-y-0.5
+                          active:translate-y-0 active:shadow-[#25D366]/20"
+                      >
+                        <MessageCircle className="w-6 h-6 flex-shrink-0" />
+                        <span className="text-center leading-snug">{ctaLabel}</span>
+                        <ArrowRight className="w-5 h-5 flex-shrink-0" />
+                      </a>
+                    </div>
+
+                    {/* Bottom breathing room for mobile scroll */}
+                    <div className="h-4 lg:h-2" />
                   </div>
-
-                  {/* ===== WHATSAPP CTA — Dynamic text based on price ===== */}
-                  <a
-                    href={waUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-auto flex items-center justify-center gap-3 w-full px-6 py-5 text-lg font-bold text-white bg-[#25D366] rounded-2xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40 hover:-translate-y-0.5"
-                  >
-                    <MessageCircle className="w-6 h-6" />
-                    <span className="text-center leading-snug">{ctaLabel}</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </a>
                 </div>
               </div>
             </div>
