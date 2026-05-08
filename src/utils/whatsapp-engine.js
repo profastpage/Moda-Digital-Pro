@@ -23,44 +23,44 @@ export function generateWhatsAppLink(message) {
 export const WHATSAPP_PRODUCTS = [
   {
     id: 1,
-    name: "Plotter Sublimación Industrial",
+    name: "Digitalizador de Escaneo Plano",
     image: "/images/product-01-escaneo-plano.jpg",
     message:
-      "¡Hola! 👋 Me interesa recibir información técnica y el precio del *Plotter de Sublimación Industrial*. Quedo atento. 🖨️✨",
+      "¡Hola! 👋 Me interesa recibir información técnica y precio del *Digitalizador de Escaneo Plano* para patrones y moldes. 📂✨",
   },
   {
     id: 2,
-    name: "Plotter Textil Gran Formato",
+    name: "Plotter de Corte de Inyección Vertical",
     image: "/images/product-02-plotter-corte-vertical.jpg",
     message:
-      "Hola Moda Digital Pro, me gustaría cotizar el *Plotter Textil de Gran Formato* y conocer las facilidades de pago. 📏👕",
+      "Hola Moda Digital Pro, me gustaría cotizar el *Plotter de Corte de Inyección de Tinta Vertical*. ¿Tienen stock disponible? 🖨️📏",
   },
   {
     id: 3,
-    name: "Impresora DTF Alta Resolución",
+    name: "Plotter de Corte de Inyección Cama Plana",
     image: "/images/product-03-plotter-corte-cama-plana.jpg",
     message:
-      "¡Hola! Solicito detalles sobre la *Impresora DTF de Alta Resolución*. Me interesa para un proyecto de producción moderna. 🚀🔥",
+      "¡Hola! Solicito detalles y ficha técnica del *Plotter de Corte de Inyección de Tinta de Cama Plana*. ⚙️📐",
   },
   {
     id: 4,
-    name: "Calandra de Transferencia Térmica",
+    name: "Digitalizador de Escaneo Plano (Gran Formato)",
     image: "/images/product-04-escaneo-plano-2.jpg",
     message:
-      "Buen día, deseo información sobre la *Calandra de Transferencia Térmica*. ¿Podrían enviarme la ficha técnica? ⚙️⚡",
+      "Buen día, deseo información sobre el *Digitalizador de Escaneo Plano de Gran Formato*. Me interesa para mi flujo de producción. 🚀📂",
   },
   {
     id: 5,
-    name: "Plotter de Corte de Precisión",
+    name: "Digitalizador Compacto",
     image: "/images/product-05-digitalizador.jpg",
     message:
-      "Hola, estoy interesado en el *Plotter de Corte de Precisión*. Por favor, envíenme modelos disponibles y precios. ✂️💎",
+      "Hola, estoy interesado en el *Digitalizador Compacto* de alto rendimiento. Por favor, envíenme modelos y precios. 💎✂️",
   },
   {
     id: 6,
-    name: "Kit de Insumos Premium (Tintas/Papel)",
+    name: "Software GetonAgain Garment CAD V2024.1",
     image: "/images/product-06-getonagain-cad.jpg",
     message:
-      "¡Hola! Quisiera consultar por el *Stock de Insumos y Tintas Premium* para mis equipos industriales. 🎨📦",
+      "¡Hola! Me interesa la licencia del *Software GetonAgain Garment CAD V2024.1*. ¿Qué incluye la versión de este año? 💻👕",
   },
 ];
