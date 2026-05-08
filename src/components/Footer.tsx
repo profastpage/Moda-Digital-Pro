@@ -1,11 +1,28 @@
 "use client";
 
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { SITE_CONFIG, FOOTER_LINKS, CONTACT_INFO } from "@/constants/product";
 import PlotterIcon from "./PlotterIcon";
 
 export default function Footer() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = !mounted || theme !== "light";
+
   return (
-    <footer className="bg-navy-dark border-t border-border/30 pt-16 pb-20 md:pb-8">
+    <footer
+      className={`pt-16 pb-20 md:pb-8 transition-colors duration-300 ${
+        isDark
+          ? "bg-slate-950 border-t border-slate-800/50"
+          : "bg-slate-50 border-t border-slate-200"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 mb-12">
@@ -13,19 +30,21 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <PlotterIcon className="w-8 h-8" />
-              <span className="text-white font-bold text-lg tracking-tight">
+              <span className={`font-bold text-lg tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
                 Moda Digital <span className="text-primary">Pro</span>
               </span>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-4 max-w-xs">
+            <p className={`text-sm leading-relaxed mb-4 max-w-xs ${isDark ? "text-slate-400" : "text-slate-600"}`}>
               {SITE_CONFIG.description}
             </p>
-            <p className="text-muted-foreground text-sm">{CONTACT_INFO.email}</p>
+            <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+              {CONTACT_INFO.email}
+            </p>
           </div>
 
           {/* Productos */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 tracking-wider uppercase">
+            <h4 className={`font-semibold text-sm mb-4 tracking-wider uppercase ${isDark ? "text-white" : "text-slate-900"}`}>
               Productos
             </h4>
             <ul className="space-y-2.5">
@@ -33,7 +52,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-muted-foreground text-sm hover:text-primary transition-colors duration-200"
+                    className={`text-sm hover:text-primary transition-colors duration-200 ${isDark ? "text-slate-400" : "text-slate-600"}`}
                   >
                     {link.label}
                   </a>
@@ -44,7 +63,7 @@ export default function Footer() {
 
           {/* Servicios */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 tracking-wider uppercase">
+            <h4 className={`font-semibold text-sm mb-4 tracking-wider uppercase ${isDark ? "text-white" : "text-slate-900"}`}>
               Servicios
             </h4>
             <ul className="space-y-2.5">
@@ -52,7 +71,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-muted-foreground text-sm hover:text-primary transition-colors duration-200"
+                    className={`text-sm hover:text-primary transition-colors duration-200 ${isDark ? "text-slate-400" : "text-slate-600"}`}
                   >
                     {link.label}
                   </a>
@@ -63,7 +82,7 @@ export default function Footer() {
 
           {/* Empresa */}
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4 tracking-wider uppercase">
+            <h4 className={`font-semibold text-sm mb-4 tracking-wider uppercase ${isDark ? "text-white" : "text-slate-900"}`}>
               Empresa
             </h4>
             <ul className="space-y-2.5">
@@ -71,7 +90,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-muted-foreground text-sm hover:text-primary transition-colors duration-200"
+                    className={`text-sm hover:text-primary transition-colors duration-200 ${isDark ? "text-slate-400" : "text-slate-600"}`}
                   >
                     {link.label}
                   </a>
@@ -82,11 +101,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-border/30 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-xs sm:text-sm">
+        <div className={`pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t ${
+          isDark ? "border-slate-800/50" : "border-slate-200"
+        }`}>
+          <p className={`text-xs sm:text-sm ${isDark ? "text-slate-500" : "text-slate-500"}`}>
             &copy; {new Date().getFullYear()} {SITE_CONFIG.brand}. Todos los derechos reservados.
           </p>
-          <p className="text-muted-foreground text-xs">
+          <p className={`text-xs ${isDark ? "text-slate-500" : "text-slate-500"}`}>
             Diseñado con tecnología de grado industrial
           </p>
         </div>

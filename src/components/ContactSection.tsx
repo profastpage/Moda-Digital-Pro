@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import { CONTACT_INFO, SITE_CONFIG } from "@/constants/product";
-import { Send, Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -15,6 +16,9 @@ const fadeUp = {
 };
 
 export default function ContactSection() {
+  const { theme } = useTheme();
+  const isDark = theme !== "light";
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,8 +40,8 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contacto" className="relative py-20 sm:py-28 lg:py-32 bg-muted/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="contacto" className="py-20 sm:py-28 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           custom={0}
@@ -50,10 +54,10 @@ export default function ContactSection() {
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 rounded-full">
             Contáctanos
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-6">
             Impulsa tu producción textil
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
             Estamos listos para asesorarte. Escríbenos y recibe una cotización personalizada sin costo.
           </p>
         </motion.div>
@@ -70,11 +74,11 @@ export default function ContactSection() {
           >
             <form
               onSubmit={handleSubmit}
-              className="bg-card rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm border border-border/60"
+              className="bg-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm border border-slate-200"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Nombre completo
                   </label>
                   <input
@@ -84,11 +88,11 @@ export default function ContactSection() {
                     onChange={handleChange}
                     placeholder="Ej: Carlos Mendoza"
                     required
-                    className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
+                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Correo electrónico
                   </label>
                   <input
@@ -98,13 +102,13 @@ export default function ContactSection() {
                     onChange={handleChange}
                     placeholder="correo@ejemplo.com"
                     required
-                    className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
+                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 mb-5 sm:mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Teléfono
                   </label>
                   <input
@@ -112,12 +116,12 @@ export default function ContactSection() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+51 999 999 999"
-                    className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
+                    placeholder="+51 944 252 684"
+                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Producto de interés
                   </label>
                   <select
@@ -125,7 +129,7 @@ export default function ContactSection() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm appearance-none"
+                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm appearance-none"
                   >
                     <option value="">Selecciona un producto</option>
                     <option value="escaneo-plano">Digitalizador de Escaneo Plano</option>
@@ -139,7 +143,7 @@ export default function ContactSection() {
                 </div>
               </div>
               <div className="mb-6">
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Mensaje
                 </label>
                 <textarea
@@ -149,7 +153,7 @@ export default function ContactSection() {
                   placeholder="Cuéntanos sobre tu proyecto o necesidad..."
                   rows={5}
                   required
-                  className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm resize-none"
+                  className="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 text-sm resize-none"
                 />
               </div>
               <button
@@ -169,68 +173,70 @@ export default function ContactSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="lg:col-span-2 space-y-6"
+            className="lg:col-span-2 space-y-5"
           >
-            <div className="bg-card rounded-2xl p-6 sm:p-8 shadow-sm border border-border/60">
-              <h3 className="text-lg font-bold text-foreground mb-6">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+              <h3 className="text-lg font-bold text-slate-900 mb-6">
                 Información de Contacto
               </h3>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl flex-shrink-0">
-                    <Phone className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                    <Phone className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Teléfono</p>
-                    <p className="text-sm text-muted-foreground">{CONTACT_INFO.phone}</p>
+                    <p className="text-sm font-medium text-slate-800">Teléfono</p>
+                    <p className="text-sm text-slate-600">{CONTACT_INFO.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl flex-shrink-0">
-                    <Mail className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                    <Mail className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Correo</p>
-                    <p className="text-sm text-muted-foreground">{CONTACT_INFO.email}</p>
+                    <p className="text-sm font-medium text-slate-800">Correo</p>
+                    <p className="text-sm text-slate-600">{CONTACT_INFO.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Ubicación</p>
-                    <p className="text-sm text-muted-foreground">{CONTACT_INFO.address}</p>
+                    <p className="text-sm font-medium text-slate-800">Ubicación</p>
+                    <p className="text-sm text-slate-600">{CONTACT_INFO.address}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-xl flex-shrink-0">
-                    <Clock className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 flex items-center justify-center bg-cyan-50 rounded-xl flex-shrink-0">
+                    <Clock className="w-5 h-5 text-cyan-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Horario</p>
-                    <p className="text-sm text-muted-foreground">{CONTACT_INFO.hours}</p>
+                    <p className="text-sm font-medium text-slate-800">Horario</p>
+                    <p className="text-sm text-slate-600">{CONTACT_INFO.hours}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* WhatsApp CTA */}
+            {/* WhatsApp CTA — compact clickable card */}
             <a
               href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20personalizada.%20%C2%BFPodr%C3%ADan%20asesorarme%3F%20%f0%9f%8f%ad%f0%9f%93%90"
               target="_blank"
               rel="noopener noreferrer"
-              className="block bg-[#25D366] rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 text-center"
+              className="flex items-center gap-4 bg-[#25D366] rounded-2xl p-5 sm:p-6 shadow-lg shadow-green-600/20 hover:shadow-xl hover:shadow-green-600/30 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5"
             >
-              <p className="text-white font-bold text-lg mb-1">¿Prefieres WhatsApp?</p>
-              <p className="text-white/80 text-sm">Escríbenos directamente y recibe atención inmediata</p>
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-white font-bold text-base">¿Prefieres WhatsApp?</p>
+                <p className="text-white/80 text-sm">Escríbenos y recibe atención inmediata</p>
+              </div>
             </a>
           </motion.div>
         </div>
       </div>
-
-      {/* Bottom gradient — smooth blend into Footer (navy-dark) */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#020617] pointer-events-none" />
     </section>
   );
 }

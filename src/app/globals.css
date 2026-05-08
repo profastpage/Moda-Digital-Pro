@@ -41,67 +41,11 @@ img, svg {
 }
 
 /* ===================================
-   SECTION TRANSITIONS — Smooth Blends
-   =================================== */
-
-/* Dark section → light section: navy fades to background */
-.section-fade-dark-to-light {
-  position: relative;
-}
-.section-fade-dark-to-light::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(to bottom, transparent, #0f172a);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Light section → dark section: fades to navy */
-.section-fade-light-to-dark {
-  position: relative;
-}
-.section-fade-light-to-dark::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(to bottom, transparent, #0f172a);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Light mode overrides for section transitions */
-.light .section-fade-dark-to-light::after,
-.light .section-fade-light-to-dark::after {
-  background: linear-gradient(to bottom, transparent, #0f172a);
-}
-
-/* Dark → muted transition (e.g., About → FAQ) */
-.section-fade-dark-to-muted::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(to bottom, transparent, var(--color-background));
-  pointer-events: none;
-  z-index: 1;
-}
-
-.light .section-fade-dark-to-muted::after {
-  background: linear-gradient(to bottom, transparent, #0f172a);
-}
-
-/* ===================================
-   MODO CLARO — Estética Industrial
-   =================================== */
+   MODO CLARO — Global Overrides
+   ===================================
+   Components use theme-aware inline classes (useTheme).
+   These CSS rules handle residual utility classes that
+   aren't yet converted. */
 
 /* --- Fondos --- */
 .light .bg-background {
@@ -114,15 +58,11 @@ img, svg {
 
 .light .bg-muted\/40,
 .light .bg-muted {
-  background-color: #e2e8f0 !important;
+  background-color: #f8fafc !important;
 }
 
-/* Navy sections: deep navy #0f172a in both modes (softer than pure black) */
+/* Navy sections: stay dark in both modes */
 .light .bg-navy {
-  background-color: #0f172a !important;
-}
-
-.light .bg-navy-dark {
   background-color: #0f172a !important;
 }
 
@@ -132,12 +72,10 @@ img, svg {
 }
 
 .light .text-muted-foreground {
-  color: #475569 !important;
+  color: #64748b !important;
 }
 
-/* text-white on DARK sections (navy, hero, footer) keeps white.
-   text-white on LIGHT sections gets overridden per-component.
-   Default: keep white for safety on dark overlays. */
+/* text-white stays white (for dark sections, overlays, etc.) */
 .light .text-white {
   color: #ffffff !important;
 }
@@ -145,40 +83,19 @@ img, svg {
 .light .text-white\/80,
 .light .text-white\/75,
 .light .text-white\/70,
-.light .text-white\/85,
-.light .text-white\/60 {
+.light .text-white\/85 {
   color: #64748b !important;
 }
 
-/* ===================================
-   HERO SECTION — Texto siempre blanco
-   ===================================
-   El hero tiene video + overlay oscuro, por lo que el texto
-   DEBE ser blanco en ambos modos (claro y oscuro).
-   Estas reglas sobreescriben cualquier override del modo claro. */
-.hero-section .text-white {
-  color: rgba(255, 255, 255, 1) !important;
-}
-.hero-section .text-white\/90 { color: rgba(255, 255, 255, 0.9) !important; }
-.hero-section .text-white\/80 { color: rgba(255, 255, 255, 0.8) !important; }
-.hero-section .text-white\/75 { color: rgba(255, 255, 255, 0.75) !important; }
-.hero-section .text-white\/70 { color: rgba(255, 255, 255, 0.7) !important; }
-.hero-section .text-white\/60 { color: rgba(255, 255, 255, 0.6) !important; }
-.hero-section .text-white\/20 { color: rgba(255, 255, 255, 0.2) !important; }
-
-/* Badge del hero: mantener border/visible en ambos modos */
-.hero-section .border-primary\/30 {
-  border-color: rgba(6, 182, 212, 0.3) !important;
-}
-.hero-section .bg-primary\/10 {
-  background-color: rgba(6, 182, 212, 0.1) !important;
+.light .text-white\/60 {
+  color: #94a3b8 !important;
 }
 
 /* --- Bordes --- */
 .light .border-border\/60,
 .light .border-border\/40,
 .light .border-border\/30 {
-  border-color: #cbd5e1 !important;
+  border-color: #e2e8f0 !important;
 }
 
 /* --- BG utilities --- */
@@ -202,13 +119,33 @@ img, svg {
   background-color: rgba(15, 23, 42, 0.07) !important;
 }
 
-/* --- Inputs --- */
+/* --- Inputs (global catch for any remaining unconverted inputs) --- */
 .light input,
 .light select,
 .light textarea {
-  background-color: #f8fafc !important;
+  background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
+}
+
+/* ===================================
+   HERO SECTION — Texto siempre blanco
+   =================================== */
+.hero-section .text-white {
+  color: rgba(255, 255, 255, 1) !important;
+}
+.hero-section .text-white\/90 { color: rgba(255, 255, 255, 0.9) !important; }
+.hero-section .text-white\/80 { color: rgba(255, 255, 255, 0.8) !important; }
+.hero-section .text-white\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+.hero-section .text-white\/70 { color: rgba(255, 255, 255, 0.7) !important; }
+.hero-section .text-white\/60 { color: rgba(255, 255, 255, 0.6) !important; }
+.hero-section .text-white\/20 { color: rgba(255, 255, 255, 0.2) !important; }
+
+.hero-section .border-primary\/30 {
+  border-color: rgba(6, 182, 212, 0.3) !important;
+}
+.hero-section .bg-primary\/10 {
+  background-color: rgba(6, 182, 212, 0.1) !important;
 }
 
 /* === Scrollbar === */
@@ -233,10 +170,7 @@ img, svg {
   background: var(--color-primary);
 }
 
-/* === HERO VIDEO — Fullscreen Override ===
-   The global img/svg rule above doesn't apply to video.
-   For the hero, the <video> must fill 100% of the container (100svh).
-   object-cover crops the video to cover the viewport without black bars. */
+/* === HERO VIDEO — Fullscreen Override === */
 .hero-section video {
   width: 100% !important;
   height: 100% !important;
