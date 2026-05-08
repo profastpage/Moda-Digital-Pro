@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PRODUCTS } from "@/constants/product";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import ProductModal from "./ProductModal";
 
 /* Standardized animation: short slide (20px), fast (0.6s), easeOut */
@@ -17,7 +17,7 @@ const fadeUp = {
 };
 
 const cardUp = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -36,7 +36,6 @@ export default function ProductsSection() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    /* Delay unmount for exit animation */
     setTimeout(() => setSelectedProduct(null), 350);
   };
 
@@ -64,7 +63,7 @@ export default function ProductsSection() {
           </p>
         </motion.div>
 
-        {/* Product Cards — simplified, fully clickable */}
+        {/* Product Cards — minimal: image + title + outline CTA */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {PRODUCTS.map((product, i) => (
             <motion.article
@@ -75,31 +74,36 @@ export default function ProductsSection() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
               onClick={() => openModal(product)}
-              className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-border/60 hover:border-primary/30 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer"
+              className="group relative flex flex-col bg-card rounded-2xl overflow-hidden cursor-pointer
+                border border-border/40 hover:border-primary/30
+                shadow-sm hover:shadow-xl hover:shadow-primary/5
+                transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
             >
-              {/* Product Image */}
-              <div className="relative h-48 sm:h-52 w-full bg-muted overflow-hidden flex items-center justify-center p-4">
+              {/* Product Image — the star of the card */}
+              <div className="relative aspect-[4/3] w-full bg-muted overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.title}
                   loading="lazy"
-                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-contain p-6 sm:p-8 transition-transform duration-700 group-hover:scale-105"
                 />
                 {product.badge && (
-                  <span className="absolute top-3 right-3 px-3 py-1 text-xs font-bold text-white bg-primary/90 backdrop-blur-sm rounded-full">
+                  <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase text-white bg-primary/80 backdrop-blur-md rounded-full">
                     {product.badge}
                   </span>
                 )}
               </div>
 
-              {/* Product Info — image + title + CTA only */}
-              <div className="p-5 sm:p-6 flex flex-col flex-grow">
-                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-4 leading-snug flex-grow">
+              {/* Card Footer — Title + Outline CTA */}
+              <div className="px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-3">
+                <h3 className="text-sm sm:text-base font-bold text-foreground leading-snug line-clamp-2 flex-grow">
                   {product.title}
                 </h3>
-                <span className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 w-full text-sm font-semibold text-primary border-2 border-primary/30 rounded-xl group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300">
-                  Ver detalles
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                <span className="flex-shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-xl
+                  border-2 border-primary/30 text-primary
+                  group-hover:bg-primary group-hover:text-white group-hover:border-primary
+                  transition-all duration-300">
+                  <ArrowUpRight className="w-4 h-4" />
                 </span>
               </div>
             </motion.article>

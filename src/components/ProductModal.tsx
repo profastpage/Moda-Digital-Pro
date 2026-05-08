@@ -2,7 +2,9 @@
 
 import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MessageCircle, Monitor, ArrowRight } from "lucide-react";
+import { X, MessageCircle, ArrowRight } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 import { SITE_CONFIG } from "@/constants/product";
 
 const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
@@ -46,6 +48,15 @@ interface ProductModalProps {
 }
 
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = !mounted || theme !== "light";
+
   /* Lock body scroll when modal is open */
   useEffect(() => {
     if (isOpen) {
@@ -80,117 +91,139 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
   return (
     <AnimatePresence>
       {isOpen && (
-        /* Backdrop */
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-          onClick={onClose}
-        >
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-
-          {/* Modal container */}
+        <>
+          {/* ===== BACKDROP — Deep blur overlay ===== */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-xl"
+            onClick={onClose}
+          />
+
+          {/* ===== MODAL — Scale up + fade in ===== */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#0a1628] border border-slate-700/50 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[101] flex items-center justify-center p-4 sm:p-6 pointer-events-none"
           >
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-all duration-200 backdrop-blur-sm"
-              aria-label="Cerrar"
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className={`pointer-events-auto relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border transition-colors duration-300 ${
+                isDark
+                  ? "bg-slate-900 border-slate-700/50"
+                  : "bg-white border-slate-200"
+              }`}
             >
-              <X className="w-5 h-5" />
-            </button>
+              {/* ===== FLOATING CLOSE BUTTON — Translucent ===== */}
+              <button
+                onClick={onClose}
+                className={`sticky top-4 float-right mr-4 mt-4 z-10 w-10 h-10 flex items-center justify-center rounded-full
+                  backdrop-blur-md border transition-all duration-200 hover:scale-110 ${
+                    isDark
+                      ? "bg-black/40 border-white/10 text-white/70 hover:text-white hover:bg-black/60"
+                      : "bg-black/10 border-black/5 text-slate-500 hover:text-slate-900 hover:bg-black/20"
+                  }`}
+                aria-label="Cerrar"
+              >
+                <X className="w-5 h-5" />
+              </button>
 
-            {/* Content: Side A (Visual) + Side B (Info) */}
-            <div className="flex flex-col lg:flex-row">
-              {/* SIDE A — Visual */}
-              <div className="w-full lg:w-1/2 flex-shrink-0">
-                <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full bg-slate-900/50 flex items-center justify-center p-6 lg:p-8">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-contain rounded-lg"
-                  />
-                  {/* Video placeholder badge */}
-                  <div className="absolute bottom-4 left-4 lg:bottom-6 lg:left-6 flex items-center gap-2 px-3 py-2 bg-black/50 backdrop-blur-sm rounded-lg border border-slate-600/30">
-                    <Monitor className="w-4 h-4 text-cyan-400" />
-                    <span className="text-xs text-slate-300 font-medium">Video disponible — Próximamente</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* SIDE B — Full Info */}
-              <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col">
-                {/* Badge */}
-                {product.badge && (
-                  <span className="inline-block self-start px-3 py-1 mb-4 text-xs font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 rounded-full uppercase tracking-wider">
-                    {product.badge}
-                  </span>
-                )}
-
-                {/* Title */}
-                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight">
-                  {product.title}
-                </h2>
-
-                {/* Short description (from card) */}
-                <p className="text-slate-400 text-sm leading-relaxed mb-3">
-                  {product.description}
-                </p>
-
-                {/* Long description (full detail) */}
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-                  {product.longDescription}
-                </p>
-
-                {/* Specs table */}
-                <div className="mb-8 flex-grow">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
-                    Especificaciones Clave
-                  </h3>
-                  <div className="space-y-0">
-                    {product.specs.map((spec, i) => (
-                      <div
-                        key={i}
-                        className={`flex items-start justify-between py-3 border-b border-slate-700/40 ${
-                          i === product.specs.length - 1 ? "border-b-0" : ""
-                        }`}
-                      >
-                        <span className="text-sm text-slate-400 font-medium pr-4">
-                          {spec.label}
-                        </span>
-                        <span className="text-sm text-white font-semibold text-right">
-                          {spec.value}
-                        </span>
-                      </div>
-                    ))}
+              {/* ===== CONTENT: Image (top) + Info (bottom) ===== */}
+              <div className="flex flex-col lg:flex-row">
+                {/* Side A — Product Image */}
+                <div className="w-full lg:w-1/2 flex-shrink-0">
+                  <div className={`relative aspect-[4/3] lg:aspect-auto lg:h-full flex items-center justify-center p-6 lg:p-10 transition-colors duration-300 ${
+                    isDark ? "bg-slate-800/50" : "bg-slate-50"
+                  }`}>
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-contain rounded-xl"
+                    />
                   </div>
                 </div>
 
-                {/* ===== WHATSAPP CTA — Big & Prominent ===== */}
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto flex items-center justify-center gap-3 w-full px-6 py-5 text-lg font-bold text-white bg-[#25D366] rounded-2xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg shadow-[#25D366]/30 hover:shadow-[#25D366]/50 hover:-translate-y-0.5"
-                >
-                  <MessageCircle className="w-6 h-6" />
-                  Cotizar por WhatsApp
-                  <ArrowRight className="w-5 h-5" />
-                </a>
+                {/* Side B — Full Product Info */}
+                <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-10 flex flex-col">
+                  {/* Badge */}
+                  {product.badge && (
+                    <span className="inline-block self-start px-3 py-1 mb-5 text-[10px] font-bold tracking-widest uppercase rounded-full border
+                      text-cyan-600 bg-cyan-50 border-cyan-200">
+                      {product.badge}
+                    </span>
+                  )}
+
+                  {/* Title */}
+                  <h2 className={`text-2xl sm:text-3xl font-bold mb-4 leading-tight ${
+                    isDark ? "text-white" : "text-slate-900"
+                  }`}>
+                    {product.title}
+                  </h2>
+
+                  {/* Short description */}
+                  <p className={`text-sm leading-relaxed mb-3 ${
+                    isDark ? "text-slate-400" : "text-slate-500"
+                  }`}>
+                    {product.description}
+                  </p>
+
+                  {/* Long description */}
+                  <p className={`text-sm sm:text-base leading-relaxed mb-8 ${
+                    isDark ? "text-slate-300" : "text-slate-600"
+                  }`}>
+                    {product.longDescription}
+                  </p>
+
+                  {/* Specs Table */}
+                  <div className="mb-8 flex-grow">
+                    <h3 className={`text-xs font-bold uppercase tracking-widest mb-4 ${
+                      isDark ? "text-slate-500" : "text-slate-400"
+                    }`}>
+                      Especificaciones Clave
+                    </h3>
+                    <div className="space-y-0">
+                      {product.specs.map((spec, i) => (
+                        <div
+                          key={i}
+                          className={`flex items-start justify-between py-3 border-b ${
+                            isDark ? "border-slate-700/40" : "border-slate-100"
+                          } ${i === product.specs.length - 1 ? "border-b-0" : ""}`}
+                        >
+                          <span className={`text-sm font-medium pr-4 ${
+                            isDark ? "text-slate-400" : "text-slate-500"
+                          }`}>
+                            {spec.label}
+                          </span>
+                          <span className={`text-sm font-semibold text-right ${
+                            isDark ? "text-white" : "text-slate-900"
+                          }`}>
+                            {spec.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ===== WHATSAPP CTA — Big Green Button ===== */}
+                  <a
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto flex items-center justify-center gap-3 w-full px-6 py-5 text-lg font-bold text-white bg-[#25D366] rounded-2xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40 hover:-translate-y-0.5"
+                  >
+                    <MessageCircle className="w-6 h-6" />
+                    Cotizar por WhatsApp
+                    <ArrowRight className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>
-        </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
