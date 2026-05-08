@@ -22,23 +22,45 @@ export default function Header() {
 
   const isDark = mounted && theme !== "light";
 
-  // When NOT scrolled, header is transparent over dark hero → always light text.
-  // When scrolled, adapt to current theme.
-  const textLogo = !scrolled ? "text-white" : isDark ? "text-white" : "text-slate-900";
-  const textNav = !scrolled
-    ? "text-white/75 hover:text-white hover:bg-white/10"
+  /* When NOT scrolled → transparent over dark Hero → always white text.
+     When scrolled → adapt to current theme background. */
+  const textLogo = !scrolled
+    ? "text-white"
     : isDark
-      ? "text-slate-300 hover:text-white hover:bg-white/10"
-      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100";
-  const textMobile = !scrolled ? "text-white" : isDark ? "text-white" : "text-slate-900";
+      ? "text-white"
+      : "text-slate-900";
+
+  const textNav = !scrolled
+    ? "text-white/90 hover:text-white hover:bg-white/10"
+    : isDark
+      ? "text-slate-200 hover:text-white hover:bg-white/10"
+      : "text-slate-700 hover:text-slate-900 hover:bg-slate-100";
+
+  const textMobile = !scrolled
+    ? "text-white"
+    : isDark
+      ? "text-white"
+      : "text-slate-900";
+
   const borderDiv = !scrolled
     ? "border-transparent"
     : isDark
       ? "border-slate-800/50"
       : "border-slate-200";
+
   const bgMobileMenu = isDark
     ? "bg-slate-950/95 border-slate-800/50"
     : "bg-white/95 border-slate-200";
+
+  const mobileMenuLink = isDark
+    ? "text-slate-200 hover:text-white hover:bg-white/5"
+    : "text-slate-700 hover:text-slate-900 hover:bg-slate-100";
+
+  const dividerBorder = !scrolled
+    ? "border-white/20"
+    : isDark
+      ? "border-white/20"
+      : "border-slate-200";
 
   return (
     <header
@@ -74,17 +96,15 @@ export default function Header() {
               </a>
             ))}
             <div
-              className={`flex items-center gap-1.5 ml-2 pl-2 border-l ${
-                isDark || !scrolled ? "border-white/20" : "border-slate-200"
-              }`}
+              className={`flex items-center gap-1.5 ml-2 pl-2 border-l ${dividerBorder}`}
             >
-              <ThemeToggle />
+              <ThemeToggle scrolled={scrolled} isDark={isDark} />
             </div>
           </div>
 
           {/* Mobile Nav Toggle */}
           <div className="flex lg:hidden items-center gap-1">
-            <ThemeToggle />
+            <ThemeToggle scrolled={scrolled} isDark={isDark} />
             <button
               className={`p-1.5 rounded-md transition-colors ml-0.5 ${textMobile}`}
               aria-label="Open menu"
@@ -104,11 +124,7 @@ export default function Header() {
               <a
                 key={item.href}
                 href={item.href}
-                className={`block px-4 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
-                  isDark
-                    ? "text-slate-300 hover:text-white hover:bg-white/5"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
+                className={`block px-4 py-2.5 text-sm font-semibold rounded-lg transition-colors ${mobileMenuLink}`}
                 onClick={() => setMenuOpen(false)}
               >
                 {item.label}

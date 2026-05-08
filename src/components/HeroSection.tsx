@@ -51,7 +51,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-black" style={{ height: "100dvh", minHeight: "100vh" }}>
+    <section className="hero-section relative w-full overflow-hidden bg-black" style={{ height: "100dvh", minHeight: "100vh" }}>
       {/* ===== LAYER 1: Video Background ===== */}
       <video
         ref={videoRef}

@@ -4,7 +4,12 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
-export default function ThemeToggle() {
+interface ThemeToggleProps {
+  scrolled?: boolean;
+  isDark?: boolean;
+}
+
+export default function ThemeToggle({ scrolled = false, isDark = true }: ThemeToggleProps) {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -18,10 +23,20 @@ export default function ThemeToggle() {
     );
   }
 
+  /* Color logic:
+     - Not scrolled (over dark hero) → white icon always
+     - Scrolled in dark mode → light gray icon
+     - Scrolled in light mode → dark icon */
+  const iconColor = !scrolled
+    ? "text-white/80 hover:text-white hover:bg-white/10"
+    : isDark
+      ? "text-slate-300 hover:text-white hover:bg-white/10"
+      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-lg transition-all duration-200 text-white/70 hover:text-white hover:bg-white/10 dark:hover:bg-white/10"
+      className={`p-2 rounded-lg transition-all duration-200 ${iconColor}`}
       aria-label={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
     >
       {theme === "dark" ? (
