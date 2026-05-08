@@ -101,14 +101,22 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className={`pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t ${
+        <div className={`pt-8 flex flex-col items-center gap-3 border-t ${
           isDark ? "border-slate-800/50" : "border-slate-200"
         }`}>
-          <p className={`text-xs sm:text-sm ${isDark ? "text-slate-500" : "text-slate-500"}`}>
+          <p className={`text-xs sm:text-sm text-center ${isDark ? "text-slate-500" : "text-slate-500"}`}>
             &copy; {new Date().getFullYear()} {SITE_CONFIG.brand}. Todos los derechos reservados.
           </p>
-          <p className={`text-xs ${isDark ? "text-slate-500" : "text-slate-500"}`}>
-            Diseñado con tecnología de grado industrial
+          <p className={`text-xs text-center ${isDark ? "text-slate-600" : "text-slate-400"}`}>
+            Diseñado y desarrollado por{" "}
+            <a
+              href="https://fastpagepro.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-primary/70 hover:text-primary transition-colors duration-200"
+            >
+              FastPagePro
+            </a>
           </p>
         </div>
       </div>
