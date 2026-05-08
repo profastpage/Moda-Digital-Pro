@@ -56,7 +56,7 @@ export default function FloatingWhatsApp() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed bottom-20 md:bottom-28 right-4 md:right-8 z-[60] w-[280px] sm:w-80 bg-[#020617] border border-cyan-500/30 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden"
+            className="fixed bottom-[6.5rem] md:bottom-28 right-4 md:right-8 z-[9999] w-[280px] sm:w-80 bg-[#020617] border border-cyan-500/30 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden pointer-events-auto"
           >
             {/* Panel Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-[#0f172a] to-[#020617] border-b border-cyan-500/20">
@@ -118,12 +118,12 @@ export default function FloatingWhatsApp() {
         )}
       </AnimatePresence>
 
-      {/* ===== Desktop Floating Button — hidden on mobile ===== */}
+      {/* ===== Floating Button — visible on both mobile and PC ===== */}
       <button
         data-wa-trigger
         onClick={toggleModal}
         aria-label="Abrir menú de productos WhatsApp"
-        className="hidden md:flex fixed bottom-8 right-8 z-50 relative w-16 h-16 rounded-full bg-[#25D366] items-center justify-center shadow-lg shadow-[#25D366]/30 hover:shadow-[#25D366]/50 hover:scale-110 active:scale-95 transition-all duration-300"
+        className="flex fixed bottom-24 right-6 md:bottom-8 md:right-8 z-[9999] w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] items-center justify-center shadow-lg shadow-[#25D366]/30 hover:shadow-[#25D366]/50 hover:scale-110 active:scale-95 transition-all duration-300 pointer-events-auto"
       >
         {/* Pulse ring */}
         <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25" />
