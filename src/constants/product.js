@@ -45,13 +45,12 @@ const HERO = {
   cta: SITE_CONFIG.cta,
   video: {
     /*
-     * Cloudinary optimized video URL.
-     * Parameters: f_auto (WebM/MP4 auto), q_auto (smart quality), vc_h265 (HEVC codec).
-     * Replace the URL below with your actual Cloudinary video public ID.
-     * Format: https://res.cloudinary.com/{CLOUD_NAME}/video/upload/f_auto,q_auto,vc_h265/{PUBLIC_ID}
+     * Cloudinary optimized video — Hero de Moda Digital Pro.
+     * Parámetros: f_auto (formato auto WebM/MP4), q_auto (calidad inteligente), vc_h265 (codec HEVC).
+     * Public ID: zlyosboxlj59mhf0xare | Duración: 19.4s | Resolución: 1920x1080
      */
-    desktop: "https://res.cloudinary.com/demo/video/upload/f_auto,q_auto,vc_h265/production_ID_sample.mp4",
-    mobile: "https://res.cloudinary.com/demo/video/upload/f_auto,q_auto,vc_h265/w_800/production_ID_sample.mp4",
+    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/f_auto,q_auto,vc_h265/zlyosboxlj59mhf0xare.mp4",
+    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/w_800,f_auto,q_auto,vc_h265/zlyosboxlj59mhf0xare.mp4",
   },
   images: {
     desktop: ["/images/hero-1.jpg", "/images/hero-2.jpg"],
