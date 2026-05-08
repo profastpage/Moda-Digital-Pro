@@ -46,11 +46,15 @@ const HERO = {
   video: {
     /*
      * Cloudinary optimized video — Hero de Moda Digital Pro.
-     * Parámetros: f_auto (formato auto WebM/MP4), q_auto (calidad inteligente), vc_h265 (codec HEVC).
-     * Public ID: zlyosboxlj59mhf0xare | Duración: 19.4s | Resolución: 1920x1080
+     * Public ID: nbtlskmnbfugnl8r9my5 | Duración: 20.1s | Original: 1920x1080
+     *
+     * Desktop:  c_limit,w_1920,q_auto,f_auto  → horizontal optimizado
+     * Mobile:   c_fill,g_auto:subject,ar_9:16,z_1.2,q_auto,f_auto  → IA smart-crop vertical 9:16
      */
-    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/f_auto,q_auto,vc_h265/zlyosboxlj59mhf0xare.mp4",
-    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/w_800,f_auto,q_auto,vc_h265/zlyosboxlj59mhf0xare.mp4",
+    cloudName: "dqk6ol7id",
+    publicId: "nbtlskmnbfugnl8r9my5",
+    desktop: "https://res.cloudinary.com/dqk6ol7id/video/upload/c_limit,w_1920,q_auto,f_auto/nbtlskmnbfugnl8r9my5.mp4",
+    mobile: "https://res.cloudinary.com/dqk6ol7id/video/upload/c_fill,g_auto:subject,ar_9:16,z_1.2,q_auto,f_auto/nbtlskmnbfugnl8r9my5.mp4",
   },
   images: {
     desktop: ["/images/hero-1.jpg", "/images/hero-2.jpg"],

@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
+/* Responsive breakpoint: 768px */
+const MOBILE_BREAKPOINT = 768;
+
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0);
+  const [videoSrc, setVideoSrc] = useState(HERO.video.desktop);
   const progressKeyRef = useRef(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   /* Rotate hero texts every 6 seconds */
   useEffect(() => {
@@ -17,6 +22,31 @@ export default function HeroSection() {
     }, 6000);
     return () => clearInterval(interval);
   }, []);
+
+  /* Dynamic video URL based on viewport width */
+  const updateVideoSrc = useCallback(() => {
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    const newSrc = isMobile ? HERO.video.mobile : HERO.video.desktop;
+    setVideoSrc((prev) => {
+      if (prev !== newSrc) return newSrc;
+      return prev;
+    });
+  }, []);
+
+  useEffect(() => {
+    updateVideoSrc();
+    window.addEventListener("resize", updateVideoSrc);
+    return () => window.removeEventListener("resize", updateVideoSrc);
+  }, [updateVideoSrc]);
+
+  /* Re-trigger play when source changes (resize cross breakpoint) */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.load();
+      video.play().catch(() => {});
+    }
+  }, [videoSrc]);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -34,35 +64,24 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* ===== LAYER 1: Background Video (Cloudinary) ===== */}
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      {/* ===== LAYER 1: Background Video (Cloudinary Dynamic) ===== */}
       <div className="absolute inset-0" aria-hidden="true">
-        {/* Desktop Video */}
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover hidden lg:block scale-105"
+          className="absolute inset-0 w-full h-full object-cover"
+          poster="/images/hero-1.jpg"
         >
-          <source src={HERO.video.desktop} type="video/mp4" />
-        </video>
-
-        {/* Mobile Video (lower bandwidth) */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover lg:hidden scale-105"
-        >
-          <source src={HERO.video.mobile} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
       </div>
 
-      {/* ===== LAYER 2: Image Fallback (if video fails to load) ===== */}
+      {/* ===== LAYER 2: Image Fallback (if video fails) ===== */}
       <div className="absolute inset-0" aria-hidden="true">
         <img
           src={HERO.images.desktop[0]}
@@ -74,9 +93,9 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* ===== LAYER 3: Overlay gradient + dark film ===== */}
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/70 via-transparent to-[#020617]/90" />
+      {/* ===== LAYER 3: Overlay — dark film for text readability ===== */}
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/60 via-transparent to-[#020617]/90" />
 
       {/* ===== LAYER 4: Content ===== */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 sm:py-40">
@@ -92,7 +111,6 @@ export default function HeroSection() {
           </motion.span>
 
           {/* ===== Rotating Content Block (single AnimatePresence) ===== */}
-          {/* Fixed min-height container prevents layout jump / text overlap */}
           <div className="min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px] mb-6">
             <AnimatePresence mode="wait">
               <motion.div
