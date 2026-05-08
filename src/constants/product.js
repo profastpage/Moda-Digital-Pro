@@ -13,7 +13,7 @@ const SITE_CONFIG = {
     label: "Cotizar Plotter $5,600",
     href: "#contacto",
   },
-  whatsapp: "https://wa.me/51999999999",
+  whatsapp: "https://wa.me/51944252684",
 };
 
 const NAV_ITEMS = [
@@ -293,7 +293,7 @@ const FAQ_ITEMS = [
 ];
 
 const CONTACT_INFO = {
-  phone: "+51 999 999 999",
+  phone: "+51 944 252 684",
   email: "ventas@modadigitalpro.com",
   address: "Lima, Perú",
   hours: "Lun - Vie: 8:00 - 18:00 | Sáb: 9:00 - 13:00",

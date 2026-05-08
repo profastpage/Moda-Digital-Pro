@@ -3,6 +3,25 @@
 import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MessageCircle, Play, Monitor } from "lucide-react";
+import { SITE_CONFIG } from "@/constants/product";
+
+const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
+
+/** Mensajes contextuales por producto para WhatsApp */
+const WA_MESSAGES: Record<string, string> = {
+  "escaneo-plano-1":
+    "📋 ¡Hola! Vi el *Digitalizador de Escaneo Plano* en su web (1800×1200mm, 600dpi, 3s/A0). Quisiera conocer el precio y si tienen disponibilidad. ¿Incluye software CAD? 📐",
+  "plotter-corte-vertical":
+    "🖨️ Hola Moda Digital Pro, vi el *Plotter de Corte de Inyección Vertical* (1600mm, 45m²/h, 1440dpi). Me gustaría cotizarlo. ¿Tienen stock? ¿Cuáles tintas incluye? 📏",
+  "plotter-corte-cama-plana":
+    "⚙️ ¡Buen día! Vi el *Plotter de Cama Plana* (1800×2500mm, 1440dpi, succión programable) en su catálogo. Por favor envíenme ficha técnica, precio y disponibilidad. 📐",
+  "escaneo-plano-2":
+    "🚀 Hola, vi el *Digitalizador de Gran Formato* (1118mm, 1200dpi, 48-bit) en su web. ¿Cuál es el precio? ¿Hay stock? Me interesa para conversión de patrones. 📂",
+  "digitalizador":
+    "💎 ¡Hola! Quiero cotizar el *Digitalizador Compacto* (A3+, 1200dpi, USB-C). ¿Podrían indicarme precio, disponibilidad y si incluye software de vectorización? ✂️",
+  "getonagain-cad":
+    "💻 Hola, me interesa la licencia de *GetonAgain Garment CAD V2024.1* que vi en su web. ¿Incluye Patronaje + Grading + Marcación + 3D? ¿Precio y disponibilidad inmediata? 👕",
+};
 
 interface ProductSpec {
   label: string;
@@ -149,7 +168,9 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
                 {/* WhatsApp CTA */}
                 <a
-                  href={`https://wa.me/51999999999?text=Hola, estoy interesado en: ${encodeURIComponent(product.title)}`}
+                  href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+                    WA_MESSAGES[product.id] || `Hola, estoy interesado en: ${product.title}. ¿Podrían darme más información y precio?`
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-auto inline-flex items-center justify-center gap-3 w-full px-6 py-4 text-base font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg hover:shadow-[#25D366]/30 hover:-translate-y-0.5"

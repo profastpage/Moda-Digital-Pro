@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS, SITE_CONFIG } from "@/constants/product";
-import { Menu, X, ArrowRight, Sun, Moon, MessageCircle, Phone } from "lucide-react";
+import { Menu, X, ArrowRight, Sun, Moon, MessageCircle } from "lucide-react";
 import PlotterIcon from "./PlotterIcon";
 
 /* ============================================
@@ -145,12 +145,6 @@ export default function Header() {
       ? "text-white"
       : "text-slate-900";
 
-  const borderDiv = !scrolled
-    ? "border-transparent"
-    : isDark
-      ? "border-slate-800/50"
-      : "border-slate-200";
-
   const dividerBorder = !scrolled
     ? "border-white/20"
     : isDark
@@ -176,13 +170,13 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 shadow-none ${
           scrolled
             ? isDark
-              ? "bg-slate-950/90 backdrop-blur-md shadow-lg"
-              : "bg-white/90 backdrop-blur-md shadow-lg"
-            : "bg-gradient-to-b from-black/80 to-transparent"
-        } ${!scrolled ? "border-b border-transparent" : `border-b ${borderDiv}`}`}
+              ? "bg-slate-950/90 backdrop-blur-md"
+              : "bg-white/90 backdrop-blur-md"
+            : "bg-gradient-to-b from-black/60 to-transparent"
+        }`}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[52px] sm:h-[56px]">
@@ -351,23 +345,21 @@ export default function Header() {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <motion.a
-                    href="#contacto"
+                    href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20interesa%20cotizar%20el%20Plotter%20Textil%20T-1800%20a%20%245%2C600.%20%C2%BFTienen%20disponibilidad%20inmediata%3F%20%f0%9f%8f%ad%f0%9f%93%90"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     variants={ctaPulse}
                     initial="rest"
                     whileHover="hover"
                     whileTap="tap"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      closeItem("#contacto");
-                    }}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold rounded-xl transition-colors duration-300"
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold rounded-xl transition-colors duration-300"
                   >
-                    <Phone className="w-4 h-4" />
-                    {SITE_CONFIG.cta.label}
+                    <MessageCircle className="w-4 h-4" />
+                    Cotizar Plotter $5,600
                   </motion.a>
 
                   <motion.a
-                    href="https://wa.me/51944252684"
+                    href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20sus%20plotters%20y%20equipos%20textiles.%20%C2%BFPodr%C3%ADan%20asesorarme%3F%20%f0%9f%8f%ad%f0%9f%93%90"
                     target="_blank"
                     rel="noopener noreferrer"
                     variants={whatsappPulse}

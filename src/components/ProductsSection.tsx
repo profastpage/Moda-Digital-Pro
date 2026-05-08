@@ -2,9 +2,32 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PRODUCTS } from "@/constants/product";
+import { PRODUCTS, SITE_CONFIG } from "@/constants/product";
 import { MessageCircle, Eye } from "lucide-react";
 import ProductModal from "./ProductModal";
+
+const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
+
+/** Mensajes pre-rellenados contextuales por producto */
+const WA_MESSAGES: Record<string, string> = {
+  "escaneo-plano-1":
+    "📋 ¡Hola! Me interesa el *Digitalizador de Escaneo Plano* (1800×1200mm, 600dpi). ¿Podrían enviarme precio y disponibilidad inmediata? 📐",
+  "plotter-corte-vertical":
+    "🖨️ Hola Moda Digital Pro, necesito cotizar el *Plotter de Corte de Inyección Vertical* (1600mm, 45m²/h). ¿Tienen disponibilidad? ¿Cuál es el precio? 📏",
+  "plotter-corte-cama-plana":
+    "⚙️ ¡Buen día! Quiero información del *Plotter de Cama Plana* (1800×2500mm, 1440dpi). Por favor envíenme precio y disponibilidad. 📐",
+  "escaneo-plano-2":
+    "🚀 Hola, estoy interesado en el *Digitalizador de Gran Formato* (1118mm, 1200dpi). ¿Cuál es el precio y hay stock disponible? 📂",
+  "digitalizador":
+    "💎 ¡Hola! Quiero cotizar el *Digitalizador Compacto* (A3+, 1200dpi). ¿Podrían indicarme precio y disponibilidad? ✂️",
+  "getonagain-cad":
+    "💻 Hola, me interesa la licencia de *GetonAgain Garment CAD V2024.1* (Patronaje + Grading + Marcación + 3D). ¿Precio y disponibilidad? 👕",
+};
+
+function getWhatsAppUrl(productId: string): string {
+  const msg = WA_MESSAGES[productId] || `Hola, estoy interesado en consultar por un producto de Moda Digital Pro.`;
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
 
 /* Standardized animation: short slide (20px), fast (0.6s), easeOut */
 const fadeUp = {
@@ -110,14 +133,14 @@ export default function ProductsSection() {
                   {product.description}
                 </p>
                 <a
-                  href={`https://wa.me/51999999999?text=${encodeURIComponent(`Hola, estoy interesado en: ${product.title}`)}`}
+                  href={getWhatsAppUrl(product.id)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 w-full text-sm font-semibold text-white bg-[#25D366] rounded-xl hover:bg-[#20bd59] transition-colors duration-300 shadow-md hover:shadow-lg"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  {product.cta}
+                  Cotizar por WhatsApp
                 </a>
               </div>
             </motion.article>

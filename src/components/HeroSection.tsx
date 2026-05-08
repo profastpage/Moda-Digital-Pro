@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HERO, HERO_ROTATIONS } from "@/constants/product";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { HERO, HERO_ROTATIONS, SITE_CONFIG } from "@/constants/product";
+import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 
 export default function HeroSection() {
   const [currentText, setCurrentText] = useState(0);
@@ -177,10 +177,13 @@ export default function HeroSection() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
-              href={HERO.cta.href}
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-cyan-500 text-white font-semibold text-base sm:text-lg rounded-xl hover:bg-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-400/40 hover:-translate-y-0.5"
+              href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20interesa%20cotizar%20el%20Plotter%20Textil%20T-1800%20a%20%245%2C600.%20%C2%BFTienen%20disponibilidad%20inmediata%3F%20%f0%9f%8f%ad%f0%9f%93%90"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#25D366] text-white font-semibold text-base sm:text-lg rounded-xl hover:bg-[#20BD5A] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#20BD5A]/40 hover:-translate-y-0.5"
             >
-              {HERO.cta.label}
+              <MessageCircle className="w-5 h-5" />
+              Cotizar Plotter $5,600
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </motion.div>

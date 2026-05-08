@@ -217,7 +217,7 @@ export default function ContactSection() {
 
             {/* WhatsApp CTA */}
             <a
-              href={SITE_CONFIG.whatsapp}
+              href="https://wa.me/51944252684?text=%F0%9F%91%8B%20%C2%A1Hola%20Moda%20Digital%20Pro!%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20personalizada.%20%C2%BFPodr%C3%ADan%20asesorarme%3F%20%f0%9f%8f%ad%f0%9f%93%90"
               target="_blank"
               rel="noopener noreferrer"
               className="block bg-[#25D366] rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 text-center"
