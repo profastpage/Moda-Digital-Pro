@@ -11,16 +11,16 @@ const WA_NUMBER = SITE_CONFIG.whatsapp.replace("https://wa.me/", "");
 
 /** Mensajes contextuales por producto para WhatsApp */
 const WA_MESSAGES: Record<string, string> = {
-  "escaneo-plano-1":
-    "📋 ¡Hola! Vi el *Digitalizador de Escaneo Plano* en su web (1800×1200mm, 600dpi, 3s/A0). Quisiera conocer el precio y si tienen disponibilidad. ¿Incluye software CAD? 📐",
-  "plotter-corte-vertical":
-    "🖨️ Hola Moda Digital Pro, vi el *Plotter de Corte de Inyección Vertical* (1600mm, 45m²/h, 1440dpi). Me gustaría cotizarlo. ¿Tienen stock? ¿Cuáles tintas incluye? 📏",
-  "plotter-corte-cama-plana":
-    "⚙️ ¡Buen día! Vi el *Plotter de Cama Plana* (1800×2500mm, 1440dpi, succión programable) en su catálogo. Por favor envíenme ficha técnica, precio y disponibilidad. 📐",
-  "escaneo-plano-2":
-    "🚀 Hola, vi el *Digitalizador de Gran Formato* (1118mm, 1200dpi, 48-bit) en su web. ¿Cuál es el precio? ¿Hay stock? Me interesa para conversión de patrones. 📂",
-  "digitalizador":
-    "💎 ¡Hola! Quiero cotizar el *Digitalizador Compacto* (A3+, 1200dpi, USB-C). ¿Podrían indicarme precio, disponibilidad y si incluye software de vectorización? ✂️",
+  "plotter-inkjet-alta-velocidad":
+    "📋 ¡Hola! Vi el *Plotter Inkjet de Alta Velocidad* en su web (200 m²/h, aluminio aeronáutico, 1-4 cartuchos). Me interesa cotizar este equipo. ¿Tienen stock y disponibilidad inmediata? 📐",
+  "plotter-trazo-corte-carton":
+    "🖨️ Hola Moda Digital Pro, vi el *Plotter de Trazo de Papel y Corte de Cartón* (110 m²/h, Servo, HP45, cuchilla rotativa) en su catálogo. Me gustaría conocer el precio y disponibilidad. 📏",
+  "digitalizador-48x36":
+    "⚙️ ¡Buen día! Vi el *Digitalizador de 48x36* en su web (compatible con +30 formatos CAD). Por favor envíenme precio y disponibilidad. 📐",
+  "plotter-corte-carton-cama-plana":
+    "🚀 Hola, vi el *Plotter de Corte de Cartón Cama Plana* (Flatbed industrial, Servo, HP45, pantalla HD) en su web. Me interesa cotizar. ¿Hay stock? 📂",
+  "digitalizador-cama-plana":
+    "💎 ¡Hola! Quiero cotizar el *Digitalizador de Cama Plana* (escaneo un solo toque, vacío, DXF universal) que vi en su catálogo. ¿Podrían indicarme precio y disponibilidad? ✂️",
   "getonagain-cad":
     "💻 Hola, me interesa la licencia de *GetonAgain Garment CAD V2024.1* que vi en su web. ¿Incluye Patronaje + Grading + Marcación + 3D? ¿Precio y disponibilidad inmediata? 👕",
 };
@@ -160,6 +160,26 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     {product.title}
                   </h2>
 
+                  {/* Price — Celeste highlight */}
+                  {product.price && (
+                    <div className="mb-4">
+                      <span className={`text-2xl sm:text-3xl font-bold ${
+                        product.price.startsWith("$")
+                          ? "text-cyan-500"
+                          : isDark ? "text-slate-300" : "text-slate-600"
+                      }`}>
+                        {product.price}
+                      </span>
+                      {product.price.startsWith("$") && (
+                        <span className={`block text-xs font-medium mt-1 ${
+                          isDark ? "text-slate-500" : "text-slate-400"
+                        }`}>
+                          Dólares americanos
+                        </span>
+                      )}
+                    </div>
+                  )}
+
                   {/* Short description */}
                   <p className={`text-sm leading-relaxed mb-3 ${
                     isDark ? "text-slate-400" : "text-slate-500"
@@ -212,7 +232,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                     className="mt-auto flex items-center justify-center gap-3 w-full px-6 py-5 text-lg font-bold text-white bg-[#25D366] rounded-2xl hover:bg-[#20bd59] transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40 hover:-translate-y-0.5"
                   >
                     <MessageCircle className="w-6 h-6" />
-                    Cotizar por WhatsApp
+                    Cotizar este equipo por WhatsApp
                     <ArrowRight className="w-5 h-5" />
                   </a>
                 </div>

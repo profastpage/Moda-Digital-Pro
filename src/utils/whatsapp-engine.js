@@ -24,38 +24,38 @@ export function generateWhatsAppLink(message) {
 export const WHATSAPP_PRODUCTS = [
   {
     id: 1,
-    name: "Digitalizador de Escaneo Plano",
-    image: "/images/product-01-escaneo-plano.jpg",
+    name: "Plotter Inkjet de Alta Velocidad",
+    image: "/images/product-01-plotter-inkjet-alta-velocidad.png",
     message:
-      "📋 ¡Hola! Me interesa el *Digitalizador de Escaneo Plano* (1800×1200mm, 600dpi). Vi que exporta a DXF, PLT, AI, SVG, PDF y es compatible con GetonAgain, Lectra y Gerber. ¿Podrían enviarme precio y disponibilidad? 📐✨",
+      "📋 ¡Hola! Me interesa el *Plotter Inkjet de Alta Velocidad* (200 m²/h, aluminio aeronáutico, 1-4 cartuchos, panel táctil LCD). ¿Podrían enviarme precio y disponibilidad? 📐✨",
   },
   {
     id: 2,
-    name: "Plotter de Corte de Inyección Vertical",
-    image: "/images/product-02-plotter-corte-vertical.jpg",
+    name: "Plotter de Trazo de Papel y Corte de Cartón",
+    image: "/images/product-02-plotter-trazo-corte-carton.png",
     message:
-      "🖨️ Hola Moda Digital Pro, necesito cotizar el *Plotter de Corte de Inyección de Tinta Vertical* (1600mm, 45m²/h, 1440dpi). ¿Tienen stock disponible? ¿Cuál es el precio? ¿Incluye tintas pigmentadas CMYK? 📏",
+      "🖨️ Hola Moda Digital Pro, necesito cotizar el *Plotter de Trazo de Papel y Corte de Cartón* (110 m²/h, Servo, HP45, cuchilla rotativa). ¿Tienen stock disponible? ¿Cuál es el precio? 📏",
   },
   {
     id: 3,
-    name: "Plotter de Corte de Inyección Cama Plana",
-    image: "/images/product-03-plotter-corte-cama-plana.jpg",
+    name: "Digitalizador de 48x36",
+    image: "/images/product-03-digitalizador-48x36.png",
     message:
-      "⚙️ ¡Buen día! Quiero información del *Plotter de Corte de Inyección de Tinta de Cama Plana* (1800×2500mm, 1440dpi, succión programable). Por favor envíenme ficha técnica, precio y disponibilidad inmediata. 📐",
+      "⚙️ ¡Buen día! Quiero información del *Digitalizador de 48x36* (compatible con +30 formatos CAD, alta precisión). Por favor envíenme precio y disponibilidad. 📐",
   },
   {
     id: 4,
-    name: "Digitalizador de Escaneo Plano (Gran Formato)",
-    image: "/images/product-04-escaneo-plano-2.jpg",
+    name: "Plotter de Corte de Cartón Cama Plana",
+    image: "/images/product-04-plotter-corte-cama-plana.png",
     message:
-      "🚀 Hola, estoy interesado en el *Digitalizador de Escaneo Plano de Gran Formato* (1118mm, 1200dpi, 48-bit). Vi que maneja TIFF, JPEG, PNG, PDF y DXF. ¿Cuál es el precio y hay stock disponible? 📂",
+      "🚀 Hola, estoy interesado en el *Plotter de Corte de Cartón Cama Plana* (Flatbed industrial, Servo, HP45, pantalla táctil HD). ¿Cuál es el precio y hay stock disponible? 📂",
   },
   {
     id: 5,
-    name: "Digitalizador Compacto",
-    image: "/images/product-05-digitalizador.jpg",
+    name: "Digitalizador de Cama Plana",
+    image: "/images/product-05-digitalizador-cama-plana.png",
     message:
-      "💎 ¡Hola! Quiero cotizar el *Digitalizador Compacto* (A3+, 1200dpi, USB-C, 4.2kg). ¿Podrían indicarme precio, disponibilidad y si incluye software de vectorización? ✂️",
+      "💎 ¡Hola! Quiero cotizar el *Digitalizador de Cama Plana* (escaneo un solo toque, vacío, DXF universal, reconocimiento automático de contornos). ¿Podrían indicarme precio y disponibilidad? ✂️",
   },
   {
     id: 6,
