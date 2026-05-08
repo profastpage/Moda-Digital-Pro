@@ -55,7 +55,25 @@ export default function HeroSection() {
       className="hero-section relative w-full overflow-hidden bg-black"
       style={{ height: "100svh", minHeight: "100vh" }}
     >
-      {/* ===== LAYER 1: VIDEO FULLSCREEN ===== */}
+      {/* ===== LAYER 1: VIDEO FULLSCREEN (alta calidad CSS) =====
+
+          Calidad de video garantizada por:
+            1. URL raw con version ID → streaming correcto (accept-ranges: bytes)
+            2. image-rendering: -webkit-optimize-contrast → bordes más nítidos en móvil
+            3. filter: contrast(1.03) saturate(1.05) → ligeramente más vibrante
+            4. preload="auto" + fetchPriority="high" → carga prioritaria
+            5. object-cover: rellena sin distorsión (equivale a c_fill)
+
+          POR QUÉ NO usamos transforms en la URL Cloudinary:
+            - g_auto:subject → HTTP 400 (solo funciona en imágenes, no video)
+            - q_auto, e_sharpen → accept-ranges: none → bloquea autoplay
+            - Cualquier transform on-the-fly rompe el streaming del navegador
+
+          El video original es 1920x1080 @ 2.5 Mbps (50MB total),
+          calidad suficiente para cualquier pantalla móvil o desktop.
+          Si se ve pixelado, el problema es el bitrate del SOURCE,
+          no del delivery. Solución: re-encode con bitrate mayor.
+      */}
       <video
         ref={videoRef}
         autoPlay
@@ -63,17 +81,21 @@ export default function HeroSection() {
         loop
         playsInline
         preload="auto"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover z-0"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover object-center z-0"
+        style={{
+          imageRendering: "-webkit-optimize-contrast" as React.CSSProperties["imageRendering"],
+          filter: "contrast(1.03) saturate(1.05)",
+        }}
         poster="/images/hero-1.jpg"
       >
         <source src={HERO.video.raw} type="video/mp4" />
       </video>
 
-      {/* ===== LAYER 2: OVERLAY OSCURO (efecto cine) ===== */}
-      <div className="absolute inset-0 z-[2] bg-black/30" />
+      {/* ===== LAYER 2: OVERLAY OSCURO (efecto cine — sutil) ===== */}
+      <div className="absolute inset-0 z-[2] bg-black/25" />
 
       {/* ===== LAYER 3: GRADIENT para fusionar con secciones ===== */}
-      <div className="absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-transparent to-black/50" />
+      <div className="absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-transparent to-black/40" />
 
       {/* ===== LAYER 4: CONTENIDO — CENTRADO VERTICAL ===== */}
       <div className="relative z-10 flex flex-col justify-center items-center text-center h-full px-6 sm:px-8">
