@@ -43,6 +43,16 @@ const HERO = {
   title: SITE_CONFIG.tagline,
   subtitle: SITE_CONFIG.description,
   cta: SITE_CONFIG.cta,
+  video: {
+    /*
+     * Cloudinary optimized video URL.
+     * Parameters: f_auto (WebM/MP4 auto), q_auto (smart quality), vc_h265 (HEVC codec).
+     * Replace the URL below with your actual Cloudinary video public ID.
+     * Format: https://res.cloudinary.com/{CLOUD_NAME}/video/upload/f_auto,q_auto,vc_h265/{PUBLIC_ID}
+     */
+    desktop: "https://res.cloudinary.com/demo/video/upload/f_auto,q_auto,vc_h265/production_ID_sample.mp4",
+    mobile: "https://res.cloudinary.com/demo/video/upload/f_auto,q_auto,vc_h265/w_800/production_ID_sample.mp4",
+  },
   images: {
     desktop: ["/images/hero-1.jpg", "/images/hero-2.jpg"],
     mobile: ["/images/hero-mobile-1.jpg", "/images/hero-mobile-2.jpg"],

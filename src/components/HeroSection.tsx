@@ -6,23 +6,14 @@ import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
-  const [currentImage, setCurrentImage] = useState(0);
   const [currentText, setCurrentText] = useState(0);
-  const progressKeyRef = useRef(0); // forces re-render to restart CSS animation
-
-  /* Rotate background images every 6 seconds */
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % 2);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+  const progressKeyRef = useRef(0);
 
   /* Rotate hero texts every 6 seconds */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentText((prev) => (prev + 1) % HERO_ROTATIONS.length);
-      progressKeyRef.current += 1; // bump key → re-mount bar → restart animation
+      progressKeyRef.current += 1;
     }, 6000);
     return () => clearInterval(interval);
   }, []);
@@ -36,7 +27,6 @@ export default function HeroSection() {
     }),
   };
 
-  /* Exit: slide up & fade out | Enter: slide from below & fade in */
   const textVariants = {
     enter: { opacity: 0, y: 30 },
     center: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
@@ -45,46 +35,50 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Desktop Background */}
-      <div className="absolute inset-0 hidden lg:block" aria-hidden="true">
+      {/* ===== LAYER 1: Background Video (Cloudinary) ===== */}
+      <div className="absolute inset-0" aria-hidden="true">
+        {/* Desktop Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover hidden lg:block scale-105"
+        >
+          <source src={HERO.video.desktop} type="video/mp4" />
+        </video>
+
+        {/* Mobile Video (lower bandwidth) */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover lg:hidden scale-105"
+        >
+          <source src={HERO.video.mobile} type="video/mp4" />
+        </video>
+      </div>
+
+      {/* ===== LAYER 2: Image Fallback (if video fails to load) ===== */}
+      <div className="absolute inset-0" aria-hidden="true">
         <img
           src={HERO.images.desktop[0]}
           alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            currentImage === 0 ? "opacity-100" : "opacity-0"
-          }`}
+          className="absolute inset-0 w-full h-full object-cover opacity-0"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.opacity = "1";
+          }}
         />
-        <img
-          src={HERO.images.desktop[1]}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            currentImage === 1 ? "opacity-100" : "opacity-0"
-          }`}
-        />
-        {/* Dark gradient — always opaque enough for white text in both themes */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-[#0f172a]/60 to-[#020617]/85" />
       </div>
 
-      {/* Mobile Background */}
-      <div className="absolute inset-0 lg:hidden" aria-hidden="true">
-        <img
-          src={HERO.images.mobile[0]}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            currentImage === 0 ? "opacity-100" : "opacity-0"
-          }`}
-        />
-        <img
-          src={HERO.images.mobile[1]}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            currentImage === 1 ? "opacity-100" : "opacity-0"
-          }`}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/80 via-[#0f172a]/60 to-[#020617]/85" />
-      </div>
+      {/* ===== LAYER 3: Overlay gradient + dark film ===== */}
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/70 via-transparent to-[#020617]/90" />
 
-      {/* Content */}
+      {/* ===== LAYER 4: Content ===== */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 sm:py-40">
         <div className="max-w-3xl">
           <motion.span
@@ -97,7 +91,7 @@ export default function HeroSection() {
             {HERO.badge}
           </motion.span>
 
-          {/* Rotating Title — fixed min-height prevents layout jump */}
+          {/* Rotating Title */}
           <div className="min-h-[3.5rem] sm:min-h-[4.5rem] md:min-h-[5rem] lg:min-h-[5.5rem] mb-6 sm:mb-8 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.h1
@@ -106,14 +100,14 @@ export default function HeroSection() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg"
               >
                 {HERO_ROTATIONS[currentText].title}
               </motion.h1>
             </AnimatePresence>
           </div>
 
-          {/* Rotating Subtitle — fixed min-height prevents layout jump */}
+          {/* Rotating Subtitle */}
           <div className="min-h-[4.5rem] sm:min-h-[3.5rem] md:min-h-[4rem] mb-6 max-w-2xl overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.p
@@ -129,7 +123,7 @@ export default function HeroSection() {
             </AnimatePresence>
           </div>
 
-          {/* Progress Indicators — 2 dashes showing active slide + countdown */}
+          {/* Progress Indicators */}
           <div className="flex gap-2 mb-8 sm:mb-12">
             {HERO_ROTATIONS.map((_, idx) => (
               <div
