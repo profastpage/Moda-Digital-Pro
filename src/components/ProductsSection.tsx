@@ -77,12 +77,22 @@ export default function ProductsSection({
   title,
   description,
 }: ProductsSectionProps) {
-  /* Transform products: Sanity data → flat format, or use fallback constants */
+  /* Merge products: fallback (original 6) + CMS products (no duplicates by slug) */
   const products: ProductItem[] = useMemo(() => {
-    if (sanityProducts?.length) {
-      return sanityProducts.map(transformSanityProduct);
-    }
-    return (fallbackProducts || PRODUCTS) as unknown as ProductItem[];
+    const base = (fallbackProducts || PRODUCTS) as unknown as ProductItem[];
+
+    if (!sanityProducts?.length) return base;
+
+    // Collect slugs from fallback to avoid duplicates
+    const fallbackSlugs = new Set(base.map((p: ProductItem) => p.id));
+
+    // Transform CMS products and filter out those already in fallback
+    const cmsItems = sanityProducts
+      .map(transformSanityProduct)
+      .filter((p) => !fallbackSlugs.has(p.id));
+
+    // Fallback first, then CMS products appended
+    return [...base, ...cmsItems];
   }, [sanityProducts, fallbackProducts]);
 
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
