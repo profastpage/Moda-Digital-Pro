@@ -14,7 +14,7 @@
 // desde el CMS. Es inamovible por diseño.
 // ============================================================
 
-import { defineField, type Rule } from "sanity";
+import { defineField } from "sanity";
 
 // ── Variables de entorno (dinámicas por proyecto) ──
 
@@ -78,8 +78,8 @@ export function slugField(source: string) {
           .replace(/[^a-z0-9\-]/g, "")
           .slice(0, 96),
     },
-    validation: (Rule: Rule) =>
-      Rule.required().error("El slug es obligatorio para generar la URL del producto."),
+    validation: (rule) =>
+      rule.required().error("El slug es obligatorio para generar la URL del producto."),
   });
 }
 
@@ -97,10 +97,9 @@ export function imageField(label: string, required = true) {
     options: {
       hotspot: true,
     },
-    validation: (Rule: Rule) =>
-      required
-        ? Rule.required().error("La imagen es obligatoria. Sube al menos una foto del producto.")
-        : Rule.optional(),
+    validation: required
+      ? (rule) => rule.required().error("La imagen es obligatoria. Sube al menos una foto del producto.")
+      : undefined,
   });
 }
 
@@ -115,8 +114,8 @@ export function nameField(label: string, maxLen = 120) {
     title: label,
     description: `Nombre visible en la tienda y buscadores. Máximo ${maxLen} caracteres.`,
     type: "string",
-    validation: (Rule: Rule) =>
-      Rule.required()
+    validation: (rule) =>
+      rule.required()
         .max(maxLen)
         .error(`El nombre es obligatorio (máximo ${maxLen} caracteres).`),
   });
@@ -136,8 +135,8 @@ export function categoryField(categories: CategoryOption[]) {
       list: categories,
       layout: "radio",
     },
-    validation: (Rule: Rule) =>
-      Rule.required().error("Debes seleccionar una categoría para el producto."),
+    validation: (rule) =>
+      rule.required().error("Debes seleccionar una categoría para el producto."),
   });
 }
 
@@ -152,8 +151,8 @@ export function descriptionField(title = "Descripción") {
       "Describe el producto con detalle. Puedes usar negritas y listas para organizar la información.",
     type: "array",
     of: [{ type: "block" }],
-    validation: (Rule: Rule) =>
-      Rule.required().error("La descripción es obligatoria para el catálogo."),
+    validation: (rule) =>
+      rule.required().error("La descripción es obligatoria para el catálogo."),
   });
 }
 
@@ -167,8 +166,8 @@ export function priceField() {
     description:
       'Escribe el precio como prefieras. Ejemplos: "Desde S/ 1,299", "Cotizar", "S/ 899.00".',
     type: "string",
-    validation: (Rule: Rule) =>
-      Rule.required().max(50).error("El precio es obligatorio (máx. 50 caracteres)."),
+    validation: (rule) =>
+      rule.required().max(50).error("El precio es obligatorio (máx. 50 caracteres)."),
   });
 }
 
@@ -182,10 +181,7 @@ export function specsField() {
     description:
       "Agrega las especificaciones clave del producto. Se muestran como etiquetas en la tarjeta.",
     type: "array",
-    of: [{ type: "string" }],
-    options: {
-      of: [{ type: "string", title: "Especificación" }],
-    },
+    of: [{ type: "string", title: "Especificación" }],
   });
 }
 

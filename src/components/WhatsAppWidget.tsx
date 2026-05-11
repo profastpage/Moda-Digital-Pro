@@ -26,7 +26,7 @@ const pulseVariants = {
     transition: {
       duration: 2,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
 };
@@ -44,7 +44,7 @@ const bubbleVariants = {
     scale: 1,
     x: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       damping: 22,
       stiffness: 260,
       delay: 0.1,
@@ -65,7 +65,7 @@ const buttonVariants = {
     scale: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       damping: 20,
       stiffness: 260,
     },

@@ -55,9 +55,9 @@ export default defineType({
       title: "Descripción Corta",
       description:
         "Texto opcional que aparece al pasar el mouse sobre el filtro de categoría.",
-      type: "string",
+      type: "text",
       rows: 2,
-      validation: (Rule) => Rule.max(100).optional(),
+      validation: (Rule) => Rule.max(100),
     }),
 
     // ── Color de identificación ──

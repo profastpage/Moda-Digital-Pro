@@ -118,11 +118,6 @@ export default defineConfig({
     // SOLO aparece cuando el usuario selecciona un documento.
     // Sin Releases, sin Vision — interfaz limpia.
     presentationTool({
-      // Desactiva el panel lateral de documentos por defecto.
-      // Solo se muestra cuando el usuario selecciona un documento.
-      document: {
-        actions: [],
-      },
       previewUrl: {
         // URL que se carga al abrir el panel
         initial:
@@ -137,29 +132,20 @@ export default defineConfig({
       resolve: {
         locations: {
           product: defineLocations({
-            type: "product",
-            resolve: () => ({
-              locations: [
-                { title: "Productos", href: "/#productos" },
-              ],
-            }),
+            locations: [
+              { title: "Productos", href: "/#productos" },
+            ],
           }),
           category: defineLocations({
-            type: "category",
-            resolve: () => ({
-              locations: [
-                { title: "Productos", href: "/#productos" },
-              ],
-            }),
+            locations: [
+              { title: "Productos", href: "/#productos" },
+            ],
           }),
           siteSettings: defineLocations({
-            type: "siteSettings",
-            resolve: () => ({
-              locations: [
-                { title: "Inicio", href: "/" },
-                { title: "Nosotros", href: "/#nosotros" },
-              ],
-            }),
+            locations: [
+              { title: "Inicio", href: "/" },
+              { title: "Nosotros", href: "/#nosotros" },
+            ],
           }),
         },
       },
@@ -169,16 +155,6 @@ export default defineConfig({
   // ── Esquemas ──
   schema: {
     types: schemaTypes,
-  },
-
-  // ── Document settings ──
-  document: {
-    // Auto-guardado: Sanity guarda cambios automáticamente
-    // (incluyendo imágenes subidas) sin recargar la página.
-    // El usuario solo necesita hacer clic en "Publish" para publicar.
-    unsavedChanges: {
-      warning: "Tienes cambios sin guardar. ¿Seguro que quieres salir?",
-    },
   },
 
   // ── Form builder: auto-save habilitado ──

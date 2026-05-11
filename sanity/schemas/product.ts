@@ -72,12 +72,6 @@ export default defineType({
       },
       validation: (Rule) =>
         Rule.required().error("Debes seleccionar una categoría para el producto."),
-      preview: {
-        select: {
-          title: "category.name",
-          subtitle: "category.description",
-        },
-      },
     }),
 
     descriptionField("Descripción del Producto"),
