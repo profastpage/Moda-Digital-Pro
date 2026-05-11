@@ -2,10 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import MobileNav from "@/components/MobileNav";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import BackToTop from "@/components/BackToTop";
 import { WhatsAppModalProvider } from "@/context/WhatsAppModalContext";
+import SiteComponents from "@/components/SiteComponents";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -126,9 +124,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <WhatsAppModalProvider>
             {children}
-            <BackToTop />
-            <FloatingWhatsApp />
-            <MobileNav />
+            <SiteComponents />
           </WhatsAppModalProvider>
         </ThemeProvider>
       </body>
