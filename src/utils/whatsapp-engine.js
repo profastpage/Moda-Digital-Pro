@@ -123,7 +123,7 @@ export function buildGeneralWhatsAppURL(type = "header") {
 }
 
 // ────────────────────────────────────────────────────────
-//  WhatsApp product catalog (legacy — used by FloatingWhatsApp panel)
+//  WhatsApp product catalog (used by FloatingWhatsApp panel)
 // ────────────────────────────────────────────────────────
 
 /**
@@ -137,14 +137,14 @@ export function buildGeneralWhatsAppURL(type = "header") {
 export const WHATSAPP_PRODUCTS = [
   {
     id: 1,
-    name: "Plotter Inkjet de Alta Velocidad",
+    name: "Plotter Textil de Impresión de Alta Velocidad",
     image: "/images/product-01-plotter-inkjet-alta-velocidad.png",
     message: [
       "¡Hola! 👋",
       "",
-      "Quiero cotizar el *Plotter Inkjet de Alta Velocidad* (Alta Velocidad).",
+      "He visto el *Plotter Textil de Impresión de Alta Velocidad* por *$ 5,500* en su web.",
       "",
-      "¿Podrían indicarme precio y disponibilidad de entrega? 📈",
+      "Deseo adquirir este equipo. ¿Podrían indicarme los pasos para la compra? 🚀",
     ].join("\n"),
   },
   {
@@ -161,14 +161,14 @@ export const WHATSAPP_PRODUCTS = [
   },
   {
     id: 3,
-    name: 'Digitalizador de 48"x36"',
+    name: "Digitalizador de moldes y patrones textiles",
     image: "/images/product-03-digitalizador-48x36.png",
     message: [
       "¡Hola! 👋",
       "",
-      'Quiero cotizar el *Digitalizador de 48"x36"* (Digitalizador).',
+      "He visto el *Digitalizador de moldes y patrones textiles* por *$ 1,700* en su web.",
       "",
-      "¿Podrían indicarme precio y disponibilidad de entrega? 📈",
+      "Deseo adquirir este equipo. ¿Podrían indicarme los pasos para la compra? 🚀",
     ].join("\n"),
   },
   {
@@ -185,26 +185,26 @@ export const WHATSAPP_PRODUCTS = [
   },
   {
     id: 5,
-    name: "Digitalizador de Cama Plana",
+    name: "Escáner digital de moldes",
     image: "/images/product-05-digitalizador-cama-plana.png",
     message: [
       "¡Hola! 👋",
       "",
-      "Quiero cotizar el *Digitalizador de Cama Plana* (Escaneo Automático).",
+      "Quiero cotizar el *Escáner digital de moldes* (Escaneo Automático).",
       "",
       "¿Podrían indicarme precio y disponibilidad de entrega? 📈",
     ].join("\n"),
   },
   {
     id: 6,
-    name: "Software GetonAgain Garment CAD V2024.1",
+    name: "Software CAD para patronaje y optimización textil",
     image: "/images/product-06-getonagain-cad.jpg",
     message: [
       "¡Hola! 👋",
       "",
-      "Quiero cotizar el *Software GetonAgain Garment CAD V2024.1* (Software).",
+      "He visto el *Software CAD para patronaje y optimización textil* por *$ 2,200* en su web.",
       "",
-      "¿Podrían indicarme precio y disponibilidad de entrega? 📈",
+      "Deseo adquirir este equipo. ¿Podrían indicarme los pasos para la compra? 🚀",
     ].join("\n"),
   },
 ];

@@ -26,9 +26,9 @@ const NAV_ITEMS = [
 
 const HERO_ROTATIONS = [
   {
-    title: "La nueva generación del trazado industrial",
+    title: "Plotters textiles industriales y software CAD para confección en Perú",
     subtitle:
-      "Plotters de alta velocidad fabricados con componentes electrónicos de clase mundial, estructura en aluminio aeronáutico y panel táctil inteligente.",
+      "Soluciones profesionales para patronaje, trazado, digitalización y producción textil.",
   },
   {
     title: "Diseñados para producción de alto rendimiento",
@@ -75,13 +75,13 @@ const HERO = {
 const PRODUCTS = [
   {
     id: "plotter-inkjet-alta-velocidad",
-    title: "Plotter Inkjet de Alta Velocidad",
+    title: "Plotter Textil de Impresión de Alta Velocidad",
     image: "/images/product-01-plotter-inkjet-alta-velocidad.png",
     description:
       "Plotter industrial de última generación para moldería y corte de prendas. Velocidad de hasta 200 m²/h con estructura de aluminio aeronáutico y tecnología de movimiento lineal.",
     price: "$ 5,500",
     cta: "Cotizar Ahora",
-    badge: "Alta Velocidad",
+    badge: "El más vendido",
     longDescription:
       "Presentamos nuestro plotter industrial de última generación, diseñado para ofrecer máxima velocidad, precisión y estabilidad en procesos de moldería y producción de corte de prendas. Su sistema configurable de 1 a 4 cartuchos alcanza velocidades de hasta 200 m² por hora, optimizando la productividad de tu empresa. Fabricado con estructura de aluminio aeronáutico y componentes de alta precisión, garantiza trazados continuos, limpios y exactos incluso en trabajos de alta demanda. Gracias a su avanzada tecnología de movimiento lineal, ofrece una operación silenciosa, estable y de baja vibración, mejorando la calidad de impresión y reduciendo errores en moldes y patrones. Cuenta con panel táctil LCD de fácil manejo, visor protector de correas y cabezales, además de un diseño pensado para brindar seguridad, durabilidad y bajo mantenimiento.",
     specs: [
@@ -119,11 +119,11 @@ const PRODUCTS = [
   },
   {
     id: "digitalizador-48x36",
-    title: "Digitalizador de 48\"x36\"",
+    title: "Digitalizador de moldes y patrones textiles",
     image: "/images/product-03-digitalizador-48x36.png",
     description:
       "Digitalizador industrial de patrones para convertir moldes físicos en archivos digitales. Alta precisión, interfaz amigable y compatible con más de 30 formatos y softwares CAD.",
-    price: "Precio por cotizar",
+    price: "$ 1,700",
     cta: "Cotizar Ahora",
     badge: "Digitalizador",
     longDescription:
@@ -147,7 +147,7 @@ const PRODUCTS = [
       "Flatbed industrial de alta precisión para patronaje, diseño y corte profesional. Sistema Servo, pantalla táctil HD y cartuchos HP45 para máxima calidad.",
     price: "$ 9,900",
     cta: "Cotizar Ahora",
-    badge: "Cama Plana",
+    badge: "Corte de Cartón",
     longDescription:
       "Presentamos nuestra Flatbed Industrial de alta precisión, desarrollada para empresas que buscan máxima estabilidad, exactitud y automatización en procesos de patronaje, diseño y corte profesional. Fabricada bajo un avanzado sistema de control desarrollado de forma independiente, esta tecnología garantiza un funcionamiento estable, preciso y confiable incluso durante largas jornadas de producción continua. Su moderna pantalla táctil HD ofrece una interacción hombre-máquina intuitiva y sencilla, facilitando una operación más rápida, eficiente y cómoda para el usuario. Equipada con sistema combinado de suministro de tinta y cartuchos HP45, proporciona una salida de tinta uniforme, estable y de alta definición, logrando líneas de impresión nítidas y precisas en cada trabajo. El avanzado sistema Servo de alta precisión asegura una alineación exacta de las líneas impresas sobre papel continuo, además de un corte altamente preciso para optimizar la calidad del patronaje y desarrollo de muestras.",
     specs: [
@@ -163,7 +163,7 @@ const PRODUCTS = [
   },
   {
     id: "digitalizador-cama-plana",
-    title: "Digitalizador de Cama Plana",
+    title: "Escáner digital de moldes",
     image: "/images/product-05-digitalizador-cama-plana.png",
     description:
       "Flatbed Scanning Digitizer para digitalizar moldes con escaneo de un solo toque. Reconocimiento automático de contornos, sistema de vacío y exportación DXF universal.",
@@ -185,13 +185,13 @@ const PRODUCTS = [
   },
   {
     id: "getonagain-cad",
-    title: "GetonAgain Garment CAD V2024.1",
+    title: "Software CAD para patronaje y optimización textil",
     image: "/images/product-06-getonagain-cad.jpg",
     description:
       "Software profesional de patronaje y diseño textil Garment CAD versión 2024.1. Incluye herramientas avanzadas de grading, marcación, modificación de patrones y exportación a formatos de corte industrial compatible con plotters CNC.",
-    price: "Precio por cotizar",
+    price: "$ 2,200",
     cta: "Cotizar Ahora",
-    badge: "Software",
+    badge: "Software Cad Textil",
     longDescription:
       "GetonAgain Garment CAD V2024.1 es el software de patronaje más completo del mercado textil latinoamericano. Esta versión incluye herramientas avanzadas de diseño de patrones desde cero, grading automático con tablas de medidas personalizables, marcación inteligente que optimiza el consumo de tela hasta un 15%, y exportación directa a formatos de corte compatible con todos los plotters CNC del mercado. Su interfaz ha sido rediseñada para mayor productividad, con atajos de teclado personalizables y vista previa 3D del prendido terminado.",
     specs: [
@@ -283,7 +283,7 @@ const FAQ_ITEMS = [
   {
     question: "¿Sus digitalizadores son compatibles con otros software CAD del mercado?",
     answer:
-      "Sí. Tanto nuestro Digitalizador de 48x36 como el Digitalizador de Cama Plana son compatibles con más de 30 formatos digitales y se integran de forma nativa con los principales softwares CAD de patronaje industrial: GetonAgain, Lectra, Gerber, Optitex, Diamino, Accumark y otros sistemas líderes del mercado. La exportación es directa en formato universal DXF, lo que permite un flujo de trabajo fluido entre la digitalización del patrón físico y su edición en cualquier entorno CAD profesional.",
+      "Sí. Tanto nuestro Digitalizador de Moldes y Patrones Textiles como el Escáner Digital de Moldes son compatibles con más de 30 formatos digitales y se integran de forma nativa con los principales softwares CAD de patronaje industrial: GetonAgain, Lectra, Gerber, Optitex, Diamino, Accumark y otros sistemas líderes del mercado. La exportación es directa en formato universal DXF, lo que permite un flujo de trabajo fluido entre la digitalización del patrón físico y su edición en cualquier entorno CAD profesional.",
   },
   {
     question: "¿Realizan instalaciones y capacitaciones a nivel nacional?",
@@ -293,7 +293,7 @@ const FAQ_ITEMS = [
   {
     question: "¿Cómo puedo obtener una cotización formal de un equipo con precio publicado?",
     answer:
-      "Para equipos con precio publicado (como el Plotter Inkjet de Alta Velocidad a USD 5,500, el Plotter de Trazo y Corte a USD 6,200 o la Flatbed Industrial a USD 9,900), puedes solicitar tu cotización formal directamente a través del botón de WhatsApp en nuestra web o escribiendo a ventas@modadigitalpro.com. Te enviaremos una proforma con detalle del equipo, condiciones de pago, tiempos de entrega y cobertura de garantía. Para equipos sin precio publicado, nuestro equipo comercial te brindará una cotización personalizada según tus requerimientos específicos de producción.",
+      "Para equipos con precio publicado (como el Plotter Textil de Alta Velocidad a USD 5,500, el Plotter de Trazo y Corte a USD 6,200, el Digitalizador de Moldes y Patrones a USD 1,700 o la Flatbed Industrial a USD 9,900), puedes solicitar tu cotización formal directamente a través del botón de WhatsApp en nuestra web o escribiendo a ventas@modadigitalpro.com. Te enviaremos una proforma con detalle del equipo, condiciones de pago, tiempos de entrega y cobertura de garantía. Para equipos sin precio publicado, nuestro equipo comercial te brindará una cotización personalizada según tus requerimientos específicos de producción.",
   },
   {
     question: "¿Cuál es el tiempo de entrega de un equipo?",
@@ -308,12 +308,12 @@ const FAQ_ITEMS = [
   {
     question: "¿Qué tipo de tintas y materiales son compatibles con sus plotters?",
     answer:
-      "Nuestros plotters utilizan cartuchos HP45 de alta precisión y sistemas de suministro de tinta continuo compatible con tintas pigmentadas, reactivas y de sublimado. El Plotter Inkjet de Alta Velocidad acepta configuraciones de 1 a 4 cartuchos para trazado sobre papel continuo, mientras que el Plotter de Cama Plana trabaja con sistema combinado de suministro de tinta y cartuchos HP45 para impresión y corte sobre múltiples materiales: papel kraft desde 80 gr/m², cartón corrugado, vinilo, transfer térmico y substratos especiales de producción textil.",
+      "Nuestros plotters utilizan cartuchos HP45 de alta precisión y sistemas de suministro de tinta continuo compatible con tintas pigmentadas, reactivas y de sublimado. El Plotter Textil de Impresión de Alta Velocidad acepta configuraciones de 1 a 4 cartuchos para trazado sobre papel continuo, mientras que el Plotter de Corte de Cartón Cama Plana trabaja con sistema combinado de suministro de tinta y cartuchos HP45 para impresión y corte sobre múltiples materiales: papel kraft desde 80 gr/m², cartón corrugado, vinilo, transfer térmico y substratos especiales de producción textil.",
   },
   {
-    question: "¿El software GetonAgain Garment CAD V2024.1 es compatible con todos sus equipos?",
+    question: "¿El Software CAD para patronaje y optimización textil es compatible con todos sus equipos?",
     answer:
-      "Sí. GetonAgain Garment CAD V2024.1 es totalmente compatible con toda nuestra línea de plotters y digitalizadores. El software incluye módulos de Patronaje, Grading, Marcación y vista previa 3D, con exportación directa a formatos de corte (DXF, PLT, CUT, ISO, CSV) reconocidos por todos nuestros equipos. La licencia es perpetua con 1 año de actualizaciones gratuitas, está disponible en 4 idiomas (español, inglés, portugués y chino), y funciona sobre Windows 10/11 con 8 GB de RAM mínimo. Es la herramienta ideal para completar un flujo de trabajo integrado desde la digitalización hasta la producción.",
+      "Sí. El Software CAD para Patronaje y Optimización Textil (GetonAgain V2024.1) es totalmente compatible con toda nuestra línea de plotters y digitalizadores. El software incluye módulos de Patronaje, Grading, Marcación y vista previa 3D, con exportación directa a formatos de corte (DXF, PLT, CUT, ISO, CSV) reconocidos por todos nuestros equipos. La licencia es perpetua con 1 año de actualizaciones gratuitas, está disponible en 4 idiomas (español, inglés, portugués y chino), y funciona sobre Windows 10/11 con 8 GB de RAM mínimo. Es la herramienta ideal para completar un flujo de trabajo integrado desde la digitalización hasta la producción.",
   },
 ];
 
@@ -326,12 +326,12 @@ const CONTACT_INFO = {
 
 const FOOTER_LINKS = {
   productos: [
-    { label: "Plotter Inkjet Alta Velocidad", href: "#productos" },
+    { label: "Plotter Textil de Impresión", href: "#productos" },
     { label: "Plotter Trazo y Corte", href: "#productos" },
-    { label: "Digitalizador 48x36", href: "#productos" },
-    { label: "Plotter Cama Plana", href: "#productos" },
-    { label: "Digitalizador Cama Plana", href: "#productos" },
-    { label: "GetonAgain CAD", href: "#productos" },
+    { label: "Digitalizador de Moldes", href: "#productos" },
+    { label: "Plotter Corte de Cartón", href: "#productos" },
+    { label: "Escáner Digital de Moldes", href: "#productos" },
+    { label: "Software CAD Textil", href: "#productos" },
     { label: "Ver todos", href: "#productos" },
   ],
   servicios: [
