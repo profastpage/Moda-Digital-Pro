@@ -7,5 +7,6 @@ import category from "./category";
 import product from "./product";
 import siteSettings from "./siteSettings";
 import studioGuide from "./guia";
+import homeContent from "./homeContent";
 
-export const schemaTypes = [category, product, siteSettings, studioGuide];
+export const schemaTypes = [category, product, siteSettings, studioGuide, homeContent];

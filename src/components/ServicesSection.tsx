@@ -2,12 +2,17 @@
 
 import { motion } from "framer-motion";
 import { SERVICES } from "@/constants/product";
-import { Printer, Flame, Palette } from "lucide-react";
+import { Printer, Flame, Palette, Settings, Wrench, Monitor, Star, Lamp } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Printer,
   Flame,
   Palette,
+  Settings,
+  Wrench,
+  Monitor,
+  Star,
+  Lamp,
 };
 
 const fadeUp = {
@@ -28,7 +33,21 @@ const cardUp = {
   }),
 };
 
-export default function ServicesSection() {
+interface ServicesSectionProps {
+  services?: { id?: string; icon: string; title: string; description: string }[];
+  badge?: string;
+  title?: string;
+  description?: string;
+}
+
+export default function ServicesSection({
+  services: servicesProp,
+  badge,
+  title,
+  description,
+}: ServicesSectionProps) {
+  const services = servicesProp?.length ? servicesProp : SERVICES;
+
   return (
     <section id="servicios" className="py-20 sm:py-28 lg:py-32 bg-muted/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,24 +61,23 @@ export default function ServicesSection() {
           className="text-center max-w-2xl mx-auto mb-16 sm:mb-20"
         >
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 rounded-full">
-            Nuestros Servicios
+            {badge || "Nuestros Servicios"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Soluciones Industriales para Patronaje y Producción Textil
+            {title || "Soluciones Industriales para Patronaje y Producción Textil"}
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed text-center">
-            Ofrecemos soluciones profesionales para impresión de moldes, patronaje digital,
-            trazado industrial y producción textil asistida por computadora.
+            {description || "Ofrecemos soluciones profesionales para impresión de moldes, patronaje digital, trazado industrial y producción textil asistida por computadora."}
           </p>
         </motion.div>
 
         {/* Service Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {SERVICES.map((service, i) => {
+          {services.map((service, i) => {
             const IconComponent = ICON_MAP[service.icon] || Printer;
             return (
               <motion.div
-                key={service.id}
+                key={service.id || i}
                 custom={i}
                 variants={cardUp}
                 initial="hidden"

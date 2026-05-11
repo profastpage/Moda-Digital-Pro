@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PRODUCTS } from "@/constants/product";
+import { getProductImageUrl, plainText, type SanityProduct } from "@/lib/sanity.client";
 import { ArrowUpRight } from "lucide-react";
 import ProductModal from "./ProductModal";
 
@@ -25,11 +26,69 @@ const cardUp = {
   }),
 };
 
-export default function ProductsSection() {
-  const [selectedProduct, setSelectedProduct] = useState<typeof PRODUCTS[0] | null>(null);
+/* ── Transform a single SanityProduct into the flat format ProductModal expects ── */
+function transformSanityProduct(product: SanityProduct) {
+  const description = plainText(product.description);
+  return {
+    id: product.slug?.current || product._id,
+    title: product.name,
+    image: getProductImageUrl(product.image) || "/images/fallback.png",
+    description,
+    longDescription: description,
+    price: product.price,
+    badge: product.badge || undefined,
+    specs: (product.specs || []).map((s) => {
+      if (typeof s === "string") {
+        return {
+          label: s.split(":")[0]?.trim() || s,
+          value: s.includes(":") ? s.split(":").slice(1).join(":").trim() : s,
+        };
+      }
+      const obj = s as { label?: string; value?: string } | undefined;
+      return { label: obj?.label || "", value: obj?.value || "" };
+    }),
+  };
+}
+
+/* ── Shared product type for the component ── */
+interface ProductItem {
+  id: string;
+  title: string;
+  image: string;
+  description: string;
+  longDescription: string;
+  price?: string;
+  badge?: string;
+  specs: { label: string; value: string }[];
+}
+
+interface ProductsSectionProps {
+  sanityProducts?: SanityProduct[] | null;
+  fallbackProducts?: typeof PRODUCTS;
+  badge?: string;
+  title?: string;
+  description?: string;
+}
+
+export default function ProductsSection({
+  sanityProducts,
+  fallbackProducts,
+  badge,
+  title,
+  description,
+}: ProductsSectionProps) {
+  /* Transform products: Sanity data → flat format, or use fallback constants */
+  const products: ProductItem[] = useMemo(() => {
+    if (sanityProducts?.length) {
+      return sanityProducts.map(transformSanityProduct);
+    }
+    return (fallbackProducts || PRODUCTS) as unknown as ProductItem[];
+  }, [sanityProducts, fallbackProducts]);
+
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = (product: typeof PRODUCTS[0]) => {
+  const openModal = (product: ProductItem) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
@@ -52,20 +111,19 @@ export default function ProductsSection() {
           className="text-center max-w-2xl mx-auto mb-16 sm:mb-20"
         >
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 rounded-full">
-            Nuestros Productos
+            {badge || "Nuestros Productos"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Equipos y software de última generación
+            {title || "Equipos y software de última generación"}
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed text-center">
-            Soluciones integrales para la industria textil: digitalizadores, plotters de corte
-            e inyección, y software CAD profesional. Todo lo que necesitas para escalar tu producción.
+            {description || "Soluciones integrales para la industria textil: digitalizadores, plotters de corte e inyección, y software CAD profesional. Todo lo que necesitas para escalar tu producción."}
           </p>
         </motion.div>
 
         {/* Product Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {PRODUCTS.map((product, i) => (
+          {products.map((product, i) => (
             <motion.article
               key={product.id}
               custom={i}

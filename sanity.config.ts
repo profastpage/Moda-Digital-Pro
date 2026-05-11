@@ -76,15 +76,25 @@ export default defineConfig({
                   ]),
               ),
 
-            // ── Grupo 2: Información Corporativa ──
+            // ── Grupo 2: Contenido de Página ──
             S.listItem()
-              .title("Información Corporativa")
+              .title("Contenido de Página")
               .icon(HomeIcon)
-              .id("corporativo-group")
+              .id("contenido-group")
               .child(
                 S.list()
-                  .title("Empresa")
+                  .title("Contenido")
                   .items([
+                    S.listItem()
+                      .title("Página Principal")
+                      .icon(HomeIcon)
+                      .id("home-content-editor")
+                      .child(
+                        S.document()
+                          .schemaType("homeContent")
+                          .documentId("home-content")
+                          .title("Página Principal"),
+                      ),
                     S.listItem()
                       .title("Configuración del Sitio")
                       .icon(CogIcon)
@@ -145,6 +155,16 @@ export default defineConfig({
             locations: [
               { title: "Inicio", href: "/" },
               { title: "Nosotros", href: "/#nosotros" },
+            ],
+          }),
+          homeContent: defineLocations({
+            locations: [
+              { title: "Página Principal", href: "/" },
+              { title: "Productos", href: "/#productos" },
+              { title: "Servicios", href: "/#servicios" },
+              { title: "Nosotros", href: "/#nosotros" },
+              { title: "FAQ", href: "/#faq" },
+              { title: "Contacto", href: "/#contacto" },
             ],
           }),
         },

@@ -8,6 +8,10 @@ import { Menu, X, ArrowRight, Sun, Moon, MessageCircle, ChevronDown } from "luci
 import PlotterIcon from "./PlotterIcon";
 import { useHasMounted } from "@/hooks/useHasMounted";
 
+interface HeaderProps {
+  navItems?: { label: string; href: string }[];
+}
+
 /* ============================================
    MENÚ FULLSCREEN PREMIUM — FRAMER MOTION
    ============================================ */
@@ -99,7 +103,8 @@ const whatsappPulse = {
 /* ============================================
    COMPONENTE HEADER
    ============================================ */
-export default function Header() {
+export default function Header({ navItems: navItemsProp }: HeaderProps) {
+  const navItems = navItemsProp?.length ? navItemsProp : NAV_ITEMS;
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mounted = useHasMounted();
@@ -192,7 +197,7 @@ export default function Header() {
 
             {/* Desktop Nav */}
             <div className="hidden lg:flex items-center gap-0.5">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
@@ -309,7 +314,7 @@ export default function Header() {
                 className="flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16"
               >
                 <nav className="space-y-0">
-                  {NAV_ITEMS.map((item, idx) => (
+                  {navItems.map((item, idx) => (
                     <motion.a
                       key={item.href}
                       href={item.href}

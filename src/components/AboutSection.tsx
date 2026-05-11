@@ -2,13 +2,17 @@
 
 import { motion } from "framer-motion";
 import { STATS, ADVANTAGES } from "@/constants/product";
-import { TrendingUp, Layers, Star, Clock } from "lucide-react";
+import { TrendingUp, Layers, Star, Clock, Shield, Zap, HeadphonesIcon, Award } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   TrendingUp,
   Layers,
   Star,
   Clock,
+  Shield,
+  Zap,
+  HeadphonesIcon,
+  Award,
 };
 
 const fadeUp = {
@@ -38,7 +42,24 @@ const slideRight = {
   }),
 };
 
-export default function AboutSection() {
+interface AboutSectionProps {
+  stats?: { value: string; label: string; icon: string }[];
+  advantages?: { number: string; title: string; description: string }[];
+  badge?: string;
+  title?: string;
+  advantagesTitle?: string;
+}
+
+export default function AboutSection({
+  stats: statsProp,
+  advantages: advantagesProp,
+  badge,
+  title,
+  advantagesTitle,
+}: AboutSectionProps) {
+  const stats = statsProp?.length ? statsProp : STATS;
+  const advantages = advantagesProp?.length ? advantagesProp : ADVANTAGES;
+
   return (
     <section id="nosotros" className="relative py-20 sm:py-28 lg:py-32 bg-navy text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -52,16 +73,16 @@ export default function AboutSection() {
           className="text-center max-w-2xl mx-auto mb-14 sm:mb-20"
         >
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary border border-primary/30 rounded-full">
-            Por qué Moda Digital Pro
+            {badge || "Por qué Moda Digital Pro"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-            Tecnología de grado industrial para tu producción textil
+            {title || "Tecnología de grado industrial para tu producción textil"}
           </h2>
         </motion.div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-14 sm:mb-20 max-w-4xl mx-auto">
-          {STATS.map((stat, i) => {
+          {stats.map((stat, i) => {
             const Icon = ICON_MAP[stat.icon] || TrendingUp;
             return (
               <motion.div
@@ -93,12 +114,12 @@ export default function AboutSection() {
             viewport={{ once: true, amount: 0.3 }}
             className="text-xl sm:text-2xl lg:text-3xl font-bold"
           >
-            Ventajas de elegir Moda Digital Pro
+            {advantagesTitle || "Ventajas de elegir Moda Digital Pro"}
           </motion.h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
-          {ADVANTAGES.map((adv, i) => (
+          {advantages.map((adv, i) => (
             <motion.div
               key={adv.number}
               custom={i}

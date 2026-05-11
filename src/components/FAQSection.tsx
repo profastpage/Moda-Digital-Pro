@@ -25,12 +25,25 @@ const listUp = {
   }),
 };
 
-export default function FAQSection() {
+interface FAQSectionProps {
+  faqItems?: { question: string; answer: string }[];
+  badge?: string;
+  title?: string;
+  description?: string;
+}
+
+export default function FAQSection({
+  faqItems: faqItemsProp,
+  badge,
+  title,
+  description,
+}: FAQSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { theme } = useTheme();
   const mounted = useHasMounted();
 
   const isDark = !mounted || theme !== "light";
+  const faqItems = faqItemsProp?.length ? faqItemsProp : FAQ_ITEMS;
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -60,22 +73,21 @@ export default function FAQSection() {
             }`}
           >
             <CircleQuestionMark className="w-3.5 h-3.5" />
-            Preguntas Frecuentes
+            {badge || "Preguntas Frecuentes"}
           </span>
           <h2
             className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-4 ${
               isDark ? "text-white" : "text-slate-900"
             }`}
           >
-            Todo lo que necesitas saber
+            {title || "Todo lo que necesitas saber"}
           </h2>
           <p
             className={`text-base sm:text-lg leading-relaxed max-w-2xl mx-auto ${
               isDark ? "text-slate-300" : "text-slate-600"
             }`}
           >
-            Resolvemos tus dudas más comunes sobre nuestros equipos, servicios y
-            procesos de producción textil.
+            {description || "Resolvemos tus dudas más comunes sobre nuestros equipos, servicios y procesos de producción textil."}
           </p>
         </motion.div>
 
@@ -87,7 +99,7 @@ export default function FAQSection() {
           viewport={{ once: true, amount: 0.2 }}
           className="space-y-3"
         >
-          {FAQ_ITEMS.map((item, i) => {
+          {faqItems.map((item, i) => {
             const isOpen = openIndex === i;
             return (
               <div

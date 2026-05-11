@@ -16,11 +16,24 @@ const fadeUp = {
   }),
 };
 
-export default function ContactSection() {
+interface ContactSectionProps {
+  contactInfo?: { phone?: string; email?: string; address?: string; hours?: string };
+  badge?: string;
+  title?: string;
+  description?: string;
+}
+
+export default function ContactSection({
+  contactInfo: contactInfoProp,
+  badge,
+  title,
+  description,
+}: ContactSectionProps) {
   const { theme } = useTheme();
   const mounted = useHasMounted();
 
   const isDark = !mounted || theme !== "light";
+  const contactInfo = contactInfoProp || CONTACT_INFO;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,13 +68,13 @@ export default function ContactSection() {
           className="text-center max-w-2xl mx-auto mb-16 sm:mb-20"
         >
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 rounded-full">
-            Contáctanos
+            {badge || "Contáctanos"}
           </span>
           <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${isDark ? "text-white" : "text-slate-900"}`}>
-            Impulsa tu producción textil
+            {title || "Impulsa tu producción textil"}
           </h2>
           <p className={`text-base sm:text-lg leading-relaxed ${isDark ? "text-slate-300" : "text-slate-600"}`}>
-            Estamos listos para asesorarte. Escríbenos y recibe una cotización personalizada sin costo.
+            {description || "Estamos listos para asesorarte. Escríbenos y recibe una cotización personalizada sin costo."}
           </p>
         </motion.div>
 
@@ -189,7 +202,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Teléfono</p>
-                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.phone}</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{contactInfo.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -198,7 +211,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Correo</p>
-                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.email}</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{contactInfo.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -207,7 +220,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Ubicación</p>
-                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.address}</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{contactInfo.address}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -216,7 +229,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className={`text-sm font-medium ${isDark ? "text-slate-200" : "text-slate-800"}`}>Horario</p>
-                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{CONTACT_INFO.hours}</p>
+                    <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>{contactInfo.hours}</p>
                   </div>
                 </div>
               </div>

@@ -5,11 +5,28 @@ import { SITE_CONFIG, FOOTER_LINKS, CONTACT_INFO } from "@/constants/product";
 import PlotterIcon from "./PlotterIcon";
 import { useHasMounted } from "@/hooks/useHasMounted";
 
-export default function Footer() {
+interface FooterProps {
+  footerLinks?: {
+    productos: { label: string; href: string }[];
+    servicios: { label: string; href: string }[];
+    empresa: { label: string; href: string }[];
+  };
+  tagline?: string;
+  contactInfo?: { phone?: string; email?: string; address?: string; hours?: string };
+}
+
+export default function Footer({
+  footerLinks: footerLinksProp,
+  tagline: taglineProp,
+  contactInfo: contactInfoProp,
+}: FooterProps) {
   const { theme } = useTheme();
   const mounted = useHasMounted();
 
   const isDark = !mounted || theme !== "light";
+  const footerLinks = footerLinksProp || FOOTER_LINKS;
+  const tagline = taglineProp || SITE_CONFIG.description;
+  const contactInfo = contactInfoProp || CONTACT_INFO;
 
   return (
     <footer
@@ -31,10 +48,10 @@ export default function Footer() {
               </span>
             </div>
             <p className={`text-sm leading-relaxed mb-4 max-w-xs ${isDark ? "text-slate-400" : "text-slate-600"}`}>
-              {SITE_CONFIG.description}
+              {tagline}
             </p>
             <p className={`text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}>
-              {CONTACT_INFO.email}
+              {contactInfo.email}
             </p>
           </div>
 
@@ -44,7 +61,7 @@ export default function Footer() {
               Productos
             </h4>
             <ul className="space-y-2.5">
-              {FOOTER_LINKS.productos.map((link) => (
+              {footerLinks.productos.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -63,7 +80,7 @@ export default function Footer() {
               Servicios
             </h4>
             <ul className="space-y-2.5">
-              {FOOTER_LINKS.servicios.map((link) => (
+              {footerLinks.servicios.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -82,7 +99,7 @@ export default function Footer() {
               Empresa
             </h4>
             <ul className="space-y-2.5">
-              {FOOTER_LINKS.empresa.map((link) => (
+              {footerLinks.empresa.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}

@@ -121,6 +121,74 @@ export const SITE_SETTINGS_QUERY = `
   }
 `;
 
+// ── Contenido de Página Principal ──
+
+/** Contenido completo del homepage (singleton) */
+export const HOME_CONTENT_QUERY = `
+  *[_type == "homeContent"][0] {
+    _id,
+    heroBadge,
+    heroCTALabel,
+    heroScrollLabel,
+    heroRotations[] {
+      title,
+      subtitle
+    },
+    productsBadge,
+    productsTitle,
+    productsDescription,
+    servicesBadge,
+    servicesTitle,
+    servicesDescription,
+    services[] {
+      icon,
+      title,
+      description
+    },
+    aboutBadge,
+    aboutTitle,
+    advantagesTitle,
+    stats[] {
+      value,
+      label,
+      icon
+    },
+    advantages[] {
+      number,
+      title,
+      description
+    },
+    faqBadge,
+    faqTitle,
+    faqDescription,
+    faqItems[] {
+      question,
+      answer
+    },
+    contactBadge,
+    contactTitle,
+    contactDescription,
+    contactHours,
+    footerTagline,
+    footerProducts[] {
+      label,
+      href
+    },
+    footerServices[] {
+      label,
+      href
+    },
+    footerCompany[] {
+      label,
+      href
+    },
+    navItems[] {
+      label,
+      href
+    }
+  }
+`;
+
 // ── Slugs para generación estática ──
 
 /** Todos los slugs de productos (para generateStaticParams) */

@@ -5,6 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HERO, HERO_ROTATIONS } from "@/constants/product";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
+interface HeroSectionProps {
+  badge?: string;
+  rotations?: { title: string; subtitle: string }[];
+  ctaLabel?: string;
+  scrollLabel?: string;
+}
+
 /* ===== Viewport width tracking via useSyncExternalStore ===== */
 const emptySubscribe = () => () => {};
 
@@ -16,7 +23,18 @@ function useIsMobile(breakpoint = 768) {
   );
 }
 
-export default function HeroSection() {
+export default function HeroSection({
+  badge,
+  rotations,
+  ctaLabel,
+  scrollLabel,
+}: HeroSectionProps) {
+  /* Use Sanity props or fall back to constants */
+  const heroBadge = badge || HERO.badge;
+  const heroRotations = rotations?.length ? rotations : HERO_ROTATIONS;
+  const heroCtaLabel = ctaLabel || HERO.cta.label;
+  const heroScrollLabel = scrollLabel || HERO.scrollLabel;
+
   const [currentText, setCurrentText] = useState(0);
   const [mobileFailed, setMobileFailed] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
@@ -47,11 +65,11 @@ export default function HeroSection() {
   /* Rotate hero texts every 6 seconds */
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentText((prev) => (prev + 1) % HERO_ROTATIONS.length);
+      setCurrentText((prev) => (prev + 1) % heroRotations.length);
       setProgressKey((prev) => prev + 1);
     }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [heroRotations.length]);
 
   /* Force autoplay on mount */
   useEffect(() => {
@@ -121,7 +139,7 @@ export default function HeroSection() {
             animate="visible"
             className="inline-block px-4 py-1.5 mb-5 text-xs sm:text-sm font-semibold tracking-widest uppercase text-cyan-400 border border-cyan-400/30 rounded-full bg-cyan-400/10 backdrop-blur-sm"
           >
-            {HERO.badge}
+            {heroBadge}
           </motion.span>
 
           {/* Rotating Content */}
@@ -138,13 +156,13 @@ export default function HeroSection() {
                   className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-3 sm:mb-4"
                   style={{ textShadow: "0 2px 16px rgba(0,0,0,0.9), 0 4px 24px rgba(0,0,0,0.5)" }}
                 >
-                  {HERO_ROTATIONS[currentText].title}
+                  {heroRotations[currentText].title}
                 </h1>
                 <p
                   className="text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto"
                   style={{ textShadow: "0 1px 10px rgba(0,0,0,0.8)" }}
                 >
-                  {HERO_ROTATIONS[currentText].subtitle}
+                  {heroRotations[currentText].subtitle}
                 </p>
               </motion.div>
             </AnimatePresence>
@@ -152,7 +170,7 @@ export default function HeroSection() {
 
           {/* Progress Indicators */}
           <div className="flex justify-center gap-2 mb-6 sm:mb-8">
-            {HERO_ROTATIONS.map((_, idx) => (
+            {heroRotations.map((_, idx) => (
               <div
                 key={idx}
                 className="h-1 w-8 bg-white/20 overflow-hidden rounded-full"
@@ -185,7 +203,7 @@ export default function HeroSection() {
                 document.querySelector("#productos")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Explorar Equipos
+              {heroCtaLabel}
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </motion.div>
@@ -204,7 +222,7 @@ export default function HeroSection() {
           document.querySelector("#productos")?.scrollIntoView({ behavior: "smooth" });
         }}
       >
-        <span className="text-[10px] font-medium tracking-widest uppercase">{HERO.scrollLabel}</span>
+        <span className="text-[10px] font-medium tracking-widest uppercase">{heroScrollLabel}</span>
         <ChevronDown className="w-5 h-5" />
       </motion.a>
 
