@@ -9,17 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@sanity/client": "^7",
+    "@sanity/client": "^7.22.0",
     "@sanity/icons": "^3",
     "@sanity/image-url": "^1",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",
     "next": "16.2.5",
-    "next-sanity": "^9",
+    "next-sanity": "^12",
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "sanity": "^3"
+    "sanity": "^5",
+    "styled-components": "^6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
