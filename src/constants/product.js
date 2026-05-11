@@ -224,25 +224,25 @@ const CATALOG = [
 
 const SERVICES = [
   {
-    id: "impresion-digital",
-    icon: "Printer",
-    title: "Impresión Digital Textil",
-    description:
-      "Servicio de impresión digital sobre telas de todo tipo: algodón, poliéster, lino y mezclas. Tecnología de inyección directa con tintas reactivas y pigmentadas de grado industrial. Producción desde 1 metro hasta rollos completos con colores vibrantes y fijación permanente.",
-  },
-  {
-    id: "sublimacion",
-    icon: "Flame",
-    title: "Sublimación Textil",
-    description:
-      "Transferencia de diseños de alta definición mediante proceso de sublimación térmica. Ideal para prendas deportivas, uniformes y artículos promocionales. Garantizamos fidelidad cromática y resistencia al lavado superior a 50 ciclos.",
-  },
-  {
-    id: "diseno-cam",
+    id: "software-cad-patronaje",
     icon: "Palette",
-    title: "Diseño & CAM",
+    title: "Software CAD y Patronaje Industrial",
     description:
-      "Servicio integral de diseño textil asistido por computadora (CAM). Digitalización de patrones, vectorización de trazos y preparación de archivos para producción en serie. Nuestro equipo especializado transforma tu creatividad en producción industrial.",
+      "Digitalización de moldes, escalado, trazado industrial y preparación de archivos para producción textil. Soluciones CAD/CAM para optimizar procesos de confección y maximizar productividad.",
+  },
+  {
+    id: "capacitacion",
+    icon: "Flame",
+    title: "Capacitación en Software y Equipos",
+    description:
+      "Capacitación especializada en software CAD/CAM, patronaje digital, trazado industrial y operación de equipos para producción textil. Entrenamiento práctico orientado a optimizar procesos de confección y maximizar productividad.",
+  },
+  {
+    id: "soporte-tecnico",
+    icon: "Printer",
+    title: "Soporte Técnico Especializado",
+    description:
+      "Asistencia técnica para plotters industriales, digitalizadores y sistemas CAD de confección. Diagnóstico, configuración, mantenimiento y soporte profesional para garantizar continuidad operativa en producción textil.",
   },
 ];
 
@@ -256,15 +256,15 @@ const STATS = [
 const ADVANTAGES = [
   {
     number: "01",
-    title: "Precisión aeronáutica en cada trazo",
+    title: "Equipos Industriales con Mayor Vida Útil",
     description:
-      "Nuestros plotters utilizan tecnología de grado aeronáutico que garantiza trazos milimétricos perfectos. Cada diseño se reproduce con una precisión superior a 0.01 mm, asegurando resultados impecables en producciones de gran escala.",
+      "Nuestros equipos incorporan componentes electrónicos de marcas reconocidas internacionalmente como Samsung, Altera y Winbond, garantizando mayor estabilidad operativa, durabilidad y rendimiento continuo para producción industrial.",
   },
   {
     number: "02",
-    title: "Tintas de alta fijación y durabilidad",
+    title: "Tecnología Certificada con Respaldo Internacional",
     description:
-      "Trabajamos exclusivamente con tintas industriales de fijación permanente. Nuestros procesos garantizan resistencia al lavado superior a 50 ciclos, resistencia UV para colores que no se decoloran con el sol, y texturas que mantienen su suavidad original.",
+      "Trabajamos con equipos GETONAGAIN respaldados por certificaciones internacionales ISO 9001, ISO 14001 e ISO 45001. Una marca con presencia global y reconocimiento en la industria por su calidad, innovación y soporte técnico especializado.",
   },
   {
     number: "03",
@@ -335,9 +335,9 @@ const FOOTER_LINKS = {
     { label: "Ver todos", href: "#productos" },
   ],
   servicios: [
-    { label: "Impresión Digital", href: "#servicios" },
-    { label: "Sublimación Textil", href: "#servicios" },
-    { label: "Diseño & CAM", href: "#servicios" },
+    { label: "Software CAD y Patronaje", href: "#servicios" },
+    { label: "Capacitación", href: "#servicios" },
+    { label: "Soporte Técnico", href: "#servicios" },
     { label: "Asesoría", href: "#servicios" },
   ],
   empresa: [

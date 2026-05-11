@@ -45,11 +45,11 @@ export default function ServicesSection() {
             Nuestros Servicios
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Soluciones integrales para tu producción textil
+            Soluciones Industriales para Patronaje y Producción Textil
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed text-center">
-            Ofrecemos un ecosistema completo para la industria de la moda digital:
-            desde la impresión hasta el diseño asistido por computadora.
+            Ofrecemos soluciones profesionales para impresión de moldes, patronaje digital,
+            trazado industrial y producción textil asistida por computadora.
           </p>
         </motion.div>
 
