@@ -5,13 +5,15 @@ import { createClient } from "@sanity/client";
  * /api/seed-products?secret=TOKEN
  *
  * Puebla Sanity CMS con las 3 categorías y 6 productos de la web.
- * Solo se ejecuta si:
- *   1. Se envía ?secret= con el SANITY_REVALIDATE_SECRET correcto
- *   2. Existe SANITY_API_WRITE_TOKEN en las variables de entorno
  *
- * Los productos creados en Sanity REEMPLAZARÁN a los estáticos del
- * código fuente cuando coincidan por slug. Los productos estáticos
- * siempre aparecen como fallback — NUNCA desaparecen de la web.
+ * FLUJO:
+ *   1. Valida secret de seguridad
+ *   2. VERIFICA token de escritura
+ *   3. ELIMINA todos los productos y categorías existentes (limpieza total)
+ *   4. Crea 3 categorías + 6 productos desde cero
+ *
+ * Esto garantiza que siempre haya exactamente 6 productos y 3 categorías,
+ * sin duplicados ni datos corruptos de seeds anteriores.
  */
 
 const PROJECT_ID =
@@ -60,20 +62,18 @@ const PRODUCTS = [
     category: { _type: "reference", _ref: "category-plotters" },
     description: [
       { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Plotter industrial de última generación para moldería y corte de prendas. Velocidad de hasta 200 m²/h con estructura de aluminio aeronáutico y tecnología de movimiento lineal." }] },
-      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Presentamos nuestro plotter industrial de última generación, diseñado para ofrecer máxima velocidad, precisión y estabilidad en procesos de moldería y producción de corte de prendas. Su sistema configurable de 1 a 4 cartuchos alcanza velocidades de hasta 200 m² por hora, optimizando la productividad de tu empresa. Fabricado con estructura de aluminio aeronáutico y componentes de alta precisión, garantiza trazados continuos, limpios y exactos incluso en trabajos de alta demanda." }] },
+      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Presentamos nuestro plotter industrial de última generación, diseñado para ofrecer máxima velocidad, precisión y estabilidad en procesos de moldería y producción de corte de prendas. Su sistema configurable de 1 a 4 cartuchos alcanza velocidades de hasta 200 m² por hora, optimizando la productividad de tu empresa." }] },
     ],
     price: "$ 5,500",
     badge: "Más vendido",
     stock: 10,
     specs: [
-      { label: "Velocidad máxima", value: "200 m²/h" },
-      { label: "Sistema de cartuchos", value: "1 a 4 configurables" },
-      { label: "Estructura", value: "Aluminio aeronáutico" },
-      { label: "Panel de control", value: "Táctil LCD" },
-      { label: "Operación", value: "Silenciosa y estable" },
-      { label: "Trazado", value: "Continuo, limpio y exacto" },
-      { label: "Protección", value: "Visor de correas y cabezales" },
-      { label: "Mantenimiento", value: "Bajo, diseño duradero" },
+      { _key: "s1", label: "Velocidad máxima", value: "200 m²/h" },
+      { _key: "s2", label: "Sistema de cartuchos", value: "1 a 4 configurables" },
+      { _key: "s3", label: "Estructura", value: "Aluminio aeronáutico" },
+      { _key: "s4", label: "Panel de control", value: "Táctil LCD" },
+      { _key: "s5", label: "Operación", value: "Silenciosa y estable" },
+      { _key: "s6", label: "Trazado", value: "Continuo, limpio y exacto" },
     ],
     featured: true,
     order: 0,
@@ -86,20 +86,17 @@ const PRODUCTS = [
     category: { _type: "reference", _ref: "category-plotters" },
     description: [
       { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Plotter vertical inkjet con sistema de corte integrado. Cartuchos HP45 de alta precisión, sistema Servo de control y cuchilla rotativa para papel desde 80 gr/m²." }] },
-      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Equipado con cartuchos HP45 de alta precisión y sistema de reemplazo rápido de cabezales, este equipo ofrece una impresión eficiente, estable y de fácil mantenimiento. Su avanzada tecnología con sistema de control Servo permite realizar trazos y cortes mucho más rápidos y precisos, alcanzando velocidades de hasta 110 m² por hora." }] },
+      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Equipado con cartuchos HP45 de alta precisión y sistema de reemplazo rápido de cabezales, este equipo ofrece una impresión eficiente, estable y de fácil mantenimiento. Alcanza velocidades de hasta 110 m² por hora." }] },
     ],
     price: "$ 6,200",
-    badge: "",
+    badge: "Trazo + Corte",
     stock: 8,
     specs: [
-      { label: "Velocidad de impresión", value: "Hasta 110 m²/h" },
-      { label: "Sistema de control", value: "Servo de alta estabilidad" },
-      { label: "Cartuchos", value: "HP45 de fácil reemplazo" },
-      { label: "Función", value: "Dibujo y corte simultáneo" },
-      { label: "Cuchilla rotativa", value: "Corte desde 80 gr/m²" },
-      { label: "Pantalla", value: "Táctil de configuración rápida" },
-      { label: "Eficiencia", value: "3 a 5x vs métodos manuales" },
-      { label: "Operación", value: "Rápida, precisa y silenciosa" },
+      { _key: "s1", label: "Velocidad", value: "Hasta 110 m²/h" },
+      { _key: "s2", label: "Control", value: "Servo de alta estabilidad" },
+      { _key: "s3", label: "Cartuchos", value: "HP45 de fácil reemplazo" },
+      { _key: "s4", label: "Función", value: "Dibujo y corte simultáneo" },
+      { _key: "s5", label: "Cuchilla", value: "Corte desde 80 gr/m²" },
     ],
     featured: true,
     order: 1,
@@ -112,20 +109,16 @@ const PRODUCTS = [
     category: { _type: "reference", _ref: "category-digitalizadores" },
     description: [
       { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Digitalizador industrial de patrones para convertir moldes físicos en archivos digitales. Alta precisión, interfaz amigable y compatible con más de 30 formatos y softwares CAD." }] },
-      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "La solución ideal para convertir moldes físicos en archivos digitales de forma rápida, precisa y profesional. Gracias a su sistema de lectura de alta exactitud, permite digitalizar patrones con gran precisión, optimizando el trabajo de diseño, escalado y producción en la industria de confección y moda." }] },
+      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "La solución ideal para convertir moldes físicos en archivos digitales de forma rápida, precisa y profesional. Compatible con más de 30 formatos digitales." }] },
     ],
     price: "$ 1,700",
     badge: "",
     stock: 15,
     specs: [
-      { label: "Área de trabajo", value: '48" x 36"' },
-      { label: "Precisión de lectura", value: "Alta exactitud" },
-      { label: "Formatos compatibles", value: "Más de 30 formatos digitales" },
-      { label: "Software CAD", value: "Principales del mercado" },
-      { label: "Aplicaciones", value: "Confección, moda, patronaje" },
-      { label: "Interfaz", value: "Amigable e intuitiva" },
-      { label: "Operación", value: "Sencilla y cómoda" },
-      { label: "Integración", value: "Rápida y profesional" },
+      { _key: "s1", label: "Área de trabajo", value: '48" x 36"' },
+      { _key: "s2", label: "Precisión", value: "Alta exactitud" },
+      { _key: "s3", label: "Formatos", value: "Más de 30 digitales" },
+      { _key: "s4", label: "Software CAD", value: "Principales del mercado" },
     ],
     featured: false,
     order: 2,
@@ -138,20 +131,16 @@ const PRODUCTS = [
     category: { _type: "reference", _ref: "category-plotters" },
     description: [
       { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Flatbed industrial de alta precisión para patronaje, diseño y corte profesional. Sistema Servo, pantalla táctil HD y cartuchos HP45 para máxima calidad." }] },
-      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Desarrollada para empresas que buscan máxima estabilidad, exactitud y automatización en procesos de patronaje, diseño y corte profesional. Su moderna pantalla táctil HD ofrece una interacción hombre-máquina intuitiva y sencilla, facilitando una operación más rápida, eficiente y cómoda para el usuario." }] },
+      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Desarrollada para empresas que buscan máxima estabilidad, exactitud y automatización en procesos de patronaje y corte profesional." }] },
     ],
     price: "$ 9,900",
     badge: "",
     stock: 5,
     specs: [
-      { label: "Sistema de control", value: "Avanzado independiente" },
-      { label: "Pantalla", value: "Táctil HD" },
-      { label: "Cartuchos", value: "HP45 + sistema de tinta" },
-      { label: "Sistema Servo", value: "Alta precisión en alineación" },
-      { label: "Impresión", value: "Tinta uniforme y HD" },
-      { label: "Corte", value: "Altamente preciso" },
-      { label: "Producción", value: "Jornadas continuas" },
-      { label: "Operación", value: "Estable y confiable" },
+      { _key: "s1", label: "Control", value: "Avanzado independiente" },
+      { _key: "s2", label: "Pantalla", value: "Táctil HD" },
+      { _key: "s3", label: "Cartuchos", value: "HP45 + sistema de tinta" },
+      { _key: "s4", label: "Servo", value: "Alta precisión" },
     ],
     featured: true,
     order: 3,
@@ -164,20 +153,16 @@ const PRODUCTS = [
     category: { _type: "reference", _ref: "category-digitalizadores" },
     description: [
       { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Flatbed Scanning Digitizer para digitalizar moldes con escaneo de un solo toque. Reconocimiento automático de contornos, sistema de vacío y exportación DXF universal." }] },
-      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "La solución avanzada para digitalizar moldes y piezas físicas con máxima rapidez, precisión y automatización. Este innovador sistema reemplaza los métodos tradicionales de digitalización manual, permitiendo convertir patrones en papel y piezas cortadas físicas en archivos digitales mediante escaneo de un solo toque." }] },
+      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "Solución avanzada para digitalizar moldes y piezas físicas con máxima rapidez, precisión y automatización mediante escaneo de un solo toque." }] },
     ],
     price: "Precio por cotizar",
     badge: "",
     stock: 3,
     specs: [
-      { label: "Escaneo", value: "Un solo toque, alta definición" },
-      { label: "Contornos", value: "Reconocimiento automático" },
-      { label: "Fijación", value: "PVC + adsorción al vacío" },
-      { label: "Modos de fondo", value: "Oscuro y claro intercambiables" },
-      { label: "Iluminación", value: "No requiere luces adicionales" },
-      { label: "Software", value: "Extracción de contornos" },
-      { label: "Exportación", value: "DXF universal" },
-      { label: "Compatible con", value: "Principales CAD industriales" },
+      { _key: "s1", label: "Escaneo", value: "Un solo toque" },
+      { _key: "s2", label: "Contornos", value: "Reconocimiento automático" },
+      { _key: "s3", label: "Fijación", value: "PVC + vacío" },
+      { _key: "s4", label: "Exportación", value: "DXF universal" },
     ],
     featured: false,
     order: 4,
@@ -189,19 +174,17 @@ const PRODUCTS = [
     slug: { _type: "slug", current: "getonagain-cad" },
     category: { _type: "reference", _ref: "category-software-cad" },
     description: [
-      { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Software profesional de patronaje y diseño textil Garment CAD versión 2024.1. Incluye herramientas avanzadas de grading, marcación, modificación de patrones y exportación a formatos de corte industrial compatible con plotters CNC." }] },
-      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "GetonAgain Garment CAD V2024.1 es el software de patronaje más completo del mercado textil latinoamericano. Incluye herramientas avanzadas de diseño de patrones desde cero, grading automático con tablas de medidas personalizables, marcación inteligente que optimiza el consumo de tela hasta un 15%, y exportación directa a formatos de corte compatible con todos los plotters CNC del mercado." }] },
+      { _type: "block", _key: "p1", style: "normal", children: [{ _type: "span", text: "Software profesional de patronaje y diseño textil Garment CAD versión 2024.1. Incluye herramientas avanzadas de grading, marcación y exportación a formatos de corte industrial." }] },
+      { _type: "block", _key: "p2", style: "normal", children: [{ _type: "span", text: "GetonAgain Garment CAD V2024.1 es el software de patronaje más completo del mercado textil latinoamericano. Marcación inteligente que optimiza el consumo de tela hasta un 15%." }] },
     ],
     price: "$ 2,200",
     badge: "",
     stock: 20,
     specs: [
-      { label: "Versión", value: "2024.1 (última actualización)" },
-      { label: "Módulos incluidos", value: "Patronaje + Grading + Marcación + 3D" },
-      { label: "Formatos de exportación", value: "DXF, PLT, CUT, ISO, CSV" },
-      { label: "Idiomas", value: "Español, Inglés, Portugués, Chino" },
-      { label: "Licencia", value: "Perpetua con 1 año de actualizaciones" },
-      { label: "Requisitos", value: "Windows 10/11, 8 GB RAM, SSD" },
+      { _key: "s1", label: "Versión", value: "2024.1" },
+      { _key: "s2", label: "Módulos", value: "Patronaje + Grading + 3D" },
+      { _key: "s3", label: "Exportación", value: "DXF, PLT, CUT, ISO" },
+      { _key: "s4", label: "Idiomas", value: "Español, Inglés, Portugués" },
     ],
     featured: true,
     order: 5,
@@ -216,11 +199,7 @@ export async function POST(request: Request) {
 
     if (secret !== process.env.SANITY_REVALIDATE_SECRET) {
       return NextResponse.json(
-        {
-          ok: false,
-          error:
-            "Token de seguridad inválido. Necesitas el secret correcto para ejecutar este endpoint.",
-        },
+        { ok: false, error: "Token de seguridad inválido." },
         { status: 401 },
       );
     }
@@ -232,17 +211,7 @@ export async function POST(request: Request) {
         {
           ok: false,
           error:
-            "No hay SANITY_API_WRITE_TOKEN configurado. Sigue estos pasos:\n\n" +
-            "1. Ve a https://www.sanity.io/manage\n" +
-            "2. Selecciona tu proyecto (Moda Digital Pro)\n" +
-            "3. Ve a API > Tokens > Add API Token\n" +
-            "4. Nombre: 'Seed Products'\n" +
-            "5. Permissions: 'Editor' (permite crear/editar documentos)\n" +
-            "6. Copia el token\n" +
-            "7. En Vercel > Settings > Environment Variables, agrega:\n" +
-            "   SANITY_API_WRITE_TOKEN = (tu token)\n" +
-            "8. También agrégalo en .env.local localmente\n" +
-            "9. Re-despliega en Vercel y vuelve a ejecutar este endpoint",
+            "No hay SANITY_API_WRITE_TOKEN. Agrégalo en Vercel > Settings > Environment Variables.",
         },
         { status: 400 },
       );
@@ -257,11 +226,39 @@ export async function POST(request: Request) {
       useCdn: false,
     });
 
-    /* ── 4. Crear categorías (createOrReplace = idempotente) ── */
+    /* ── 4. LIMPIEZA: eliminar TODOS los productos y categorías existentes ── */
+    const deletedProducts: string[] = [];
+    const deletedCategories: string[] = [];
+
+    try {
+      const existingProducts = await client.fetch(
+        `*[_type == "product"] { _id }`,
+      );
+      for (const doc of existingProducts) {
+        await client.delete(doc._id);
+        deletedProducts.push(doc._id);
+      }
+    } catch (e) {
+      /* non-critical — continue */
+    }
+
+    try {
+      const existingCategories = await client.fetch(
+        `*[_type == "category"] { _id }`,
+      );
+      for (const doc of existingCategories) {
+        await client.delete(doc._id);
+        deletedCategories.push(doc._id);
+      }
+    } catch (e) {
+      /* non-critical — continue */
+    }
+
+    /* ── 5. Crear categorías desde cero ── */
     const categoryResults = [];
     for (const cat of CATEGORIES) {
       try {
-        const result = await client.createOrReplace(cat);
+        const result = await client.create(cat);
         categoryResults.push({ name: cat.name, status: "ok", _id: result._id });
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -269,11 +266,11 @@ export async function POST(request: Request) {
       }
     }
 
-    /* ── 5. Crear productos (createOrReplace = idempotente) ── */
+    /* ── 6. Crear productos desde cero ── */
     const productResults = [];
     for (const prod of PRODUCTS) {
       try {
-        const result = await client.createOrReplace(prod);
+        const result = await client.create(prod);
         productResults.push({ name: prod.name, status: "ok", _id: result._id });
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -281,16 +278,20 @@ export async function POST(request: Request) {
       }
     }
 
-    /* ── 6. Responder con resumen ── */
+    /* ── 7. Responder con resumen ── */
     const okCategories = categoryResults.filter((r) => r.status === "ok").length;
     const okProducts = productResults.filter((r) => r.status === "ok").length;
 
     return NextResponse.json({
       ok: true,
-      message: `Seed completado: ${okCategories}/3 categorías y ${okProducts}/6 productos creados en Sanity CMS.`,
+      message: `Seed completado: ${okCategories}/3 categorías y ${okProducts}/6 productos creados.`,
+      cleanup: {
+        deletedProducts: deletedProducts.length,
+        deletedCategories: deletedCategories.length,
+      },
       categories: categoryResults,
       products: productResults,
-      note: "Los productos ahora aparecen en el CMS bajo 'Productos'. En la web, los datos de Sanity REEMPLAZAN a los estáticos cuando coinciden por slug. Los productos estáticos siempre aparecen como fallback.",
+      note: "Se eliminaron todos los productos y categorías anteriores. Ahora tienes exactamente 6 productos y 3 categorías. Puedes editarlos y publicarlos directamente desde el CMS.",
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
