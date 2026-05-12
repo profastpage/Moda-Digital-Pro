@@ -4,6 +4,7 @@
 // Plugins: Structure + Presentation (solo 2 pestañas)
 // Sin Releases, sin Vision — interfaz limpia para el cliente
 // Reutilizable: lee COMPANY_NAME desde variable de entorno
+// Incluye: Lista personalizada con botón X para eliminar documentos
 // ============================================================
 
 import { defineConfig } from "sanity";
@@ -23,6 +24,9 @@ import {
   SITE_URL,
   BRAND_COLORS,
 } from "./sanity/lib/schema-master";
+import DeletableList from "./sanity/plugins/DeletableList";
+import { CategoryListWithDelete, ProductListWithDelete } from "./sanity/plugins/ListWrappers";
+import React from "react";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "95d9zjqb";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -59,20 +63,22 @@ export default defineConfig({
                 S.list()
                   .title("Tienda")
                   .items([
-                    // Categorías (gestionar primero)
+                    // Categorías — con botón X para eliminar
                     S.listItem()
                       .title("Categorías")
                       .icon(TagIcon)
                       .id("categories-list")
                       .child(
-                        S.documentTypeList("category")
-                          .title("Categorías")
-                          .defaultOrdering([{ field: "order", direction: "asc" }]),
+                        S.component(CategoryListWithDelete).id("category-list-pane"),
                       ),
-                    // Productos
-                    ...S.documentTypeListItems().filter(
-                      (item) => item.getId() === "product",
-                    ),
+                    // Productos — con botón X para eliminar
+                    S.listItem()
+                      .title("Productos")
+                      .icon(PackageIcon)
+                      .id("products-list")
+                      .child(
+                        S.component(ProductListWithDelete).id("product-list-pane"),
+                      ),
                   ]),
               ),
 
