@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { PRODUCTS } from "@/constants/product";
 import { getProductImageUrl, plainText, type SanityProduct } from "@/lib/sanity.client";
-import { ArrowUpRight, PackageX } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import ProductModal from "./ProductModal";
 
 /* Standardized animation: short slide (20px), fast (0.6s), easeOut */
@@ -25,7 +26,7 @@ const cardUp = {
   }),
 };
 
-/* ── Transform a single SanityProduct into the flat format ProductModal expects ── */
+/* ── Transform a SanityProduct into the flat ProductModal format ── */
 function transformSanityProduct(product: SanityProduct) {
   const description = plainText(product.description);
   return {
@@ -35,6 +36,7 @@ function transformSanityProduct(product: SanityProduct) {
     description,
     longDescription: description,
     price: product.price,
+    cta: "Cotizar Ahora",
     badge: product.badge || undefined,
     specs: (product.specs || []).map((s) => {
       if (typeof s === "string") {
@@ -49,7 +51,7 @@ function transformSanityProduct(product: SanityProduct) {
   };
 }
 
-/* ── Shared product type for the component ── */
+/* ── Shared product type ── */
 interface ProductItem {
   id: string;
   title: string;
@@ -57,6 +59,7 @@ interface ProductItem {
   description: string;
   longDescription: string;
   price?: string;
+  cta?: string;
   badge?: string;
   specs: { label: string; value: string }[];
 }
@@ -74,10 +77,39 @@ export default function ProductsSection({
   title,
   description,
 }: ProductsSectionProps) {
-  /* Transform CMS products — 100% dynamic from Sanity */
+  /*
+   * MERGE STRATEGY:
+   * 1. Always show the 6 static fallback products
+   * 2. If Sanity CMS has products with matching slug → CMS version wins (updated data)
+   * 3. If Sanity CMS has NEW products (not in static) → append them at the end
+   *
+   * This ensures products NEVER disappear from the website,
+   * even if Sanity is empty or unreachable.
+   */
   const products: ProductItem[] = useMemo(() => {
-    if (!sanityProducts?.length) return [];
-    return sanityProducts.map(transformSanityProduct);
+    const fallback = PRODUCTS as unknown as ProductItem[];
+
+    if (!sanityProducts?.length) return fallback;
+
+    // CMS products that match a fallback slug → replace it
+    const replaced = new Set<string>();
+    const merged = fallback.map((fp) => {
+      const cmsMatch = sanityProducts.find(
+        (cp) => (cp.slug?.current || cp._id) === fp.id,
+      );
+      if (cmsMatch) {
+        replaced.add(cmsMatch.slug?.current || cmsMatch._id);
+        return transformSanityProduct(cmsMatch);
+      }
+      return fp;
+    });
+
+    // CMS products NOT in fallback → append at the end
+    const newFromCms = sanityProducts
+      .filter((cp) => !replaced.has(cp.slug?.current || cp._id))
+      .map(transformSanityProduct);
+
+    return [...merged, ...newFromCms];
   }, [sanityProducts]);
 
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
@@ -116,65 +148,57 @@ export default function ProductsSection({
           </p>
         </motion.div>
 
-        {/* Product Cards — 100% dynamic from Sanity CMS */}
-        {products.length === 0 ? (
-          <div className="text-center py-20">
-            <PackageX className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
-            <p className="text-muted-foreground text-lg">No hay productos disponibles aún.</p>
-            <p className="text-muted-foreground/60 text-sm mt-1">Agrega productos desde el CMS en /admin</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {products.map((product, i) => (
-              <motion.article
-                key={product.id}
-                custom={i}
-                variants={cardUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.15 }}
-                onClick={() => openModal(product)}
-                className="group relative flex flex-col bg-card rounded-2xl overflow-hidden cursor-pointer
-                  border border-border/40 hover:border-primary/30
-                  shadow-sm hover:shadow-xl hover:shadow-primary/5
-                  transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
-              >
-                {/* Product Image — fixed height, perfectly centered */}
-                <div className="relative w-full h-64 sm:h-72 bg-muted flex items-center justify-center overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    loading="lazy"
-                    className="w-full h-full object-contain p-5 sm:p-6 transition-transform duration-700 group-hover:scale-105"
-                  />
-                  {product.badge && (
-                    <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase text-white bg-primary/80 backdrop-blur-md rounded-full">
-                      {product.badge}
-                    </span>
-                  )}
-                </div>
-
-                {/* Card Footer — Title + "Ver más" pill */}
-                <div className="px-5 sm:px-6 py-4 flex items-center justify-between gap-3">
-                  <h3 className="text-sm sm:text-base font-bold text-foreground leading-snug line-clamp-2 flex-grow">
-                    {product.title}
-                  </h3>
-                  <span
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
-                      bg-slate-800/60 border border-slate-700/60
-                      group-hover:bg-primary group-hover:border-primary
-                      transition-all duration-300"
-                  >
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-cyan-400 group-hover:text-white transition-colors duration-300">
-                      Ver más
-                    </span>
-                    <ArrowUpRight className="w-3 h-3 text-cyan-400 group-hover:text-white transition-colors duration-300" />
+        {/* Product Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {products.map((product, i) => (
+            <motion.article
+              key={product.id}
+              custom={i}
+              variants={cardUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              onClick={() => openModal(product)}
+              className="group relative flex flex-col bg-card rounded-2xl overflow-hidden cursor-pointer
+                border border-border/40 hover:border-primary/30
+                shadow-sm hover:shadow-xl hover:shadow-primary/5
+                transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
+            >
+              {/* Product Image — fixed height, perfectly centered */}
+              <div className="relative w-full h-64 sm:h-72 bg-muted flex items-center justify-center overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  loading="lazy"
+                  className="w-full h-full object-contain p-5 sm:p-6 transition-transform duration-700 group-hover:scale-105"
+                />
+                {product.badge && (
+                  <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase text-white bg-primary/80 backdrop-blur-md rounded-full">
+                    {product.badge}
                   </span>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        )}
+                )}
+              </div>
+
+              {/* Card Footer — Title + "Ver más" pill */}
+              <div className="px-5 sm:px-6 py-4 flex items-center justify-between gap-3">
+                <h3 className="text-sm sm:text-base font-bold text-foreground leading-snug line-clamp-2 flex-grow">
+                  {product.title}
+                </h3>
+                <span
+                  className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                    bg-slate-800/60 border border-slate-700/60
+                    group-hover:bg-primary group-hover:border-primary
+                    transition-all duration-300"
+                >
+                  <span className="text-[10px] uppercase tracking-wider font-bold text-cyan-400 group-hover:text-white transition-colors duration-300">
+                    Ver más
+                  </span>
+                  <ArrowUpRight className="w-3 h-3 text-cyan-400 group-hover:text-white transition-colors duration-300" />
+                </span>
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </div>
 
       {/* Product Detail Modal */}
