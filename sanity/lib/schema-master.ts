@@ -172,16 +172,44 @@ export function priceField() {
 }
 
 /**
- * Campo de especificaciones técnicas (array de strings).
+ * Campo de especificaciones técnicas (array de objetos label/value).
+ * Cada spec tiene una etiqueta (ej: "Velocidad") y un valor (ej: "200 m²/h").
  */
 export function specsField() {
   return defineField({
     name: "specs",
     title: "Especificaciones Técnicas",
     description:
-      "Agrega las especificaciones clave del producto. Se muestran como etiquetas en la tarjeta.",
+      "Agrega las especificaciones clave del producto. Se muestran como etiquetas en la tarjeta del producto.",
     type: "array",
-    of: [{ type: "string", title: "Especificación" }],
+    of: [
+      {
+        type: "object",
+        title: "Especificación",
+        fields: [
+          defineField({
+            name: "label",
+            title: "Etiqueta",
+            description: "Nombre de la especificación. Ej: Velocidad, Peso, Material.",
+            type: "string",
+            validation: (Rule: any) => Rule.required().max(40),
+          }),
+          defineField({
+            name: "value",
+            title: "Valor",
+            description: "Valor de la especificación. Ej: 200 m²/h, 15 kg, Aluminio.",
+            type: "string",
+            validation: (Rule: any) => Rule.required().max(60),
+          }),
+        ],
+        preview: {
+          select: {
+            title: "label",
+            subtitle: "value",
+          },
+        },
+      },
+    ],
   });
 }
 

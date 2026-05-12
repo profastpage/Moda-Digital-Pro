@@ -57,7 +57,7 @@ export default defineType({
 
     slugField("name"),
 
-    imageField("Imagen Principal", true),
+    imageField("Imagen Principal", false),
 
     defineField({
       name: "category",
