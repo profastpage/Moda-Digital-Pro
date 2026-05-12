@@ -141,8 +141,12 @@ export default defineConfig({
             ? "http://localhost:3000"
             : SITE_URL,
         // Habilita Draft Mode para inline editing y contenido no publicado
+        // El token se envía como ?secret= a /api/draft-mode/enable para validación
         previewMode: {
           enable: "/api/draft-mode/enable",
+          // Token enviado como ?secret= al endpoint enable.
+          // Usa NEXT_PUBLIC_ porque sanity.config.ts corre client-side en /admin.
+          token: process.env.NEXT_PUBLIC_SANITY_REVALIDATE_SECRET,
         },
       },
       resolve: {
