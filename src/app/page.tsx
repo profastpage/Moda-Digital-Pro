@@ -3,7 +3,6 @@ import { HOME_CONTENT_QUERY, ALL_PRODUCTS_QUERY } from "@/lib/sanity.queries";
 import {
   HERO,
   HERO_ROTATIONS,
-  PRODUCTS,
   SERVICES,
   STATS,
   ADVANTAGES,
@@ -154,7 +153,6 @@ export default async function Home() {
         />
         <ProductsSection
           sanityProducts={sanityProducts}
-          fallbackProducts={PRODUCTS}
           badge={productsBadge}
           title={productsTitle}
           description={productsDescription}
