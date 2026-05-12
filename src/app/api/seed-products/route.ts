@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 /*
  * /api/seed-products?secret=TOKEN
@@ -414,10 +414,7 @@ export async function POST(request: Request) {
 
     /* ── 9. Invalidar caché de Next.js para que la web refleje los cambios ── */
     try {
-      revalidateTag("products");
-      revalidateTag("categories");
-      revalidateTag("home-content");
-      revalidateTag("site-settings");
+      revalidatePath("/", "layout");
     } catch (e) {
       /* non-critical — el caché se limpiará en la próxima request */
     }

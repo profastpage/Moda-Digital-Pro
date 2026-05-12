@@ -26,11 +26,21 @@ const cardUp = {
   }),
 };
 
+/**
+ * Resolve slug to string regardless of format.
+ * GROQ projects slug as string: "slug": slug.current
+ * But the TS type allows both string and {current, _type}.
+ */
+function resolveSlug(product: SanityProduct): string {
+  if (typeof product.slug === "string") return product.slug;
+  return product.slug?.current || product._id.replace(/^drafts\./, "");
+}
+
 /* ── Transform a SanityProduct into the flat ProductModal format ── */
 function transformSanityProduct(product: SanityProduct) {
   const description = plainText(product.description);
   return {
-    id: product.slug?.current || product._id,
+    id: resolveSlug(product),
     title: product.name,
     image: getProductImageUrl(product.image) || "/images/fallback.png",
     description,
@@ -92,13 +102,17 @@ export default function ProductsSection({
     if (!sanityProducts?.length) return fallback;
 
     // CMS products that match a fallback slug → replace it
+    // KEY FIX: GROQ returns slug as string via "slug": slug.current
+    // So we use resolveSlug() which handles both string and {current} formats.
+    // Previous bug: slug?.current returned undefined for strings,
+    // falling back to _id with "drafts." prefix → no slug match → 12 duplicates.
     const replaced = new Set<string>();
     const merged = fallback.map((fp) => {
       const cmsMatch = sanityProducts.find(
-        (cp) => (cp.slug?.current || cp._id) === fp.id,
+        (cp) => resolveSlug(cp) === fp.id,
       );
       if (cmsMatch) {
-        replaced.add(cmsMatch.slug?.current || cmsMatch._id);
+        replaced.add(resolveSlug(cmsMatch));
         return transformSanityProduct(cmsMatch);
       }
       return fp;
@@ -106,7 +120,7 @@ export default function ProductsSection({
 
     // CMS products NOT in fallback → append at the end
     const newFromCms = sanityProducts
-      .filter((cp) => !replaced.has(cp.slug?.current || cp._id))
+      .filter((cp) => !replaced.has(resolveSlug(cp)))
       .map(transformSanityProduct);
 
     return [...merged, ...newFromCms];

@@ -90,14 +90,16 @@ export interface SanityProduct {
   _createdAt: string;
   _updatedAt: string;
   name: string;
-  slug: { current: string; _type: string };
+  /** slug is string when projected via GROQ "slug": slug.current,
+   *  or object {current, _type} when fetched directly from the API. */
+  slug: string | { current: string; _type: string };
   image: SanityImage | null;
   gallery: SanityImage[];
   category: SanityCategory | null;
   categoryRaw?: string; // string viejo (backward compat)
   description: PortableTextBlock[];
   price: string;
-  specs?: string[];
+  specs?: Array<{ label?: string; value?: string }> | string[];
   stock: number;
   badge: ProductBadge;
   featured: boolean;
