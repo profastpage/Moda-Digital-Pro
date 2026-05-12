@@ -221,6 +221,8 @@ export default function DeletableList({ schemaType, title, icon }: DeletableList
         justify="space-between"
         padding={2}
         marginBottom={2}
+        wrap="wrap"
+        gap={2}
       >
         <Flex align="center" gap={2}>
           {icon}
@@ -248,11 +250,9 @@ export default function DeletableList({ schemaType, title, icon }: DeletableList
             icon={AddIcon}
             mode="bleed"
             tone="primary"
+            text={`Crear ${schemaType === "product" ? "Producto" : "Categoría"}`}
             onClick={() => router.navigateIntent("create", { type: schemaType })}
-            style={{ minWidth: "auto", padding: "4px 12px" }}
-          >
-            Crear {schemaType === "product" ? "Producto" : "Categoría"}
-          </Button>
+          />
         </Flex>
       </Flex>
 
@@ -273,11 +273,10 @@ export default function DeletableList({ schemaType, title, icon }: DeletableList
               icon={AddIcon}
               mode="default"
               tone="primary"
+              text={`Crear ${schemaType === "product" ? "Producto" : "Categoría"}`}
               onClick={() => router.navigateIntent("create", { type: schemaType })}
               style={{ marginTop: "8px" }}
-            >
-              Crear {schemaType === "product" ? "Producto" : "Categoría"}
-            </Button>
+            />
           </Flex>
         </Card>
       ) : (
