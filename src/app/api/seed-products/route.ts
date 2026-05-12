@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
+import { revalidateTag } from "next/cache";
 
 /*
  * /api/seed-products?secret=TOKEN
@@ -11,9 +12,12 @@ import { createClient } from "@sanity/client";
  *   2. VERIFICA token de escritura
  *   3. ELIMINA todos los productos y categorías existentes (limpieza total)
  *   4. Crea 3 categorías + 6 productos desde cero
+ *   5. PUBLICA todos los documentos inmediatamente
  *
- * Esto garantiza que siempre haya exactamente 6 productos y 3 categorías,
- * sin duplicados ni datos corruptos de seeds anteriores.
+ * IMPORTANTE: client.create() crea BORRADORES (drafts).
+ * La web en producción solo muestra documentos PUBLICADOS.
+ * Por eso, después de crear, publicamos usando la raw API de Sanity
+ * escribiendo directamente en la ruta publicada (sin "drafts.").
  */
 
 const PROJECT_ID =
@@ -191,6 +195,79 @@ const PRODUCTS = [
   },
 ];
 
+/**
+ * Publica documentos de Sanity creando una copia publicada directamente.
+ *
+ * @sanity/client's create() SIEMPRE crea en drafts.{_id}.
+ * Para publicar, escribimos directamente al _id (sin "drafts." prefix)
+ * usando la raw HTTP API de Sanity.
+ */
+async function publishDocuments(
+  projectId: string,
+  dataset: string,
+  token: string,
+  documents: Record<string, unknown>[],
+): Promise<{ ok: boolean; results: Record<string, string>; errors: string[] }> {
+  const url = `https://${projectId}.api.sanity.io/v2024-01-01/data/mutate/${dataset}`;
+  const results: Record<string, string> = {};
+  const errors: string[] = [];
+
+  // Batch publish: write each document to the published path (without "drafts." prefix)
+  const mutations = documents.map((doc) => ({
+    createOrReplace: doc,
+  }));
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ mutations }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        results,
+        errors: [
+          `Raw API error ${res.status}: ${data?.message || JSON.stringify(data)}`,
+        ],
+      };
+    }
+
+    // Parse results
+    if (data?.results) {
+      for (let i = 0; i < data.results.length; i++) {
+        const result = data.results[i];
+        const doc = documents[i];
+        if (result?.documentId) {
+          results[doc._id as string] = result.documentId;
+        } else if (result?.error) {
+          errors.push(`${doc._id}: ${result.error}`);
+          results[doc._id as string] = "error";
+        } else {
+          results[doc._id as string] = "ok";
+        }
+      }
+    } else {
+      // If no individual results, assume all OK
+      for (const doc of documents) {
+        results[doc._id as string] = "ok";
+      }
+    }
+  } catch (err) {
+    errors.push(
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  return { ok: errors.length === 0, results, errors };
+}
+
 export async function POST(request: Request) {
   try {
     /* ── 1. Validar secret ── */
@@ -254,44 +331,114 @@ export async function POST(request: Request) {
       /* non-critical — continue */
     }
 
-    /* ── 5. Crear categorías desde cero ── */
+    /* ── 5. Crear categorías (drafts) y publicarlas ── */
     const categoryResults = [];
+    const categoryDocs: Record<string, unknown>[] = [];
+
     for (const cat of CATEGORIES) {
       try {
-        const result = await client.create(cat);
-        categoryResults.push({ name: cat.name, status: "ok", _id: result._id });
+        await client.create(cat);
+        categoryDocs.push(cat);
+        categoryResults.push({ name: cat.name, status: "created" });
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
         categoryResults.push({ name: cat.name, status: "error", error: msg });
       }
     }
 
-    /* ── 6. Crear productos desde cero ── */
+    /* ── 5b. Publicar categorías (escribir a la ruta publicada) ── */
+    let categoriesPublished = false;
+    if (categoryDocs.length > 0) {
+      const pubResult = await publishDocuments(
+        PROJECT_ID,
+        DATASET,
+        writeToken,
+        categoryDocs,
+      );
+      categoriesPublished = pubResult.ok;
+      if (pubResult.errors.length > 0) {
+        // Add publish errors to results
+        for (const err of pubResult.errors) {
+          categoryResults.push({ name: err, status: "publish-warning" });
+        }
+      }
+    }
+
+    /* ── 6. Crear productos (drafts) y publicarlos ── */
     const productResults = [];
+    const productDocs: Record<string, unknown>[] = [];
+
     for (const prod of PRODUCTS) {
       try {
-        const result = await client.create(prod);
-        productResults.push({ name: prod.name, status: "ok", _id: result._id });
+        await client.create(prod);
+        productDocs.push(prod);
+        productResults.push({ name: prod.name, status: "created" });
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
         productResults.push({ name: prod.name, status: "error", error: msg });
       }
     }
 
-    /* ── 7. Responder con resumen ── */
-    const okCategories = categoryResults.filter((r) => r.status === "ok").length;
-    const okProducts = productResults.filter((r) => r.status === "ok").length;
+    /* ── 6b. Publicar productos (escribir a la ruta publicada) ── */
+    let productsPublished = false;
+    if (productDocs.length > 0) {
+      const pubResult = await publishDocuments(
+        PROJECT_ID,
+        DATASET,
+        writeToken,
+        productDocs,
+      );
+      productsPublished = pubResult.ok;
+      if (pubResult.errors.length > 0) {
+        for (const err of pubResult.errors) {
+          productResults.push({ name: err, status: "publish-warning" });
+        }
+      }
+    }
+
+    /* ── 7. Actualizar estados en los resultados ── */
+    for (const r of categoryResults) {
+      if (r.status === "created") r.status = categoriesPublished ? "published" : "draft";
+    }
+    for (const r of productResults) {
+      if (r.status === "created") r.status = productsPublished ? "published" : "draft";
+    }
+
+    /* ── 8. Responder con resumen ── */
+    const okCategories = categoryResults.filter(
+      (r) => r.status === "published" || r.status === "draft",
+    ).length;
+    const okProducts = productResults.filter(
+      (r) => r.status === "published" || r.status === "draft",
+    ).length;
+
+    /* ── 9. Invalidar caché de Next.js para que la web refleje los cambios ── */
+    try {
+      revalidateTag("products");
+      revalidateTag("categories");
+      revalidateTag("home-content");
+      revalidateTag("site-settings");
+    } catch (e) {
+      /* non-critical — el caché se limpiará en la próxima request */
+    }
 
     return NextResponse.json({
       ok: true,
       message: `Seed completado: ${okCategories}/3 categorías y ${okProducts}/6 productos creados.`,
+      published: {
+        categories: categoriesPublished,
+        products: productsPublished,
+      },
+      cacheInvalidated: true,
       cleanup: {
         deletedProducts: deletedProducts.length,
         deletedCategories: deletedCategories.length,
       },
       categories: categoryResults,
       products: productResults,
-      note: "Se eliminaron todos los productos y categorías anteriores. Ahora tienes exactamente 6 productos y 3 categorías. Puedes editarlos y publicarlos directamente desde el CMS.",
+      note: productsPublished
+        ? "Todos los documentos fueron PUBLICADOS y el caché fue limpiado. Ya aparecen en la web."
+        : "Los documentos se crearon como BORRADORES. Debes publicarlos manualmente desde el CMS.",
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
