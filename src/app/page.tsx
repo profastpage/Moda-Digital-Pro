@@ -58,10 +58,19 @@ interface HomeContent {
 }
 
 export default async function Home() {
-  /* ── Parallel fetch: homeContent + all products ── */
+  /* ── Parallel fetch: homeContent + all products (con tags para revalidación) ──
+   *  sanityFetch con next.tags permite revalidación on-demand vía webhook:
+   *  Cuando Sanity envía un webhook a /api/revalidate, se ejecuta revalidateTag()
+   *  y Next.js limpia el caché de las consultas asociadas a ese tag. */
   const [contentResult, productsResult] = await Promise.all([
-    sanityFetch({ query: HOME_CONTENT_QUERY }).catch(() => null),
-    sanityFetch({ query: ALL_PRODUCTS_QUERY }).catch(() => null),
+    sanityFetch({
+      query: HOME_CONTENT_QUERY,
+      tags: ["home-content", "site-settings"],
+    }).catch(() => null),
+    sanityFetch({
+      query: ALL_PRODUCTS_QUERY,
+      tags: ["products", "categories"],
+    }).catch(() => null),
   ]);
 
   /* Extract data or null */
