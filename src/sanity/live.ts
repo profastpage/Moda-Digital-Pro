@@ -1,7 +1,11 @@
 // ============================================================
 // FAST PAGE PRO — Sanity Live (defineLive)
 // Configura sanityFetch + SanityLive para revalidación en tiempo real
-// El VisualEditing overlay se maneja por separado en VisualEditing.tsx
+//
+// COMPORTAMIENTO:
+// - Producción (sin draft mode): usaCDN=true → cache CDN rápido
+// - Draft Mode (preview): usaCDN=false → datos inmediatos desde API
+// - perspective="published" en producción, "previewDrafts" en draft
 //
 // IMPORTANTE: El client DEBE tener stega.studioUrl configurado
 // para que sanityFetch retorne datos con source maps (stega)
@@ -11,31 +15,33 @@
 import { createClient } from "next-sanity";
 import { defineLive } from "next-sanity/live";
 
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "95d9zjqb";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+
+// ── Token de lectura para acceder a drafts (sin CDN) ──
+// Necesario para Draft Mode — generar en:
+// sanity.io/manage → API → Tokens → New Token (Reader)
+const token = process.env.SANITY_API_READ_TOKEN;
+const browserToken = process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN;
+
 // ── Cliente de Sanity con stega para Visual Editing ──
-// stega.studioUrl indica dónde está el Studio embebido
-// Esto permite que sanityFetch retorne source maps en los datos
-// para que el overlay VisualEditing sepa qué texto editar
+// - useCdn: true en producción (cache rápido)
+// - perspective: detecta automáticamente Draft Mode vía cookies
+//   y cambia a "previewDrafts" para mostrar borradores
+// - stega.studioUrl: habilita source maps para overlay Visual Editing
 const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "95d9zjqb",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  projectId,
+  dataset,
   apiVersion: "2025-01-01",
-  useCdn: true,
-  perspective: "published",
+  useCdn: !token, // Si hay token → useCdn=false (datos frescos). Sin token → useCdn=true (cache)
+  perspective: token ? "previewDrafts" : "published",
+  token: token, // Token para acceso a drafts
   // ── STEGA: habilita source maps en datos para Visual Editing ──
   stega: {
     enabled: true,
     studioUrl: "/admin",
   },
 });
-
-// ── Token de lectura para acceder a drafts (sin CDN) ──
-// Necesario para Draft Mode — generar en:
-// sanity.io/manage → API → Tokens → New Token (Reader)
-const token = process.env.SANITY_API_READ_TOKEN;
-
-// ── Token público para el navegador (Live Preview WebSocket) ──
-// Debe estar en NEXT_PUBLIC_ para que el browser pueda leerlo
-const browserToken = process.env.NEXT_PUBLIC_SANITY_API_READ_TOKEN;
 
 // ── Exportar sanityFetch y SanityLive ──
 // - sanityFetch: para Server Components, detecta Draft Mode automáticamente
