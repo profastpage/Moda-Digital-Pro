@@ -18,7 +18,7 @@ import {
   Text,
 } from "@sanity/ui";
 import { type SanityDocument } from "@sanity/client";
-import { PackageIcon, TagIcon, TrashIcon } from "@sanity/icons";
+import { PackageIcon, TagIcon, TrashIcon, AddIcon } from "@sanity/icons";
 
 interface DeletableListProps {
   schemaType: string;
@@ -215,7 +215,7 @@ export default function DeletableList({ schemaType, title, icon }: DeletableList
 
   return (
     <Box padding={3}>
-      {/* Header con conteo */}
+      {/* Header con conteo + botón crear */}
       <Flex
         align="center"
         justify="space-between"
@@ -238,11 +238,22 @@ export default function DeletableList({ schemaType, title, icon }: DeletableList
             </Text>
           </Card>
         </Flex>
-        {documents.length > 0 && (
-          <Text muted size={1}>
-            Haz clic en la X roja para eliminar
-          </Text>
-        )}
+        <Flex align="center" gap={3}>
+          {documents.length > 0 && (
+            <Text muted size={1}>
+              Haz clic en la X roja para eliminar
+            </Text>
+          )}
+          <Button
+            icon={AddIcon}
+            mode="bleed"
+            tone="primary"
+            onClick={() => router.navigateIntent("create", { type: schemaType })}
+            style={{ minWidth: "auto", padding: "4px 12px" }}
+          >
+            Crear {schemaType === "product" ? "Producto" : "Categoría"}
+          </Button>
+        </Flex>
       </Flex>
 
       {/* Lista de documentos */}
@@ -258,9 +269,15 @@ export default function DeletableList({ schemaType, title, icon }: DeletableList
             <Text muted size={3}>
               No hay {title.toLowerCase()} aún
             </Text>
-            <Text muted size={1}>
-              Usa el botón &quot;+&quot; arriba para crear uno nuevo
-            </Text>
+            <Button
+              icon={AddIcon}
+              mode="default"
+              tone="primary"
+              onClick={() => router.navigateIntent("create", { type: schemaType })}
+              style={{ marginTop: "8px" }}
+            >
+              Crear {schemaType === "product" ? "Producto" : "Categoría"}
+            </Button>
           </Flex>
         </Card>
       ) : (
