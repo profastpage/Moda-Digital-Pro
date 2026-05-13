@@ -23,6 +23,9 @@ import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
+// ── SSR: renderizado dinámico en cada request — SIN caché estática de Vercel ──
+export const dynamic = "force-dynamic";
+
 /* ── Type for homeContent sanity document ── */
 interface HomeContent {
   navItems?: { label: string; href: string }[];

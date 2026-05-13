@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PRODUCTS } from "@/constants/product";
 import { getProductImageUrl, plainText, type SanityProduct } from "@/lib/sanity.client";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ImageIcon } from "lucide-react";
 import ProductModal from "./ProductModal";
 
 /* Standardized animation: short slide (20px), fast (0.6s), easeOut */
@@ -36,13 +36,18 @@ function resolveSlug(product: SanityProduct): string {
   return product.slug?.current || product._id.replace(/^drafts\./, "");
 }
 
-/* ── Transform a SanityProduct into the flat ProductModal format ── */
-function transformSanityProduct(product: SanityProduct) {
+/* ── Transform a SanityProduct into the flat ProductModal format ──
+ *  Image resolution chain:
+ *    1. Sanity CDN URL (if product has uploaded image with asset)
+ *    2. Matching hardcoded product's local image (/public/images/product-XX.png)
+ *    3. Generic placeholder
+ */
+function transformSanityProduct(product: SanityProduct, fallbackImage?: string) {
   const description = plainText(product.description);
   return {
     id: resolveSlug(product),
     title: product.name,
-    image: getProductImageUrl(product.image) || "/images/fallback.png",
+    image: getProductImageUrl(product.image) || fallbackImage || "/images/placeholder.png",
     description,
     longDescription: description,
     price: product.price,
@@ -113,7 +118,7 @@ export default function ProductsSection({
       );
       if (cmsMatch) {
         replaced.add(resolveSlug(cmsMatch));
-        return transformSanityProduct(cmsMatch);
+        return transformSanityProduct(cmsMatch, fp.image); // Pass fallback image
       }
       return fp;
     });
@@ -121,7 +126,7 @@ export default function ProductsSection({
     // CMS products NOT in fallback → append at the end
     const newFromCms = sanityProducts
       .filter((cp) => !replaced.has(resolveSlug(cp)))
-      .map(transformSanityProduct);
+      .map((cp) => transformSanityProduct(cp));
 
     return [...merged, ...newFromCms];
   }, [sanityProducts]);
@@ -178,14 +183,21 @@ export default function ProductsSection({
                 shadow-sm hover:shadow-xl hover:shadow-primary/5
                 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1"
             >
-              {/* Product Image — fixed height, perfectly centered */}
+              {/* Product Image — fixed height, fallback si no hay imagen */}
               <div className="relative w-full h-64 sm:h-72 bg-muted flex items-center justify-center overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  loading="lazy"
-                  className="w-full h-full object-contain p-5 sm:p-6 transition-transform duration-700 group-hover:scale-105"
-                />
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    loading="lazy"
+                    className="w-full h-full object-contain p-5 sm:p-6 transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <ImageIcon className="w-10 h-10 opacity-30" />
+                    <span className="text-xs opacity-40">Imagen no disponible</span>
+                  </div>
+                )}
                 {product.badge && (
                   <span className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase text-white bg-primary/80 backdrop-blur-md rounded-full">
                     {product.badge}
