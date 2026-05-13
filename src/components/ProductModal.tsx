@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MessageCircle, ArrowRight } from "lucide-react";
+import { X, MessageCircle, ArrowRight, ImageIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { buildProductWhatsAppURL, hasNumericPrice } from "@/utils/whatsapp-engine";
@@ -129,20 +129,26 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                 <X className="w-5 h-5" />
               </button>
 
-              {/* ══════════ IMAGEN — Centrada arriba ══════════ */}
+              {/* ══════════ IMAGEN — Centrada arriba, fallback si no hay ══════════ */}
               <div className={`
                 w-full flex items-center justify-center
                 px-6 pt-6
-                /* max-h controlado para no empujar el texto */
                 max-h-[200px] sm:max-h-[250px] md:max-h-[300px]
                 ${isDark ? "bg-white/[0.02]" : "bg-slate-50"}
                 rounded-t-2xl
               `}>
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="max-h-full max-w-full object-contain rounded-xl"
-                />
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="max-h-full max-w-full object-contain rounded-xl"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-slate-500">
+                    <ImageIcon className="w-12 h-12 opacity-30" />
+                    <span className="text-xs opacity-40">Imagen no disponible</span>
+                  </div>
+                )}
               </div>
 
               {/* ══════════ CONTENIDO — Debajo de la imagen ══════════ */}
